@@ -1,0 +1,94 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="true" tabStyle="Account" controller="CSC_EntitlementController" action="{!getLocationInfo}">
+<script src="/support/api/34.0/interaction.js"></script>
+<script src="/support/console/34.0/integration.js"></script>
+<apex:includeScript value="{!$Resource.jQuery}"/>
+<script type="text/javascript">
+	var j$ = jQuery.noConflict();
+
+	function useData(){
+		var chckValue = j$("#chk").prop('checked');
+
+		if (chckValue) {
+			checkExistAccount();
+		} else {
+			alert('Please confrim to Overwrite the customer address with this address');
+		}
+	}
+
+	function setData(){
+		var hiddenStrESAccountId = j$("[id$=hiddenStrESAccountId]").val();
+		var company = j$("[id$=company]").val();
+		var country = j$("[id$=country]").val();
+		var state = j$("[id$=state]").val();
+		var city = j$("[id$=city]").val();
+		var zip = j$("[id$=zip]").val();
+		var streetAddr = j$("[id$=streetAddr]").val();
+        window.opener.setAccountInfo(hiddenStrESAccountId,company,country,state,city,zip,streetAddr,this.window);
+	}
+
+	function doCancel(){
+		window.close();
+	}
+</script>
+<html>
+	<head>
+		<style>
+		body{  
+			width: auto;
+			height:100%;
+			background-color: #f8f8f8;
+			margin:0 auto;  
+		}
+		</style>
+	</head>
+	<body>
+		<apex:form >
+			<apex:pageBlock title="Address On Contract" id="detailBlock">
+				<apex:pageBlockSection columns="1">					
+					<apex:pageBlockSectionItem >
+						<apex:outputLabel style="width:100px;">locationId</apex:outputLabel>
+						<apex:outputText value="{!locationId}"/>
+					</apex:pageBlockSectionItem>
+					<apex:pageBlockSectionItem >
+						<apex:outputLabel style="width:100px;">sourceCustomerID</apex:outputLabel>
+						<apex:outputText value="{!sourceCustomerID}"/>
+					</apex:pageBlockSectionItem>
+					<apex:pageBlockSectionItem >
+						<apex:outputLabel style="width:100px;">Company</apex:outputLabel>
+						<apex:inputText id="company" value="{!siteBusinessName1}" style="width:400px;"/>
+					</apex:pageBlockSectionItem>
+					<apex:pageBlockSectionItem >
+						<apex:outputLabel style="width:100px;">streetAddr</apex:outputLabel>
+						<apex:inputText id="streetAddr" value="{!streetAddr1}" style="width:400px;"/>
+					</apex:pageBlockSectionItem>
+					<apex:pageBlockSectionItem >
+						<apex:outputLabel style="width:100px;">city</apex:outputLabel>
+						<apex:inputText id="city" value="{!city}"/>
+					</apex:pageBlockSectionItem>
+					<apex:pageBlockSectionItem >
+						<apex:outputLabel style="width:100px;">State/Province</apex:outputLabel>
+						<apex:inputText id="state" value="{!geographicArea}"/>
+					</apex:pageBlockSectionItem>
+					<apex:pageBlockSectionItem >
+						<apex:outputLabel style="width:100px;">Zip/Postal Code</apex:outputLabel>
+						<apex:inputText id="zip" value="{!postalCode}"/>
+					</apex:pageBlockSectionItem>
+					<apex:pageBlockSectionItem >
+						<apex:outputLabel style="width:100px;">Counrty</apex:outputLabel>
+						<apex:inputText id="country" value="{!isoCountryCd}"/>
+					</apex:pageBlockSectionItem>
+					<apex:pageBlockSectionItem >
+						<label><input type="checkbox" id="chk"/>Overwrite the customer address with this address.</label>
+					</apex:pageBlockSectionItem>
+				</apex:pageBlockSection>
+				<apex:inputHidden id="hiddenStrESAccountId" value="{!strESAccountId}"/>
+				<div align="right">
+					<input type="button" value="Use" onclick="useData();" class="btn"/>
+					<apex:actionFunction name="checkExistAccount" action="{!checkExistAccount}" reRender="hiddenStrESAccountId" oncomplete="setData();"/>
+					<input type="button" value="Cancel" onclick="doCancel();" class="btn"/>
+				</div>
+			</apex:pageBlock>
+		</apex:form>
+	</body>
+</html>
+</apex:page>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Role xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseAccessLevel>None</caseAccessLevel>
+    <contactAccessLevel>None</contactAccessLevel>
+    <description>UNIS EAST REGION 4 SMB REP</description>
+    <mayForecastManagerShare>false</mayForecastManagerShare>
+    <name>UNIS EAST REGION 4 SMB REP</name>
+    <opportunityAccessLevel>Edit</opportunityAccessLevel>
+    <parentRole>UNIS_EAST_REGION_4_SMB_MANAGER</parentRole>
+</Role>

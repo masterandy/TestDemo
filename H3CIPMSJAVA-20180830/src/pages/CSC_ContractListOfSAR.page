@@ -1,0 +1,96 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="true">
+<script src="/support/api/34.0/interaction.js"></script>
+<script src="/support/console/34.0/integration.js"></script>
+<apex:includeScript value="{!$Resource.jQuery}"/>
+<script type="text/javascript">
+    var j$ = jQuery.noConflict();
+
+    var strProductList = window.opener.document.getElementById("page:form:hiddenBlock:hiddenStrGetEntitlementInfo").value;
+
+    var result = jQuery.parseJSON(strProductList);
+
+    j$(document).ready(function() {
+        if(result && result.contracts && (result.contracts.constructor === Array)){
+            //提取查询返回的结果
+            var searchDataList = result.contracts;
+            var htmlTag = '';
+            if(searchDataList.length > 0){
+                //遍历结果，放入到HTML内容里
+                for(var i=0; i<searchDataList.length; i++){
+                    var searchDataInfo = searchDataList[i];
+
+                    htmlTag += '<tr class="dataRow">';
+                    htmlTag += '<td class="dataCell"><input type="radio" name="rad" value='+ searchDataInfo.serviceAgreement +' /></td>';
+                    htmlTag += '<td class="dataCell">'+searchDataInfo.serviceAgreement+'</td>';
+                    htmlTag += '<td class="dataCell">'+searchDataInfo.startDate+'</td>';
+                    htmlTag += '<td class="dataCell">'+searchDataInfo.endDate+'</td>';
+                    htmlTag += '</tr>';
+                }
+
+                var infoTable = document.getElementById("DetailTable");
+                var oldNode = document.getElementById("DetailTableBody");
+
+                if(oldNode != null){
+                    infoTable.removeChild(oldNode);
+                }
+                
+                var div = document.createElement('div'); 
+                div.innerHTML = '<table>' + htmlTag + '</table>';
+                
+                div.firstChild.firstChild.setAttribute('id', 'DetailTableBody');
+                infoTable.appendChild(div.firstChild.firstChild);  
+            }
+        }
+    });
+
+    function callActionMethod(){
+        var selectData = j$('input[name="rad"]').filter(':checked').val();
+        if (selectData == undefined) {
+            alert("Please select one contract");
+            return ;
+        }
+        
+        var strContractId;
+
+        if(result && result.contracts && (result.contracts.constructor === Array)){
+                
+            //提取查询返回的结果
+            var searchDataList = result.contracts;
+
+            if(searchDataList.length > 0){
+                for(var i=0; i<searchDataList.length; i++){
+
+                    var searchDataInfo = searchDataList[i];
+
+                    if (selectData == searchDataInfo.serviceAgreement) {
+                        strContractId = searchDataInfo.serviceAgreement;
+                    }
+                }
+            }
+        }
+        window.opener.setEBSEntitlementInfoByContractListPage(strContractId,this.window);
+    }
+
+</script>
+<apex:form >
+    <apex:pageBlock title="Contract List">
+        <div>
+            <table>
+                <tr><td align="right"><input type="button" id="selectProduct" value="Use Selected Data" onclick="callActionMethod()" /></td></tr>
+            </table>
+        </div>
+        <table class="list" cellpadding="0" cellspacing="0" id="DetailTable">
+            <thead>
+                <tr class="headerRow">
+                    <td style="width:20px;"></td>
+                    <td style="width:200px;">ContractId</td>
+                    <td style="width:80px;">Start Date</td>
+                    <td style="width:80px;">End Date</td>
+                </tr>
+            </thead>
+            <tbody id="DetailTableBody">
+            </tbody>
+        </table>
+    </apex:pageBlock>
+</apex:form>
+</apex:page>

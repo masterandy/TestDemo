@@ -1,0 +1,33 @@
+<apex:page extensions="LeadChangeOwner" tabstyle="Lead" standardController="Lead">
+    <apex:pageMessages id="errmessageid"/>
+    <apex:form id="theform">
+    <apex:sectionHeader title="{!$Label.Change_Lead_Owner}" />
+    <apex:pageblock id="theblock">
+        <apex:pageBlockButtons >
+            <apex:commandButton value="{!$Label.ldchangeowner_save_button}"  action="{!saveNewOwner}" onclick="newownerid()" 
+            />
+            <apex:commandButton value="{!$Label.Ldchangeowner_cancel_button}" action="{!cancel}"/>
+        </apex:pageBlockButtons>
+        <apex:outputLabel value="{!$Label.Ld_Select_New_Owner}"  style="font-size:20px"/><br/><br/>
+        <apex:panelgrid columns="6" id="thegride">
+            <apex:outputLabel value="{!$Label.Ld_Transfer_this_lead}" style="float:right" />&nbsp;
+            <apex:outputText value="{!ldinfo.name}" />
+            <apex:outputText value="" />
+            <apex:outputText value="" />
+            <apex:outputText value="" />
+            <apex:outputtext value="{!$Label.Ld_vf_Owner}" style="float:right"/>&nbsp;
+            <apex:inputField value="{!ldtest2.ownerid}" id="owneridnewid"/>
+            <apex:inputHidden id="owneridjs" value="{!owneridjs}"/>
+            <script type="text/javascript">
+                  function newownerid() {
+                      var value1 = document.getElementById('{!$Component.owneridnewid}').value;
+                      var obj = document.getElementById('{!$Component.owneridjs}');
+                      obj.value = value1;
+                  }
+            </script>
+        </apex:panelgrid>
+    </apex:pageblock>
+    </apex:form>
+    
+
+</apex:page>

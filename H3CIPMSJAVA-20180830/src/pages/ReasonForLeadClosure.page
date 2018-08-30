@@ -1,0 +1,43 @@
+<!-- 
+/**********************************************************
+* Page Name: ReasonForLeadClosure
+* Author: HP
+* Date: 30/01/2014
+* Modify By: Darren
+* Date: 06/11/2015
+* Requirement # Request Id :  #15699
+* Release: R8.0
+* Description: This page provides Reason for Lead Closure
+***********************************************************/
+-->
+
+<apex:page standardController="Lead" extensions="ReasonForLeadClosure" sidebar="false" showHeader="false" title="Reason to Close Lead" name="ReasonForLeadClosure">
+    <apex:form >
+        <apex:pageBlock title="Reason to close Lead" id="emptyMessage">
+            <apex:pageMessages />
+            <apex:pageBlockSection >
+                <apex:inputField value="{!Lead.Closed_Reason__c}" onchange="reasonStatusEmpty(this.value);"/>
+                <apex:actionFunction name="reasonEmpty" action="{!changed}" rerender="emptyMessage"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!updateLeadController}" rendered="{!vBoolSave}"/>
+                <apex:commandButton value="Cancel" onClick="window.close()"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+    <script language="javascript">
+        function reasonStatusEmpty(resonStatus)
+        {
+            reasonEmpty();
+        }
+        if ({!closePopUp}) 
+        {
+            if (window.opener != null && !window.opener.closed) 
+            {
+                window.opener.location.href = '/{!Lead.Id}';
+                //window.opener.location.reload();
+            }
+            window.close();
+        }
+    </script>
+</apex:page>

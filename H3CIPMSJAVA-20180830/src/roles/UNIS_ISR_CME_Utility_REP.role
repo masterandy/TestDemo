@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Role xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseAccessLevel>None</caseAccessLevel>
+    <contactAccessLevel>None</contactAccessLevel>
+    <description>UNIS ISR CME/Utility REP</description>
+    <mayForecastManagerShare>false</mayForecastManagerShare>
+    <name>UNIS ISR CME/Utility REP</name>
+    <opportunityAccessLevel>Edit</opportunityAccessLevel>
+    <parentRole>UNIS_ISR_CME_Utility_GpComm_MANAGER</parentRole>
+</Role>

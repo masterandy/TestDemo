@@ -1,0 +1,223 @@
+<apex:page controller="CSC_Dispatch_Tool_Controller" id="page" showHeader="false">
+<apex:form id="form">
+<apex:inputtext id="row" value="{!row}" style="display:none;"/>
+<apex:inputtext id="AssignStatus" value="{!AssignStatus}" style="display:none;"/>
+<div class="lookupSearch"><div class="individualPalette"><div class="list0">
+<!-- Begin RelatedListElement -->
+<div class="bRelatedList" id="User"><a name="User_target"></a>
+<div class="listRelatedObject userBlock">
+<div class="bPageBlock brandSecondaryBrd secondaryPalette">
+<div class="pbHeader">
+<table  border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td style="text-align:right;" width="5%">省份</td>
+    <td style="text-align:left;" width="20%"><apex:inputField id="province" value="{!wo.Province_Lookup__c}" label="省份"/></td>
+    <td style="text-align:right;" width="5%">城市</td>
+    <td style="text-align:left;" width="20%"><apex:inputField id="city" value="{!wo.City_Lookup__c}" label="城市"/></td>
+    <td style="text-align:right;" width="5%">维修级别</td>
+    <td style="text-align:left;" width="20%"><apex:inputField id="repair_level" value="{!wo.Repair_Level__c}" label="维修级别"/></td>
+    <td style="text-align:right;" width="5%">产品类型</td>
+    <td style="text-align:left;" width="20%"><apex:inputField id="product_code" value="{!wo.Product_Code__c}" label="产品类型"/></td>
+  </tr>
+  <tr>
+    <!--td style="text-align:right;" >Zone</td>
+    <td style="text-align:left;" ><apex:outputText id="zone" value="{!zone}" label="Zone"/></td-->
+    <td style="text-align:right;" >客户名称</td>
+    <td style="text-align:left;" ><apex:inputText id="acc_name" value="{!accName}" label="客户名称"/></td>
+    <td style="text-align:left;" colspan="6"><apex:commandButton value="客户行业" action="{!GetAccountIndustry}"/>
+                                             <apex:commandButton value="大客户" action="{!GetBigAccount}"/>
+                                             <apex:commandButton value="维修站查询" action="{!GetAsc}"/></td>
+  </tr>
+</table>
+
+<apex:pagemessages id="Messages"/>
+<font size="3"><b>客户行业</b></font>
+<div class="pbBody" id="acc_industry" style="{!style_accIndustry_table}">
+  <table class="list" border="0" cellspacing="0" cellpadding="0">
+    <tr class="headerRow">
+      <th scope="col" class=" zen-deemphasize">行业</th>
+      <th scope="col" class=" zen-deemphasize">客户名称</th>
+      <th scope="col" class=" zen-deemphasize">省份</th>
+      <th scope="col" class=" zen-deemphasize">城市</th>
+    </tr>
+    <apex:repeat value="{!accIndustryList}" var="acc" id="theRepeat"> 
+    <tr class="dataRow even first">
+      <td class=" dataCell  ">{!acc.Industry__c}</td>
+      <td class=" dataCell  ">{!acc.Name}</td>
+      <td class=" dataCell  ">{!acc.Province__r.Name}</td>
+      <td class=" dataCell  ">{!acc.City__r.Name}</td>
+    </tr>
+    </apex:repeat>
+  </table>
+</div>
+<font size="3"><b>大客户</b></font>
+<div class="pbBody" id="big_acc" style="{!style_bigAcc_table}">
+  <table class="list" border="0" cellspacing="0" cellpadding="0">
+    <tr class="headerRow">
+      <th scope="col" class=" zen-deemphasize">维修中心</th>
+      <th scope="col" class=" zen-deemphasize">省份</th>
+      <th scope="col" class=" zen-deemphasize">客户名称</th>
+      <th scope="col" class=" zen-deemphasize">工程师</th>
+    </tr>
+    <apex:repeat value="{!big_accList}" var="big" id="bigRepeat"> 
+    <tr class="dataRow even first">
+      <td class=" dataCell  ">{!big.Service_Center__c}</td>
+      <td class=" dataCell  ">{!big.Province__c}</td>
+      <td class=" dataCell  ">{!big.Name}</td>
+      <td class=" dataCell  ">{!big.Engineers__c}</td>
+    </tr>
+    </apex:repeat>
+  </table>
+</div>
+<font size="3"><b>维修中心</b></font>
+<div class="pbBody" style="{!style_asc_table}">
+  <table class="list" border="0" cellspacing="0" cellpadding="0" id="asc">
+    <tr class="headerRow">
+      <th scope="col" class=" zen-deemphasize">Action</th>
+      <th scope="col" class=" zen-deemphasize">Zone Code</th>
+      <th scope="col" class=" zen-deemphasize">Zone Value</th>
+      <th scope="col" class=" zen-deemphasize">维修中心</th>
+      <th scope="col" class=" zen-deemphasize">省份</th>
+      <th scope="col" class=" zen-deemphasize">城市</th>
+      <th scope="col" class=" zen-deemphasize">ASC Code</th>
+      <th scope="col" class=" zen-deemphasize">Queue Code</th>
+      <th scope="col" class=" zen-deemphasize">授权行业</th>
+      <th scope="col" class=" zen-deemphasize">CTR值班电话</th>
+      <th scope="col" class=" zen-deemphasize">4H值班电话</th>
+      <th scope="col" class=" zen-deemphasize">Email</th>
+      <th scope="col" class=" zen-deemphasize">备件接收人</th>
+      <th scope="col" class=" zen-deemphasize">电话</th>
+      <th scope="col" class=" zen-deemphasize">备件接受地址</th>
+      <th scope="col" class=" zen-deemphasize">其他说明</th>
+    </tr>
+    <apex:repeat value="{!ascList}" var="ascinfo" id="ascRepeat"> 
+    <tr class="dataRow even first" onclick="TrOnClick()">
+      <td class=" dataCell  "><apex:commandButton value="Assign" onclick="AssignRow(this);" action="{!Assign}" oncomplete="Reload();" reRender="Messages,AssignStatus"/></td>
+      <td class=" dataCell  ">{!ascinfo.zone}</td>
+      <td class=" dataCell  ">{!ascinfo.resp}</td>
+      <td class=" dataCell  ">{!ascinfo.name}</td>
+      <td class=" dataCell  ">{!ascinfo.province}</td>
+      <td class=" dataCell  ">{!ascinfo.city}</td>
+      <td class=" dataCell  ">{!ascinfo.asccode}</td>
+      <td class=" dataCell  ">{!ascinfo.queuecode}</td>
+      <td class=" dataCell  ">{!ascinfo.industry}</td>
+      <td class=" dataCell  ">{!ascinfo.ctr_tel}</td>
+      <td class=" dataCell  ">{!ascinfo.h4_tel}</td>
+      <td class=" dataCell  ">{!ascinfo.email}</td>
+      <td class=" dataCell  ">{!ascinfo.receiver}</td>
+      <td class=" dataCell  ">{!ascinfo.receiver_tel}</td>
+      <td class=" dataCell  ">{!ascinfo.receiver_addr}</td>
+      <td class=" dataCell  ">{!ascinfo.notes}</td>
+    </tr>
+    </apex:repeat>
+  </table>
+</div>
+<br/>
+<apex:outputPanel id="requestDatePanel">
+<p><apex:actionStatus startText="calculating...please wait..." id="calculateStatus" startStyle="font-size:1.2em;color:blue"/></p>
+<table  border="0" cellpadding="0" cellspacing="0" width="100%" id="requestDateTable">
+  <tr>
+    <td style="text-align:right;" >当前时间</td>
+    <td style="text-align:left;" ><apex:inputField id="now" value="{!wo.Now__c}"/></td>
+    <td style="text-align:right;" >Zone Value</td>
+    <td style="text-align:left;" ><apex:inputText id="zone" value="{!zone_value}" label="Zone Value" disabled="true"/>
+    <apex:inputText id="zone2" value="{!zone_value}" label="Zone Value" style="display:none;"/></td>
+  </tr>
+  <tr>
+    <td style="text-align:right;" width="10%">Requested Date</td>
+    <td style="text-align:left;" width="20%"><apex:inputField id="requested_date" value="{!wo.Requested_Date__c}" label="Requested Date" /></td>
+    <td style="text-align:right;" ><label>Subcase Estimated Task Duration</label></td>
+    <td style="text-align:left;" ><apex:inputField id="Duration" label="WorkOrder Estimated Task Duration" value="{!wo.Subcase_Estimated_Task_Duration__c}" /></td>
+    <td style="text-align:left;"><apex:commandButton value="时间" action="{!GetRequestedDT}" reRender="requestDatePanel,Messages" status="calculateStatus"/></td>
+  </tr>
+</table>
+</apex:outputPanel>
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id='resultdiv' style="display:none;"></div>
+</apex:form>
+
+<script type="text/javascript"> 
+function AssignRow(obj)
+{
+    try
+    {   
+        var rowobj = document.getElementById('page:form:row');
+
+        var e = e || window.event; 
+        var target = e.target || e.srcElement; 
+        if (target.parentNode.tagName.toLowerCase() == "td") 
+        { 
+            var rowIndex = target.parentNode.parentNode.rowIndex-1; 
+            rowobj.value = rowIndex;
+            //alert(rowIndex);
+            //alert({!row});
+        } 
+    }
+    catch(e)
+    {
+    alert(e);
+    } 
+}
+
+function Reload()
+{
+    try
+    {
+        var assignStatus=document.getElementById('page:form:AssignStatus');
+        if(assignStatus.value==='success')
+        {
+            if(window.opener && !window.opener.closed)
+            { 
+                //alert(window.opener.document.getElementsByTagName("td"));
+                window.opener.location.href=window.opener.location.href; 
+            } 
+            window.close();
+        }
+    }
+    catch(ex)
+    {
+    alert(ex);
+    }
+}
+
+var oldRowIndex=0;
+function TrOnClick() 
+{
+  try
+  {
+    var tbl = document.getElementById("asc");
+    var trs = tbl.getElementsByTagName("tr");
+    
+    var e = e || window.event; 
+    var target = e.target || e.srcElement; 
+
+    if (target.parentNode.tagName.toLowerCase() == "tr") 
+    { 
+        var rowIndex = target.parentNode.rowIndex;
+        document.getElementById("page:form:zone").value=trs[rowIndex].cells[2].innerHTML;
+        document.getElementById("page:form:zone2").value=trs[rowIndex].cells[2].innerHTML;
+        if(oldRowIndex > 0 && oldRowIndex != rowIndex)
+        {
+          trs[oldRowIndex].style.background = "";
+        }
+        trs[rowIndex].style.background = "#EEFFBB";
+        oldRowIndex = rowIndex;
+    } 
+  }
+  catch(e)
+  {
+      alert(e);
+  }
+}
+
+</script>
+</apex:page>

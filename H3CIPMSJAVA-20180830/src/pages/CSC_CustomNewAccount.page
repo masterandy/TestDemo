@@ -1,0 +1,89 @@
+<apex:page controller="CSC_CustomNewAccountController" title="Search" showHeader="false" sideBar="false" tabStyle="Account" id="pg">
+<script src="/support/api/34.0/interaction.js"></script>
+<script src="/support/console/34.0/integration.js"></script>
+<apex:includeScript value="{!$Resource.jQuery}"/>
+<script type="text/javascript">
+  var j$ = jQuery.noConflict();
+  function closeWindow(){
+    var isSaveSuccess = j$("[id$=hiddenIsSaveSuccess]").val();
+    if (isSaveSuccess == 'true') {
+      window.close();
+    } else {
+      return;
+    }
+  }
+</script>
+<apex:form >
+	<apex:pageBlock id="newAccount" title="New Account" >
+      <apex:pageBlockButtons >
+        <apex:commandButton action="{!saveAccount}" value="Save" reRender="msg,hiddenIsSaveSuccess" oncomplete="closeWindow();"/>
+      </apex:pageBlockButtons>
+      <apex:pageMessages id="msg"/>
+      <apex:pageBlockSection columns="1" id="accountInfoBlockSection">
+        <apex:pageBlockSectionItem >
+          <apex:outputLabel for="AccountName">{!$ObjectType.Account.fields.Name.label}</apex:outputLabel>
+          <apex:panelGroup >
+            <div class="requiredInput">
+              <div class="requiredBlock"></div>
+               <apex:inputText id="AccountName" value="{!inputAccountName}"/>
+            </div>
+          </apex:panelGroup>
+        </apex:pageBlockSectionItem>
+          <apex:pageBlockSectionItem >
+            <apex:outputLabel for="pinCode">{!$ObjectType.Account.fields.CSC_PinCode__c.label}</apex:outputLabel>
+            <apex:panelGroup >
+            <apex:inputField id="pinCode" value="{!account.CSC_PinCode__c}"/>
+            <span style="color: red">(Note:Only MA team Can enter Pincode!)</span>
+            </apex:panelGroup>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel for="Country">Country</apex:outputLabel>
+            <apex:panelGroup >
+              <div class="requiredInput">
+                <div class="requiredBlock"></div>
+                 <apex:inputField id="Country" value="{!account.CSC_Country__c}"/>
+              </div>
+            </apex:panelGroup>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel for="Province">Province</apex:outputLabel>
+            <apex:panelGroup >
+              <div class="requiredInput">
+                <div class="requiredBlock"></div>
+                 <apex:inputField id="Province" value="{!account.Province__c}"/>
+              </div>
+            </apex:panelGroup>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel for="City">City</apex:outputLabel>
+            <apex:panelGroup >
+                <div class="requiredInput">
+                  <div class="requiredBlock"></div>
+                  <apex:inputField id="City" value="{!account.City__c}"/>
+                  <apex:commandLink value="verify" action="{!verifyCity}" reRender="PostalCode,msg" />
+                </div>
+            </apex:panelGroup>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel for="PostalCode">Zip</apex:outputLabel>
+            <apex:panelGroup >
+              <div class="requiredInput">
+                <div class="requiredBlock"></div>
+                <apex:inputField id="PostalCode" value="{!account.BillingPostalCode}"/>
+              </div>
+            </apex:panelGroup>
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel for="Street">Address</apex:outputLabel>
+            <apex:panelGroup >
+              <div class="requiredInput">
+                <div class="requiredBlock"></div>
+                <apex:inputField id="Street" value="{!account.BillingStreet}" style="width:450px"/>
+              </div>
+            </apex:panelGroup>
+        </apex:pageBlockSectionItem>
+      </apex:pageBlockSection> 
+    </apex:pageBlock>
+    <apex:inputHidden id="hiddenIsSaveSuccess" value="{!isSaveSuccess}" />
+</apex:form>
+</apex:page>

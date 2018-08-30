@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Role xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseAccessLevel>None</caseAccessLevel>
+    <contactAccessLevel>None</contactAccessLevel>
+    <description>UNIS PRESALES NORTH 2 SUPPORT REP</description>
+    <mayForecastManagerShare>false</mayForecastManagerShare>
+    <name>UNIS PRESALES NORTH 2 SUPPORT REP</name>
+    <opportunityAccessLevel>Edit</opportunityAccessLevel>
+    <parentRole>UNIS_PRESALES_NORTH_SMB_SUPPORT_MANAGER</parentRole>
+</Role>

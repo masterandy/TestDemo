@@ -1,0 +1,50 @@
+<apex:page standardController="Alliance_and_Channel_Partner__c" extensions="AddAllianceAndChannelPartnerController"  tabStyle="Opportunity" id="page">
+    <apex:form id="frm" >
+        <apex:sectionHeader title="{!$Label.Alliance_and_Channel_Partners}"/>
+        <apex:pagemessages id="msgId"/>
+        <apex:actionStatus id="resetT" startText="(Please Wait...)"/>
+        <apex:pageBlock title="{!$Label.Alliance_and_Channel_Partners_Edit}" id="pageBlock">
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton action="{!Save}" value="{!$Label.ldchangeowner_save_button}" />
+                <apex:commandButton action="{!Cancel}" value="{!$Label.Ldchangeowner_cancel_button}"/>
+            </apex:pageBlockButtons>
+            <apex:pageblockTable value="{!partnerList}" var="p" id="dataTable" >
+                <apex:column headerValue="{!$Label.Partner_Type}" width="15%">
+                    <apex:outputpanel id="columnpartnerType">                     
+                    <apex:inputField id="partnerType" value="{!p.channelPartner.Partner_Type__c}"/>
+                    <apex:actionSupport event="onchange" action="{!clearPartnerName}" rerender="dataTable,columnpartnerLocation,msgId" status="resetT">
+                        <apex:param name="para1" assignTo="{!num1}" value="{!p.logicNum}" />
+                    </apex:actionSupport>
+                    </apex:outputpanel>
+                </apex:column>
+                <apex:column headerValue="{!$Label.Partner}" width="20%" >
+                    <apex:inputText id="partner" value="{!p.PartnerNm}" />
+                    &nbsp;
+                    <apex:outputpanel id="columnpartnerLocation"> 
+                    <apex:image id="imageId" value="{!$Resource.lookupImage}" width="22" title="lookup" height="22"/>
+                    <apex:actionSupport event="onclick" action="{!ShowLookup}" rerender="dataTable,columnpartnerLocation,msgId" status="resetT">
+                        <apex:param name="para1" assignTo="{!num1}" value="{!p.logicNum}" />
+                    </apex:actionSupport>
+                    </apex:outputpanel>
+                </apex:column>
+                <!--<apex:column headerValue="{!$Label.Partner}" width="12%">
+                    <apex:inputText id="partner" value="{!p.PartnerNm}" disabled="true" />
+                </apex:column> -->
+                <apex:column headerValue="{!$Label.Business_Relationship}" width="15%">
+                    <apex:inputText id="businessRelationship" value="{!p.BusinessRelationship}" disabled="true" />
+                </apex:column>
+                <apex:column headerValue="{!$Label.Partner_Account_Role}" width="13%">                        
+                    <apex:inputField id="partnerAccountRole" value="{!p.channelPartner.Partner_Account_Role__c}"/>
+                </apex:column>
+                <apex:column headerValue="{!$Label.Partner_Primary}" width="10%">
+                    <apex:inputCheckbox id="primary" value="{!p.channelPartner.Primary__c}" />
+                </apex:column>
+                <apex:column headerValue="{!$Label.Sourced}" width="10%">
+                    <apex:inputCheckbox id="sourced" value="{!p.channelPartner.Sourced__c}" />
+                </apex:column>
+                <apex:column headerValue="">
+                </apex:column>
+           </apex:pageblockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

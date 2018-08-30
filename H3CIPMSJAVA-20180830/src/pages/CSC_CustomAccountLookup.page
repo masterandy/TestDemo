@@ -1,0 +1,173 @@
+<apex:page controller="CSC_CustomAccountLookupController" title="Search" showHeader="false" sideBar="false" tabStyle="Account" id="pg">
+<script src="/support/api/34.0/interaction.js"></script>
+<script src="/support/console/34.0/integration.js"></script>
+<apex:includeScript value="{!$Resource.jQuery}"/>
+<script type="text/javascript">
+  var j$ = jQuery.noConflict();
+  function showSaveContactInfo(FormTag,TextBox_lkid,TextBox,strContactId,strContactName) {
+    var isSaveSuccess = j$("[id$=hiddenIsSaveSuccess]").val();
+    if (isSaveSuccess == 'false') {
+      return;
+    } else {
+      javascript:top.window.opener.lookupPick2(FormTag,TextBox_lkid,TextBox,strContactId,strContactName, false);
+    }
+  }
+</script>
+<style>
+  .requiredInput {
+      position: relative;
+      height: 100%;
+  }
+
+  .requiredBlock {
+      background-color: #c00;
+      position: absolute;
+      left: -4px;
+      width: 3px;
+      top: 1px;
+      bottom: 1px;
+  }
+</style>
+  <apex:form >
+  <apex:outputPanel id="page" layout="block" style="margin:5px;padding:10px;padding-top:2px;">
+    <apex:tabPanel switchType="client" selectedTab="name1" id="tabbedPanel">
+      <apex:tab label="Search" name="tab1" id="tabOne">
+        <apex:actionRegion >  
+          <apex:outputPanel id="top" layout="block" style="margin:5px;padding:10px;padding-top:2px;">
+            <apex:outputLabel value="AccountName" style="font-weight:Bold;padding-right:10px;" for="txtSearch"/>
+            <apex:inputText id="txtSearch" value="{!searchString}" style="width:185px"/>
+            <apex:outputLabel value="Address" style="font-weight:Bold;padding-right:10px;" for="txtAddress"/>
+            <apex:inputText id="txtAddress" value="{!strAddress}" style="width:185px"/>
+              <span style="padding-left:5px">
+                <apex:commandButton id="btnGo" value="Go" action="{!Search}" rerender="msg1,searchResults"></apex:commandButton>
+              </span>
+          </apex:outputPanel>
+          <apex:pageMessages id="msg1"/>
+          <apex:outputPanel id="pnlSearchResults" style="margin:10px;height:350px;overflow-Y:auto;" layout="block">
+            <apex:pageBlock id="searchResults"> 
+              <apex:pageBlockTable value="{!results}" var="item" id="tblResults">
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >Name</apex:outputPanel>
+                  </apex:facet>
+                   <apex:outputLink value="javascript:top.window.opener.lookupPick2('{!FormTag}','{!TextBox}_lkid','{!TextBox}','{!item.Id}','{!item.Name}', false)" rendered="{!NOT(ISNULL(item.Id))}">{!item.Name}</apex:outputLink>     
+                </apex:column>
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >PinCode</apex:outputPanel>
+                  </apex:facet>
+                  <apex:outputField value="{!item.CSC_PinCode__c}" />    
+                </apex:column>
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >Country</apex:outputPanel>
+                  </apex:facet>
+                  <apex:outputField value="{!item.CSC_Country__c}" />    
+                </apex:column>
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >Province</apex:outputPanel>
+                  </apex:facet>
+                  <apex:outputField value="{!item.Province__c}" />    
+                </apex:column>
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >City</apex:outputPanel>
+                  </apex:facet>
+                  <apex:outputField value="{!item.City__c}" />    
+                </apex:column>
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >Zip</apex:outputPanel>
+                  </apex:facet>
+                  <apex:outputField value="{!item.BillingPostalCode}" />    
+                </apex:column>
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >Address</apex:outputPanel>
+                  </apex:facet>
+                  <apex:outputField value="{!item.BillingStreet}" />    
+                </apex:column>
+              </apex:pageBlockTable>
+            </apex:pageBlock>
+          </apex:outputPanel>
+        </apex:actionRegion>
+      </apex:tab>
+      <apex:tab label="New Account" name="tab2" id="tabTwo">
+        <apex:pageBlock id="newAccount" title="New Account" >
+          <apex:pageBlockButtons >
+            <apex:commandButton action="{!saveAccount}" value="Save" reRender="msg,hiddenIsSaveSuccess" oncomplete="showSaveContactInfo('{!FormTag}','{!TextBox}_lkid','{!TextBox}','{!strAccountId}','{!strAccountName}');"/>
+          </apex:pageBlockButtons>
+          <apex:pageMessages id="msg"/>
+          <apex:pageBlockSection columns="1" id="accountInfoBlockSection">
+            <apex:pageBlockSectionItem >
+              <apex:outputLabel for="AccountName">{!$ObjectType.Account.fields.Name.label}</apex:outputLabel>
+              <!--apex:inputField id="AccountName" value="{!account.Name}"/-->
+              <apex:panelGroup >
+                <div class="requiredInput">
+                  <div class="requiredBlock"></div>
+                   <apex:inputText id="AccountName" value="{!inputAccountName}"/>
+                </div>
+              </apex:panelGroup>
+            </apex:pageBlockSectionItem>
+              <apex:pageBlockSectionItem >
+                <apex:outputLabel for="pinCode">{!$ObjectType.Account.fields.CSC_PinCode__c.label}</apex:outputLabel>
+                <apex:panelGroup >
+                <apex:inputField id="pinCode" value="{!account.CSC_PinCode__c}"/>
+                <span style="color: red">(Note:Only MA team Can enter Pincode!)</span>
+                </apex:panelGroup>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel for="Country">Country</apex:outputLabel>
+                <apex:panelGroup >
+                  <div class="requiredInput">
+                    <div class="requiredBlock"></div>
+                     <apex:inputField id="Country" value="{!account.CSC_Country__c}"/>
+                  </div>
+                </apex:panelGroup>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel for="Province">Province</apex:outputLabel>
+                <apex:panelGroup >
+                  <div class="requiredInput">
+                    <div class="requiredBlock"></div>
+                     <apex:inputField id="Province" value="{!account.Province__c}"/>
+                  </div>
+                </apex:panelGroup>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel for="City">City</apex:outputLabel>
+                <apex:panelGroup >
+                    <div class="requiredInput">
+                      <div class="requiredBlock"></div>
+                      <apex:inputField id="City" value="{!account.City__c}"/>
+                      <apex:commandLink value="verify" action="{!verifyCity}" reRender="PostalCode,msg" />
+                    </div>
+                </apex:panelGroup>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel for="PostalCode">Zip</apex:outputLabel>
+                <apex:panelGroup >
+                  <div class="requiredInput">
+                    <div class="requiredBlock"></div>
+                    <apex:inputField id="PostalCode" value="{!account.BillingPostalCode}"/>
+                  </div>
+                </apex:panelGroup>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel for="Street">Address</apex:outputLabel>
+                <apex:panelGroup >
+                  <div class="requiredInput">
+                    <div class="requiredBlock"></div>
+                    <apex:inputField id="Street" value="{!account.BillingStreet}" style="width:450px"/>
+                  </div>
+                </apex:panelGroup>
+            </apex:pageBlockSectionItem>
+          </apex:pageBlockSection> 
+        </apex:pageBlock>
+        <apex:inputHidden id="hiddenIsSaveSuccess" value="{!isSaveSuccess}" />
+      </apex:tab>
+    </apex:tabPanel>
+  </apex:outputPanel>
+  </apex:form>
+</apex:page>

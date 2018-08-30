@@ -1,0 +1,197 @@
+<apex:page controller="CSC_CustomContactLookupController" title="Search" showHeader="false" sideBar="false" tabStyle="Account" id="pg">
+<script src="/support/api/34.0/interaction.js"></script>
+<script src="/support/console/34.0/integration.js"></script>
+<apex:includeScript value="{!$Resource.jQuery}"/>
+<script type="text/javascript">
+  var j$ = jQuery.noConflict();
+  function showSaveContactInfo(FormTag,TextBox_lkid,TextBox,strContactId,strContactName) {
+    var isSaveSuccess = j$("[id$=hiddenIsSaveSuccess]").val();
+    if (isSaveSuccess == 'false') {
+      return;
+    } else {
+      javascript:top.window.opener.lookupPick2(FormTag,TextBox_lkid,TextBox,strContactId,strContactName, false);
+    }
+  }
+</script>
+<style type="text/css">
+              .SavingHolder {
+              background-color: #FFFFCC;
+              border: 1px solid #333333;
+              font-size: 1.2em;
+              font-weight: bold;
+              padding: 0.5em;
+              position: relative;
+              top: 45%;
+              white-space: nowrap;
+             }
+            
+            .SavingDiv {
+              background-color: #D0D0D0;
+              opacity: .75;
+              filter: alpha(opacity=75); 
+              text-align: center;
+              width: 100%;
+              height: 100%;
+              position: fixed;
+              z-index: 300;
+              top: 0;
+              left: 0;
+             } 
+</style>
+  <apex:form >
+  <apex:outputPanel id="page" layout="block" style="margin:5px;padding:10px;padding-top:2px;">
+    <apex:tabPanel switchType="client" selectedTab="name1" id="tabbedPanel">
+      <apex:tab label="Search" name="tab1" id="tabOne">
+        <apex:actionRegion >  
+          <apex:outputPanel id="top" layout="block" style="margin:5px;padding:10px;padding-top:2px;">
+            <apex:outputLabel value="phone" style="font-weight:Bold;padding-right:10px;" for="txtPhone"/>
+            <apex:inputText id="txtPhone" value="{!strPhone}" />&nbsp;&nbsp;
+            <apex:inputText id="txtPhoneExtension" value="{!strPhoneExtension}" style="width:50px"/>
+            <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <apex:outputLabel for="autoSetValue"><b title="选中情况下如果Customer与Caller中值相同则自动覆盖" ><font color="red">自动赋值</font></b></apex:outputLabel>
+            <apex:inputCheckbox id="autoSetValue" value="{!autoSetValue}" /> -->
+            <br/>
+            <apex:outputLabel value="Accountname" style="font-weight:Bold;padding-right:10px;" for="txtSearch"/>
+            <apex:inputText id="txtSearch" value="{!searchString}" />
+            <apex:outputLabel value="Address" style="font-weight:Bold;padding-right:10px;" for="txtAddress"/>
+            <apex:inputText id="txtAddress" value="{!strAddress}" style="width:185px"/>
+              <span style="padding-left:5px">
+                <apex:commandButton id="btnGo" value="Go" action="{!Search}" rerender="msg1,searchResults"></apex:commandButton>
+              </span>
+          </apex:outputPanel>
+          <apex:pageMessages id="msg1"/>
+          <apex:outputPanel id="pnlSearchResults" style="margin:10px;height:350px;overflow-Y:auto;" layout="block">
+            <apex:pageBlock id="searchResults"> 
+              <apex:pageBlockTable value="{!results}" var="item" id="tblResults">
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >Isce</apex:outputPanel>
+                  </apex:facet>
+                  <apex:outputField value="{!item.isce__c}" />    
+                </apex:column>
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >Name</apex:outputPanel>
+                  </apex:facet>
+                   <apex:outputLink value="javascript:top.window.opener.lookupPick2('{!FormTag}','{!TextBox}_lkid','{!TextBox}','{!item.Id}','{!item.Name}', false)" rendered="{!NOT(ISNULL(item.Id))}">{!item.Name}</apex:outputLink>     
+                </apex:column>
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >Account Name</apex:outputPanel>
+                  </apex:facet>
+                  <apex:outputField value="{!item.Account.Name}" />    
+                </apex:column>
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >Account Address</apex:outputPanel>
+                  </apex:facet>
+                  <apex:outputField value="{!item.Account.BillingStreet}" />    
+                </apex:column>
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >Phone</apex:outputPanel>
+                  </apex:facet>
+                  <apex:outputField value="{!item.phone}" />    
+                </apex:column>
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >Extension</apex:outputPanel>
+                  </apex:facet>
+                  <apex:outputField value="{!item.CSC_Phone_Extension__c}" />    
+                </apex:column>
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >Other Phone</apex:outputPanel>
+                  </apex:facet>
+                  <apex:outputField value="{!item.otherPhone}" />    
+                </apex:column>
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >Email</apex:outputPanel>
+                  </apex:facet>
+                  <apex:outputField value="{!item.email}" />    
+                </apex:column>
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >Owner</apex:outputPanel>
+                  </apex:facet>
+                  <apex:outputField value="{!item.owner.Name}" />    
+                </apex:column>
+              </apex:pageBlockTable>
+            </apex:pageBlock>
+          </apex:outputPanel>
+        </apex:actionRegion>
+      </apex:tab>
+      <apex:tab label="New Contact" name="tab2" id="tabTwo">
+        <apex:pageBlock id="newContact" title="New Contact" >
+          <apex:actionStatus id="SavingStatusSpinner">
+            <apex:facet name="start">
+                 <div id="SavingDiv" class="SavingDiv" >
+                      <span id="SavingHolder" class="SavingHolder">
+                           <img  title="Saving..." alt="Saving..." src="/img/loading.gif"/>
+                           <span class="loadingDescription">Saving...</span>
+                      </span>
+                 </div>
+            </apex:facet>
+          </apex:actionStatus>
+          <apex:pageBlockButtons >
+            <apex:commandButton action="{!saveContact}" value="Save" reRender="msg,hiddenIsSaveSuccess" status="SavingStatusSpinner" oncomplete="showSaveContactInfo('{!FormTag}','{!TextBox}_lkid','{!TextBox}','{!strContactId}','{!strContactName}');"/>
+              <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <apex:outputLabel for="autoSetValue2"><b title="选中情况下如果Customer与Caller中值相同则自动覆盖" ><font color="red">自动赋值</font></b></apex:outputLabel>
+              <apex:inputCheckbox id="autoSetValue2" value="{!autoSetValue2}" /> -->
+          </apex:pageBlockButtons>
+
+          <apex:pageMessages id="msg"/>
+          <apex:pageBlockSection columns="1" id="contactBlockSection">
+            <apex:pageBlockSectionItem >
+              <apex:outputLabel for="name">Contact Name</apex:outputLabel>
+              <apex:inputField id="name" value="{!contact.LastName}"/>
+            </apex:pageBlockSectionItem>
+              <apex:pageBlockSectionItem >
+                  <apex:outputLabel for="name">Phone</apex:outputLabel>
+                  <apex:panelGroup >
+                      <apex:inputText value="{!strCountryCode}" style="width:70px;"/>
+                      <apex:inputField id="phone" value="{!contact.Phone}" style="width:140px;" required="true"/>
+                      <apex:inputField id="phoneExtension" value="{!contact.CSC_Phone_Extension__c}" style="width:50px;"/>
+                  </apex:panelGroup>
+              </apex:pageBlockSectionItem>
+              <apex:pageBlockSectionItem >
+                  <apex:outputLabel for="name">otherPhone</apex:outputLabel>
+                  <apex:inputField id="name" value="{!contact.otherPhone}"/>
+              </apex:pageBlockSectionItem>
+              <apex:pageBlockSectionItem >
+                  <apex:outputLabel for="name">Email</apex:outputLabel>
+                  <apex:inputField id="name" value="{!contact.Email}"/>
+              </apex:pageBlockSectionItem>
+              <apex:pageBlockSectionItem >
+                  <apex:outputLabel for="name">Privacy</apex:outputLabel>
+                  <apex:inputField id="name" value="{!contact.CSC_Privacy__c}"/>
+              </apex:pageBlockSectionItem>
+              <apex:pageBlockSectionItem >
+                <apex:outputLabel for="name">Mailing Country</apex:outputLabel>
+                <apex:inputField id="name" value="{!contact.MailingCountry}"/>
+              </apex:pageBlockSectionItem>
+              <apex:pageBlockSectionItem >
+                <apex:outputLabel for="name">Mailing State/Province</apex:outputLabel>
+                <apex:inputField id="name" value="{!contact.MailingState}"/>
+              </apex:pageBlockSectionItem>
+              <apex:pageBlockSectionItem >
+                <apex:outputLabel for="name">Mailing City</apex:outputLabel>
+                <apex:inputField id="name" value="{!contact.MailingCity}"/>
+              </apex:pageBlockSectionItem>
+              <apex:pageBlockSectionItem >
+                <apex:outputLabel for="name">Mailing Zip/Postal Code</apex:outputLabel>
+                <apex:inputField id="name" value="{!contact.MailingPostalCode}"/>
+              </apex:pageBlockSectionItem>
+              <apex:pageBlockSectionItem >
+                <apex:outputLabel for="name">Mailing Street</apex:outputLabel>
+                <apex:inputField id="name" value="{!contact.MailingStreet}" style="width:250px;height:100px;"/>
+              </apex:pageBlockSectionItem>
+          </apex:pageBlockSection> 
+        </apex:pageBlock>
+        <apex:inputHidden id="hiddenIsSaveSuccess" value="{!isSaveSuccess}" />
+      </apex:tab>
+    </apex:tabPanel>
+  </apex:outputPanel>
+  </apex:form>
+</apex:page>

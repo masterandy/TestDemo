@@ -1,0 +1,792 @@
+<apex:page standardController="Case" extensions="RewriteCaseNewEdit" tabStyle="Case" action="{!initCasePage}">
+    <apex:sectionHeader title="{!$Label.Case_New_Case}"/>
+    <p id="errorMessageid" style="color:red;font-size:10px;display:block">{!warnMesssage}</p>
+    <apex:form id="formid">
+        <!--
+        <apex:actionFunction name="saveacfunc" action="{!saveAllrecord}"/>
+        -->
+        <apex:pageBlock id="pgblkid">
+            <apex:pageblockButtons id="cmdbuttonid">
+                <apex:commandButton value="{!$Label.ldchangeowner_save_button}" onclick="limitchoseclosests1()" action="{!saveAllrecord}" />
+                <apex:commandButton value="{!$Label.Ldchangeowner_cancel_button}" action="{!Cancel}"/>
+            </apex:pageblockButtons>
+            <apex:pageblockSection title="{!$Label.Case_Case_Information}" collapsible="false" columns="2" id="pgblksectid">
+                <apex:inputfield value="{!Case.Origin}" required="true"  />
+                <apex:inputfield value="{!Case.status}" required="true" onchange="limitchoseclosests(this.value)" id="statusid"/>
+                <apex:inputfield value="{!Case.reason}" required="true" id="casereasonid" onchange="changeReasonHideWarningMessage()" />
+                <apex:inputfield value="{!Case.Priority}" required="true"/>
+                <apex:inputfield value="{!Case.Scenario__c}" required="true" id="scenarioid" onchange="changeScenarioaddWarningMessage()"/>
+                <apex:outputfield label="{!$Label.Case_Owner}" value="{!Case.owner.name}" rendered="{!blnownerrtdispplayvalue}" />
+                <apex:outputText value="" rendered="{!blnownerrtdispplayblank}" />
+                <apex:inputField value="{!Case.Request_Type__c}" required="true" rendered="{!blnwhetheracctrqstrt}" id="rqsttypeid" onchange="numacctsrequire(this.value)"/>
+                <apex:outputText value="" rendered="{!blnwhetheracctrqstrtblank}" />
+                <apex:outputfield label="{!$Label.Case_Record_Type}" value="{!Case.recordtype.name}" rendered="{!blnownerrtdispplayvalue}"/>
+                <apex:outputText value="" rendered="{!blnownerrtdispplayblank}" />
+                <apex:inputField value="{!Case.Number_of_Accounts__c}" id="numacctsid" rendered="{!blnwhetheracctrqstrt}" />
+                <!-- New Function for 04-Legal Review rcrdtp two field-->
+                <apex:outputText value="" rendered="{!not(whetheredit)}" />
+                <apex:inputField value="{!Case.CurrencyIsoCode}" id="currencycdid" rendered="{!blnwhetherlegalrv}" required="true"/>
+                <apex:outputText value="" rendered="{!blnwhetherlegalrv}" />
+                <apex:inputField value="{!Case.Total_Contract_Value__c}" id="totalcntractval" rendered="{!blnwhetherlegalrv}" required="true"/>
+            </apex:pageblockSection>
+            <apex:pageblockSection title="{!$Label.Case_Description_Information}" collapsible="false" columns="1" id="pgblksctn2">
+                <apex:inputfield value="{!Case.Subject}" style="width:450px;" required="true"/>
+                <apex:inputfield value="{!Case.Description}" style="height:150px;width:400px;" id="descriptionid"/>
+            </apex:pageblockSection>
+            <apex:pageblockSection title="Existing Account Information (Only for updating account)" collapsible="false" columns="2" id="pgblksectaccnameid" rendered="{!blnwhetheracctrqstrt}">
+                <apex:inputfield value="{!Case.AccountId}" id="accid"/> 
+            </apex:pageblockSection>
+            <!--New Field for 01-Account Request RT by Hardy 20160223-->
+            <apex:pageblockSection title="New Account Information" collapsible="false" columns="2" id="pgblksectaccinfoid" rendered="{!blnwhetheracctrqstrt}">
+                <apex:inputfield value="{!Case.New_Account_Name__c}" id="newaccnameid"/> 
+                <apex:inputfield value="{!Case.Industry__c}" id="industryid"/>  
+                <apex:inputfield value="{!Case.New_Account_English_Name__c}" id="newaccengid"/>
+                <apex:inputfield value="{!Case.Sub_Industry__c}" id="subindustryid" required="true"/> 
+                <apex:inputfield value="{!Case.L1_Account__c}" id="l1accid"/>
+                <apex:inputfield value="{!Case.Province__c}" id="provinceid"/>
+                <apex:inputfield value="{!Case.L1_English_Account__c}" id="l1engaccid"/>
+                <apex:inputfield value="{!Case.City__c}" id="cityid" required="true"/>
+                <apex:inputfield value="{!Case.SU__c}" id="suid"/>
+                <apex:inputfield value="{!Case.Billing_Street__c}" id="billstreetid"/>
+                <apex:inputfield value="{!Case.DTA__c}" id="dtaid" />
+                <apex:inputfield value="{!Case.Billing_Zip_Postal_Code__c}" id="billzipposcodeid"/>
+            </apex:pageblockSection>
+            <!--New Contact Information 20160328-->
+            <apex:pageblockSection title="New Contact Information" collapsible="false" columns="2" id="pgblksectcontactid" rendered="{!blnwhetheracctrqstrt}">
+                <apex:inputfield value="{!Case.Last_Name__c}" id="contlastnameid"/>
+                <apex:inputfield value="{!Case.Job_Function__c}" id="contjobfuncid"/>
+                <apex:inputfield value="{!Case.First_Name__c}" id="contfirstnameid"/>
+                <apex:inputfield value="{!Case.Job_Level__c}" id="contjoblevelid"/>
+                <apex:inputfield value="{!Case.Title__c}" id="conttitleid"/>
+                <apex:inputfield value="{!Case.Email__c}" id="contemailid"/>
+                <apex:inputfield value="{!Case.Phone__c}" id="contphoneid"/>
+                <apex:inputfield value="{!Case.WeChat__c}" id="contwechatid"/>
+            </apex:pageblockSection>
+            <!--End-->
+            <apex:pageblockSection title="Account Team Information" collapsible="false" columns="2" id="pgblksectaccteamid" rendered="{!blnwhetheracctrqstrt}">
+                <apex:inputfield value="{!Case.Team_Member_1__c}" id="teammember1id"/>
+                <apex:inputfield value="{!Case.Team_Member_4__c}" id="teammember4id"/>
+                <apex:inputfield value="{!Case.Team_Member_2__c}" id="teammember2id"/>
+                <apex:inputfield value="{!Case.Team_Member_5__c}" id="teammember5id"/>
+                <apex:inputfield value="{!Case.Team_Member_3__c}" id="teammember3id"/>
+                <apex:inputfield value="{!Case.Team_Member_6__c}" id="teammember6id"/>
+            </apex:pageblockSection>
+            <!--End-->
+            <apex:pageBlockSection title="{!$Label.Case_Attachment_Information}" collapsible="false" id="pgblkesctn3">
+                <apex:pageblockTable value="{!athmtls}" var="als" id="attachtabid">
+                    <apex:column headerValue="{!$Label.Case_Attachment_Name}" id="colmattachid" >
+                        <apex:inputFile fileName="{!als.name}" value="{!als.body}" />
+                    </apex:column>
+                </apex:pageblockTable>
+             </apex:pageBlockSection>
+        </apex:pageBlock>
+        <apex:inputHidden id="checkcloseerrmessageid" value="{!errormessageforclose}"/>
+        <apex:inputHidden id="errormessageforrqsttypeid" value="{!errormessageforrqsttype}"/>
+        <apex:inputHidden id="blnwhetheracctrqstrtid" value="{!blnwhetheracctrqstrt}"/>
+        <apex:inputHidden id="updatenameerrorid" value="{!updatenameerror}"/>
+        <apex:inputHidden id="transferacceeorid" value="{!transferacceeor}"/>
+        <apex:inputHidden id="otherissueerrorid" value="{!otherissueerror}"/>
+        <apex:inputHidden id="updateaddresserrorid" value="{!updateaddresserror}"/>
+        <apex:inputHidden id="whetherrrorid" value="{!whetherrror}"/>
+        <!--For 01-Account Request Each Field addError-->
+        <apex:inputHidden id="accnameAddErrorid" value="{!accnameAddError}"/>
+        <apex:inputHidden id="newaccnameAddErrorid" value="{!newaccnameAddError}"/>
+        <apex:inputHidden id="newaccengnameAddErrorid" value="{!newaccengnameAddError}"/>
+        <apex:inputHidden id="l1accAddErrorid" value="{!l1accAddError}"/>
+        <apex:inputHidden id="l1engaccAddErrorid" value="{!l1engaccAddError}"/>
+        <apex:inputHidden id="suAddErrorid" value="{!suAddError}"/>
+        <apex:inputHidden id="dtaAddErrorid" value="{!dtaAddError}"/>
+        <apex:inputHidden id="industryAddErrorid" value="{!industryAddError}"/>
+        <apex:inputHidden id="subindustryAddErrorid" value="{!subindustryAddError}"/>
+        <apex:inputHidden id="provinceAddErrorid" value="{!provinceAddError}"/>
+        <apex:inputHidden id="cityAddErrorid" value="{!cityAddError}"/>
+        <apex:inputHidden id="billstreetAddErrorid" value="{!billstreetAddError}"/>
+        <apex:inputHidden id="billzipposcodeAddErrorid" value="{!billzipposcodeAddError}"/>
+        <apex:inputHidden id="team1AddErrorid" value="{!team1AddError}"/>
+        <apex:inputHidden id="team2AddErrorid" value="{!team2AddError}"/>
+        <apex:inputHidden id="team3AddErrorid" value="{!team3AddError}"/>
+        <apex:inputHidden id="team4AddErrorid" value="{!team4AddError}"/>
+        <apex:inputHidden id="team5AddErrorid" value="{!team5AddError}"/>
+        <apex:inputHidden id="descriptionAddErrorid" value="{!descriptionAddError}"/>
+        <apex:inputHidden id="orderAccCrsErrorid" value="{!orderAccCrsError}"/>
+        <apex:inputHidden id="warnMesssageid" value="{!warnMesssage}"/>
+        <apex:inputHidden id="firstnameErrorid" value="{!firstnameError}"/>
+        <apex:inputHidden id="lastnameErrorid" value="{!lastnameError}"/>
+        <apex:inputHidden id="phoneErrorid" value="{!phoneError}"/>
+        <apex:inputHidden id="titleErrorid" value="{!titleError}"/>
+        <apex:inputHidden id="jobfuncErrorid" value="{!jobfuncError}"/>
+        <apex:inputHidden id="joblevelErrorid" value="{!joblevelError}"/>
+        <apex:inputHidden id="emailErrorid" value="{!emailError}"/>
+    </apex:form>
+    <script type="text/javascript">
+        var updatenameerrormessage = document.getElementById('{!$Component.formid.updatenameerrorid}').value;
+        var transferacceeormessage = document.getElementById('{!$Component.formid.transferacceeorid}').value;
+        var otherissueerrormessage = document.getElementById('{!$Component.formid.otherissueerrorid}').value;
+        var updateaddresserrormessage = document.getElementById('{!$Component.formid.updateaddresserrorid}').value;
+        var closeerror = document.getElementById('{!$Component.formid.checkcloseerrmessageid}').value;
+        var requesttypeerror = document.getElementById('{!$Component.formid.errormessageforrqsttypeid}').value;
+        var whetheracctrqst = document.getElementById('{!$Component.formid.blnwhetheracctrqstrtid}').value;
+        var orderAccCrsError = document.getElementById('{!$Component.formid.orderAccCrsErrorid}').value;
+        function limitchoseclosests(st) {
+            if(st == 'Closed') {
+                alert(closeerror);
+            }    
+        }
+        <!--Warning Message-->
+        function changeReasonHideWarningMessage() {
+            document.getElementById('errorMessageid').style.display = 'none';  
+            document.getElementById('{!$Component.formid.warnMesssageid}').value = ''; 
+            if(whetheracctrqst == 'true') {
+                if(document.getElementById('{!$Component.formid.pgblkid.pgblksectid.casereasonid}').value == 'Customer - Create a new account') {
+                    document.getElementById('{!$Component.formid.pgblkid.pgblksectid.numacctsid}').value = 1;
+                }  
+                if((document.getElementById('{!$Component.formid.pgblkid.pgblksectid.casereasonid}').value == 'Customer - Update an existing account' || 
+                document.getElementById('{!$Component.formid.pgblkid.pgblksectid.casereasonid}').value == 'SCP Admin Support' || 
+                document.getElementById('{!$Component.formid.pgblkid.pgblksectid.casereasonid}').value == 'Partner Related') 
+                && document.getElementById('{!$Component.formid.pgblkid.pgblksectid.rqsttypeid}').value == 'Single Record') {
+                    document.getElementById('{!$Component.formid.pgblkid.pgblksectid.numacctsid}').value = 1;    
+                }
+            }
+        }    
+        function changeScenarioaddWarningMessage() {
+            if(whetheracctrqst == 'true') {
+            var scenario = document.getElementById('{!$Component.formid.pgblkid.pgblksectid.scenarioid}').value;
+            if(scenario == 'Create Opportunity Account in SFDC' || scenario == 'Create Account in both SFDC and CRS') {
+                document.getElementById('errorMessageid').innerText = "{!$Label.CaseErrorAlertNewAccNotEqualMarket}";
+                document.getElementById('{!$Component.formid.warnMesssageid}').value = "{!$Label.CaseErrorAlertNewAccNotEqualMarket}";
+                document.getElementById('errorMessageid').style.display = 'block';
+            }
+            else if(scenario == 'Create Marketing Account') {
+                document.getElementById('errorMessageid').innerText = "{!$Label.CaseErrorAlertNewAccEqualMarket}"; 
+                document.getElementById('{!$Component.formid.warnMesssageid}').value = "{!$Label.CaseErrorAlertNewAccEqualMarket}";
+                document.getElementById('errorMessageid').style.display = 'block';
+            }
+            else if(scenario == 'Create Order Account in CRS') {
+                document.getElementById('errorMessageid').innerText = orderAccCrsError; 
+                document.getElementById('{!$Component.formid.warnMesssageid}').value = orderAccCrsError;
+                document.getElementById('errorMessageid').style.display = 'block';    
+            }
+            else if(scenario == 'Update Account Name') {
+                document.getElementById('errorMessageid').innerText = updatenameerrormessage; 
+                document.getElementById('{!$Component.formid.warnMesssageid}').value = updatenameerrormessage;
+                document.getElementById('errorMessageid').style.display = 'block';
+            }
+            else if(scenario == 'Request One Time Order') {
+                document.getElementById('errorMessageid').innerText = transferacceeormessage; 
+                document.getElementById('{!$Component.formid.warnMesssageid}').value = transferacceeormessage;
+                document.getElementById('errorMessageid').style.display = 'block';
+                document.getElementById('{!$Component.formid.pgblkid.pgblksectid.numacctsid}').value = 1;
+            }
+            else if(scenario == 'Transfer Account') {
+                if(document.getElementById('{!$Component.formid.pgblkid.pgblksectid.rqsttypeid}').value == 'Single Record') {
+                    document.getElementById('errorMessageid').innerText = transferacceeormessage; 
+                    document.getElementById('{!$Component.formid.warnMesssageid}').value = transferacceeormessage;
+                    document.getElementById('errorMessageid').style.display = 'block';    
+                }
+                if(document.getElementById('{!$Component.formid.pgblkid.pgblksectid.rqsttypeid}').value == 'Multiple Records') {
+                    document.getElementById('errorMessageid').innerText = otherissueerrormessage; 
+                    document.getElementById('{!$Component.formid.warnMesssageid}').value = otherissueerrormessage;
+                    document.getElementById('errorMessageid').style.display = 'block';    
+                }
+            }
+            else if(scenario == 'Other Issues') {
+                document.getElementById('errorMessageid').innerText = otherissueerrormessage;
+                document.getElementById('{!$Component.formid.warnMesssageid}').value = otherissueerrormessage;
+                document.getElementById('errorMessageid').style.display = 'block';
+            }
+            else if(scenario == 'Update Account Address') {
+                document.getElementById('errorMessageid').innerText = updateaddresserrormessage; 
+                document.getElementById('{!$Component.formid.warnMesssageid}').value = updateaddresserrormessage;
+                document.getElementById('errorMessageid').style.display = 'block';
+            }
+            else {
+                document.getElementById('errorMessageid').style.display = 'none';   
+                document.getElementById('{!$Component.formid.warnMesssageid}').value = ''; 
+            }
+            }
+        }
+        <!--End-->  
+        function limitchoseclosests1() {  
+            var value1 = document.getElementById('{!$Component.formid.pgblkid.pgblksectid.statusid}').value;
+            var tabcomponent = document.getElementById('{!$Component.formid.pgblkid.pgblkesctn3.attachtabid}');
+            if(whetheracctrqst == 'true') {
+                var rqsttypevalue = document.getElementById('{!$Component.formid.pgblkid.pgblksectid.rqsttypeid}').value;
+                var numacctvalue = document.getElementById('{!$Component.formid.pgblkid.pgblksectid.numacctsid}').value;
+            }
+            if(value1 == 'Closed') {
+                alert(closeerror);
+                for(var i = 0 ; i < 5 ; i++) {
+                    tabcomponent.rows[i].cells[0].innerHTML = null;
+                }
+                return;
+            }
+            if(whetheracctrqst == 'true') {
+                var scenario = document.getElementById('{!$Component.formid.pgblkid.pgblksectid.scenarioid}').value;
+                var casereason = document.getElementById('{!$Component.formid.pgblkid.pgblksectid.casereasonid}').value;
+                var description = document.getElementById('{!$Component.formid.pgblkid.pgblksctn2.descriptionid}').value;
+                var accname = document.getElementById('{!$Component.formid.pgblkid.pgblksectaccnameid.accid}').value;
+                var industry = document.getElementById('{!$Component.formid.pgblkid.pgblksectaccinfoid.industryid}').value;
+                var newaccname = document.getElementById('{!$Component.formid.pgblkid.pgblksectaccinfoid.newaccnameid}').value;
+                var subindustry = document.getElementById('{!$Component.formid.pgblkid.pgblksectaccinfoid.subindustryid}').value;
+                var newaccengname = document.getElementById('{!$Component.formid.pgblkid.pgblksectaccinfoid.newaccengid}').value;
+                var province = document.getElementById('{!$Component.formid.pgblkid.pgblksectaccinfoid.provinceid}').value;
+                var l1acc = document.getElementById('{!$Component.formid.pgblkid.pgblksectaccinfoid.l1accid}').value;
+                var city = document.getElementById('{!$Component.formid.pgblkid.pgblksectaccinfoid.cityid}').value;
+                var l1engacc = document.getElementById('{!$Component.formid.pgblkid.pgblksectaccinfoid.l1engaccid}').value;
+                var su = document.getElementById('{!$Component.formid.pgblkid.pgblksectaccinfoid.suid}').value;
+                var dta = document.getElementById('{!$Component.formid.pgblkid.pgblksectaccinfoid.dtaid}').value;
+                var billstreet = document.getElementById('{!$Component.formid.pgblkid.pgblksectaccinfoid.billstreetid}').value;
+                var billzipposcode = document.getElementById('{!$Component.formid.pgblkid.pgblksectaccinfoid.billzipposcodeid}').value;
+                var accteam1 = document.getElementById('{!$Component.formid.pgblkid.pgblksectaccteamid.teammember1id}').value;
+                var accteam2 = document.getElementById('{!$Component.formid.pgblkid.pgblksectaccteamid.teammember2id}').value;
+                var accteam3 = document.getElementById('{!$Component.formid.pgblkid.pgblksectaccteamid.teammember3id}').value;
+                var accteam4 = document.getElementById('{!$Component.formid.pgblkid.pgblksectaccteamid.teammember4id}').value;
+                var accteam5 = document.getElementById('{!$Component.formid.pgblkid.pgblksectaccteamid.teammember5id}').value;
+                var contlastname = document.getElementById('{!$Component.formid.pgblkid.pgblksectcontactid.contlastnameid}').value;
+                var contfirstname = document.getElementById('{!$Component.formid.pgblkid.pgblksectcontactid.contfirstnameid}').value;
+                var conttitle = document.getElementById('{!$Component.formid.pgblkid.pgblksectcontactid.conttitleid}').value;
+                var contjobfunc = document.getElementById('{!$Component.formid.pgblkid.pgblksectcontactid.contjobfuncid}').value;
+                var contphone = document.getElementById('{!$Component.formid.pgblkid.pgblksectcontactid.contphoneid}').value;
+                var contemail = document.getElementById('{!$Component.formid.pgblkid.pgblksectcontactid.contemailid}').value;
+                var contwechat = document.getElementById('{!$Component.formid.pgblkid.pgblksectcontactid.contwechatid}').value;
+                var contjoblevel = document.getElementById('{!$Component.formid.pgblkid.pgblksectcontactid.contjoblevelid}').value;
+                if(casereason == 'Customer - Update an existing account' || casereason == 'SCP Admin Support' || casereason == 'Partner Related') {
+                    if((contfirstname != '' || conttitle != '' || contjobfunc != '' || contphone != '' || contemail != '' || contwechat != '' || contjoblevel != '' || contlastname != '') && (contlastname == '' ||
+                    contfirstname == '' || conttitle == '' || contjobfunc == '' || contphone == '' || contemail == '' || contjoblevel == '')) {
+                        if(contlastname == '') {
+                            document.getElementById('{!$Component.formid.lastnameErrorid}').value = 'Required'; 
+                        }
+                        if(contfirstname == '') {
+                            document.getElementById('{!$Component.formid.firstnameErrorid}').value = 'Required';    
+                        }
+                        if(conttitle == '') {
+                            document.getElementById('{!$Component.formid.titleErrorid}').value = 'Required';     
+                        }
+                        if(contjobfunc == '') {
+                            document.getElementById('{!$Component.formid.jobfuncErrorid}').value = 'Required';    
+                        }
+                        if(contphone == '') {
+                            document.getElementById('{!$Component.formid.phoneErrorid}').value = 'Required';    
+                        }
+                        if(contemail == '') {
+                            document.getElementById('{!$Component.formid.emailErrorid}').value = 'Required';     
+                        }
+                        if(contjoblevel == '') {
+                            document.getElementById('{!$Component.formid.joblevelErrorid}').value = 'Required';    
+                        }
+                        document.getElementById('{!$Component.formid.whetherrrorid}').value = true;        
+                    }
+                }
+
+                if(casereason == 'Customer - Create a new account') {
+                    if(scenario != 'Create Opportunity Account in SFDC' && scenario != 'Create Account in both SFDC and CRS') {
+                        if((contfirstname != '' || conttitle != '' || contjobfunc != '' || contphone != '' || contemail != '' || contwechat != '' || contjoblevel != '' || contlastname != '') && (contlastname == '' ||
+                    contfirstname == '' || conttitle == '' || contjobfunc == '' || contphone == '' || contemail == '' || contjoblevel == '')) {
+                            if(contlastname == '') {
+                                document.getElementById('{!$Component.formid.lastnameErrorid}').value = 'Required'; 
+                            }
+                            if(contfirstname == '') {
+                                document.getElementById('{!$Component.formid.firstnameErrorid}').value = 'Required';    
+                            }
+                            if(conttitle == '') {
+                                document.getElementById('{!$Component.formid.titleErrorid}').value = 'Required';     
+                            }
+                            if(contjobfunc == '') {
+                                document.getElementById('{!$Component.formid.jobfuncErrorid}').value = 'Required';    
+                            }
+                            if(contphone == '') {
+                                document.getElementById('{!$Component.formid.phoneErrorid}').value = 'Required';    
+                            }
+                            if(contemail == '') {
+                                document.getElementById('{!$Component.formid.emailErrorid}').value = 'Required';     
+                            }
+                            if(contjoblevel == '') {
+                                document.getElementById('{!$Component.formid.joblevelErrorid}').value = 'Required';    
+                            }
+                            document.getElementById('{!$Component.formid.whetherrrorid}').value = true;        
+                        }
+                    }
+                    if(scenario == 'Create Opportunity Account in SFDC' || scenario == 'Create Account in both SFDC and CRS') {
+                        if(accname != '' || industry == '' || newaccname == '' ||  newaccengname == '' || province == '' ||
+                         l1engacc == '' || su == '' || billstreet == '' ||
+                        billzipposcode == '' || l1acc == '' || (su != 'GPC' && su != 'Partner' && accteam1 == '') || (su != '' && dta == '') || (industry != '' && subindustry == '') || 
+                        (province != '' && city == '') || contfirstname == '' || contlastname == '' || contphone == '' ||
+                        conttitle == '' || contjobfunc == '' || contemail == '' || contjoblevel == '') {
+                            if(accname != '') {
+                                document.getElementById('{!$Component.formid.accnameAddErrorid}').value = 'Blank';    
+                            }
+                            if(industry == '') {
+                                document.getElementById('{!$Component.formid.industryAddErrorid}').value = 'Required';     
+                            }
+                            if(newaccname == '') {
+                                document.getElementById('{!$Component.formid.newaccnameAddErrorid}').value = 'Required';       
+                            }
+                            if(newaccengname == '') {
+                                document.getElementById('{!$Component.formid.newaccengnameAddErrorid}').value = 'Required';    
+                            }
+                            if(province == '') {
+                                document.getElementById('{!$Component.formid.provinceAddErrorid}').value = 'Required';    
+                            }
+                            if(l1engacc == '') {
+                                document.getElementById('{!$Component.formid.l1engaccAddErrorid}').value = 'Required';      
+                            }
+                            if(su == '') {
+                                document.getElementById('{!$Component.formid.suAddErrorid}').value = 'Required';         
+                            }                   
+                            if(billstreet == '') {
+                                document.getElementById('{!$Component.formid.billstreetAddErrorid}').value = 'Required';         
+                            }
+                            if(billzipposcode == '') {
+                                document.getElementById('{!$Component.formid.billzipposcodeAddErrorid}').value = 'Required';         
+                            }
+                            if(l1acc == '') {
+                                document.getElementById('{!$Component.formid.l1accAddErrorid}').value = 'Required';         
+                            }
+                            if(su != 'GPC' && su != 'Partner' && accteam1 == '') {
+                                document.getElementById('{!$Component.formid.team1AddErrorid}').value = 'Required';         
+                            }
+                            if(su != '' && dta == '') {
+                                document.getElementById('{!$Component.formid.dtaAddErrorid}').value = 'Required';         
+                            }
+                            if(industry != '' && subindustry == '') {
+                                document.getElementById('{!$Component.formid.subindustryAddErrorid}').value = 'Required';         
+                            }
+                            if(province != '' && city == '') {
+                                document.getElementById('{!$Component.formid.cityAddErrorid}').value = 'Required';         
+                            } 
+                            if(contfirstname == '') {
+                                document.getElementById('{!$Component.formid.firstnameErrorid}').value = 'Required';    
+                            }
+                            if(contlastname == '') {
+                                document.getElementById('{!$Component.formid.lastnameErrorid}').value = 'Required';      
+                            }
+                            if(contphone == '') {
+                                document.getElementById('{!$Component.formid.phoneErrorid}').value = 'Required';      
+                            }
+                            if(conttitle == '') {
+                                document.getElementById('{!$Component.formid.titleErrorid}').value = 'Required';     
+                            }
+                            if(contjobfunc == '') {
+                                document.getElementById('{!$Component.formid.jobfuncErrorid}').value = 'Required';    
+                            }
+                            if(contemail == '') {
+                                document.getElementById('{!$Component.formid.emailErrorid}').value = 'Required';     
+                            }
+                            if(contjoblevel == '') {
+                                document.getElementById('{!$Component.formid.joblevelErrorid}').value = 'Required';    
+                            }
+                            document.getElementById('{!$Component.formid.whetherrrorid}').value = true;
+                            return;
+                        }    
+                    }
+                    if(scenario == 'Create Marketing Account') {
+                        if(newaccname == '' || accname != '' || (l1acc != '' && l1engacc == '') || (l1acc == '' && l1engacc != '')) {
+                            if(accname != '') {
+                                document.getElementById('{!$Component.formid.accnameAddErrorid}').value = 'Blank';
+                            }
+                            if(newaccname == '') {
+                                document.getElementById('{!$Component.formid.newaccnameAddErrorid}').value = 'Required';    
+                            }
+                            if(l1acc != '' && l1engacc == '') {
+                                document.getElementById('{!$Component.formid.l1engaccAddErrorid}').value = 'Required';  
+                            }
+                            if(l1acc == '' && l1engacc != '') {
+                                document.getElementById('{!$Component.formid.l1accAddErrorid}').value = 'Required';
+                            }
+                            document.getElementById('{!$Component.formid.whetherrrorid}').value = true;
+                            return;
+                            
+                        }
+                    }
+                    if(scenario == 'Create Order Account in CRS') {
+                        if(accname == '' || (l1acc != '' && l1engacc == '') || (l1acc == '' && l1engacc != '')) {
+                            if(accname == '') {
+                                document.getElementById('{!$Component.formid.accnameAddErrorid}').value = 'Required';      
+                            }
+                            if(l1acc != '' && l1engacc == '') {
+                                document.getElementById('{!$Component.formid.l1engaccAddErrorid}').value = 'Required';  
+                            }
+                            if(l1acc == '' && l1engacc != '') {
+                                document.getElementById('{!$Component.formid.l1accAddErrorid}').value = 'Required';
+                            }
+                            document.getElementById('{!$Component.formid.whetherrrorid}').value = true;
+                            return;  
+                        }
+                    }
+                }
+                if(casereason == 'Customer - Update an existing account') {
+                    if(scenario == 'Update Account Name') {
+                        if(accname == '' || industry != '' || newaccname == '' ||  newaccengname == '' || province != '' ||
+                         su != '' || billstreet != '' || billzipposcode != '' || accteam1 != '' || 
+                        accteam2 != '' ||accteam3 != '' ||accteam4 != '' ||accteam5 != '' || (l1acc != '' && l1engacc == '') || 
+                        (l1acc == '' && l1engacc != '')) {
+                            if(accname == '') {
+                                document.getElementById('{!$Component.formid.accnameAddErrorid}').value = 'Required'; 
+                            }
+                            if(industry != '') {
+                                document.getElementById('{!$Component.formid.industryAddErrorid}').value = 'Blank';     
+                            }
+                            if(industry != '' && subindustry != '') {
+                                document.getElementById('{!$Component.formid.subindustryAddErrorid}').value = 'Blank';     
+                            }
+                            if(newaccname == '') {
+                                document.getElementById('{!$Component.formid.newaccnameAddErrorid}').value = 'Required';       
+                            }
+                            if(newaccengname == '') {
+                                document.getElementById('{!$Component.formid.newaccengnameAddErrorid}').value = 'Required';    
+                            }
+                            if(province != '') {
+                                document.getElementById('{!$Component.formid.provinceAddErrorid}').value = 'Blank';    
+                            }
+                            if(province != '' && city != '') {
+                                document.getElementById('{!$Component.formid.cityAddErrorid}').value = 'Blank';    
+                            }
+                            if(su != '') {
+                                document.getElementById('{!$Component.formid.suAddErrorid}').value = 'Blank';         
+                            }
+                            if(su != '' && dta != '') {
+                                document.getElementById('{!$Component.formid.dtaAddErrorid}').value = 'Blank';      
+                            }                        
+                            if(billstreet != '') {
+                                document.getElementById('{!$Component.formid.billstreetAddErrorid}').value = 'Blank';         
+                            }
+                            if(billzipposcode != '') {
+                                document.getElementById('{!$Component.formid.billzipposcodeAddErrorid}').value = 'Blank';         
+                            }
+                            if(accteam1 != '') {
+                                document.getElementById('{!$Component.formid.team1AddErrorid}').value = 'Blank';         
+                            }
+                            if(accteam2 != '') {
+                                document.getElementById('{!$Component.formid.team2AddErrorid}').value = 'Blank';         
+                            }
+                            if(accteam3 != '') {
+                                document.getElementById('{!$Component.formid.team3AddErrorid}').value = 'Blank';         
+                            }
+                            if(accteam4 != '') {
+                                document.getElementById('{!$Component.formid.team4AddErrorid}').value = 'Blank';         
+                            }
+                            if(accteam5 != '') {
+                                document.getElementById('{!$Component.formid.team5AddErrorid}').value = 'Blank';         
+                            }  
+                            if(l1acc != '' && l1engacc == '') {
+                                document.getElementById('{!$Component.formid.l1engaccAddErrorid}').value = 'Required';  
+                            }
+                            if(l1acc == '' && l1engacc != '') {
+                                document.getElementById('{!$Component.formid.l1accAddErrorid}').value = 'Required';
+                            }  
+                            document.getElementById('{!$Component.formid.whetherrrorid}').value = true;
+                            return;
+                        }
+                    }
+                    
+                    if(scenario == 'Transfer Account' && document.getElementById('{!$Component.formid.pgblkid.pgblksectid.rqsttypeid}').value == 'Single Record') {
+                        if(accname == '' || industry != '' || newaccname != '' ||  newaccengname != '' || province != '' ||
+                         l1engacc != '' || su != '' || billstreet != '' || billzipposcode != '' || l1acc != '' || accteam1 == '') {
+                            if(accname == '') {
+                                document.getElementById('{!$Component.formid.accnameAddErrorid}').value = 'Required'; 
+                            }
+                            if(industry != '') {
+                                document.getElementById('{!$Component.formid.industryAddErrorid}').value = 'Blank';     
+                            }
+                            if(industry != '' && subindustry != '') {
+                                document.getElementById('{!$Component.formid.subindustryAddErrorid}').value = 'Blank';     
+                            }
+                            if(newaccname != '') {
+                                document.getElementById('{!$Component.formid.newaccnameAddErrorid}').value = 'Blank';       
+                            }
+                            if(newaccengname != '') {
+                                document.getElementById('{!$Component.formid.newaccengnameAddErrorid}').value = 'Blank';    
+                            }
+                            if(province != '') {
+                                document.getElementById('{!$Component.formid.provinceAddErrorid}').value = 'Blank';    
+                            }
+                            if(province != '' && city != '') {
+                                document.getElementById('{!$Component.formid.cityAddErrorid}').value = 'Blank';    
+                            }
+                            if(l1engacc != '') {
+                                document.getElementById('{!$Component.formid.l1engaccAddErrorid}').value = 'Blank';      
+                            }
+                            if(su != '') {
+                                document.getElementById('{!$Component.formid.suAddErrorid}').value = 'Blank';         
+                            }
+                            if(su != '' && dta != '') {
+                                document.getElementById('{!$Component.formid.dtaAddErrorid}').value = 'Blank';      
+                            }
+                            if(billstreet != '') {
+                                document.getElementById('{!$Component.formid.billstreetAddErrorid}').value = 'Blank';         
+                            }
+                            if(billzipposcode != '') {
+                                document.getElementById('{!$Component.formid.billzipposcodeAddErrorid}').value = 'Blank';         
+                            }
+                            if(l1acc != '') {
+                                document.getElementById('{!$Component.formid.l1accAddErrorid}').value = 'Blank';         
+                            }
+                            if(accteam1 == '') {
+                                document.getElementById('{!$Component.formid.team1AddErrorid}').value = 'Required';         
+                            }
+                            document.getElementById('{!$Component.formid.whetherrrorid}').value = true;
+                            return;
+                        }    
+                    }
+                    if(scenario == 'Transfer Account' && document.getElementById('{!$Component.formid.pgblkid.pgblksectid.rqsttypeid}').value == 'Multiple Records') {
+                        if(accname != '' || industry != '' || newaccname != '' || newaccengname != '' || province != '' || 
+                         l1engacc != '' || su != '' || billstreet != '' ||
+                        billzipposcode != '' || l1acc != '' || accteam1 != '' || accteam2 != '' ||accteam3 != '' ||accteam4 != '' ||accteam5 != '' || description == '') {
+                            if(accname != '') {
+                                document.getElementById('{!$Component.formid.accnameAddErrorid}').value = 'Blank'; 
+                            }
+                            if(industry != '') {
+                                document.getElementById('{!$Component.formid.industryAddErrorid}').value = 'Blank';     
+                            }
+                            if(industry != '' && subindustry != '') {
+                                document.getElementById('{!$Component.formid.subindustryAddErrorid}').value = 'Blank';     
+                            }
+                            if(newaccname != '') {
+                                document.getElementById('{!$Component.formid.newaccnameAddErrorid}').value = 'Blank';       
+                            }
+                            if(newaccengname != '') {
+                                document.getElementById('{!$Component.formid.newaccengnameAddErrorid}').value = 'Blank';    
+                            }
+                            if(province != '') {
+                                document.getElementById('{!$Component.formid.provinceAddErrorid}').value = 'Blank';    
+                            }
+                            if(province != '' && city != '') {
+                                document.getElementById('{!$Component.formid.cityAddErrorid}').value = 'Blank';    
+                            }
+                            if(l1engacc != '') {
+                                document.getElementById('{!$Component.formid.l1engaccAddErrorid}').value = 'Blank';      
+                            }
+                            if(su != '') {
+                                document.getElementById('{!$Component.formid.suAddErrorid}').value = 'Blank';         
+                            }
+                            if(su != '' && dta != '') {
+                                document.getElementById('{!$Component.formid.dtaAddErrorid}').value = 'Blank';      
+                            }
+                            if(billstreet != '') {
+                                document.getElementById('{!$Component.formid.billstreetAddErrorid}').value = 'Blank';         
+                            }
+                            if(billzipposcode != '') {
+                                document.getElementById('{!$Component.formid.billzipposcodeAddErrorid}').value = 'Blank';         
+                            }
+                            if(l1acc != '') {
+                                document.getElementById('{!$Component.formid.l1accAddErrorid}').value = 'Blank';         
+                            }
+                            if(accteam1 != '') {
+                                document.getElementById('{!$Component.formid.team1AddErrorid}').value = 'Blank';         
+                            }
+                            if(accteam2 != '') {
+                                document.getElementById('{!$Component.formid.team2AddErrorid}').value = 'Blank';         
+                            }
+                            if(accteam3 != '') {
+                                document.getElementById('{!$Component.formid.team3AddErrorid}').value = 'Blank';         
+                            }
+                            if(accteam4 != '') {
+                                document.getElementById('{!$Component.formid.team4AddErrorid}').value = 'Blank';         
+                            }
+                            if(accteam5 != '') {
+                                document.getElementById('{!$Component.formid.team5AddErrorid}').value = 'Blank';         
+                            }
+                            if(description == '') {
+                                document.getElementById('{!$Component.formid.descriptionAddErrorid}').value = 'Required';      
+                            }
+                            document.getElementById('{!$Component.formid.whetherrrorid}').value = true;
+                            return;
+                        }    
+                    }
+                    if(scenario == 'Request One Time Order') {
+                        if(accname == '' || industry != '' || newaccname != '' ||  newaccengname != '' || province != '' ||
+                         l1engacc != '' || su != '' || billstreet != '' || billzipposcode != '' || l1acc != '' || accteam1 == '') {
+                            if(accname == '') {
+                                document.getElementById('{!$Component.formid.accnameAddErrorid}').value = 'Required'; 
+                            }
+                            if(industry != '') {
+                                document.getElementById('{!$Component.formid.industryAddErrorid}').value = 'Blank';     
+                            }
+                            if(industry != '' && subindustry != '') {
+                                document.getElementById('{!$Component.formid.subindustryAddErrorid}').value = 'Blank';     
+                            }
+                            if(newaccname != '') {
+                                document.getElementById('{!$Component.formid.newaccnameAddErrorid}').value = 'Blank';       
+                            }
+                            if(newaccengname != '') {
+                                document.getElementById('{!$Component.formid.newaccengnameAddErrorid}').value = 'Blank';    
+                            }
+                            if(province != '') {
+                                document.getElementById('{!$Component.formid.provinceAddErrorid}').value = 'Blank';    
+                            }
+                            if(province != '' && city != '') {
+                                document.getElementById('{!$Component.formid.cityAddErrorid}').value = 'Blank';    
+                            }
+                            if(l1engacc != '') {
+                                document.getElementById('{!$Component.formid.l1engaccAddErrorid}').value = 'Blank';      
+                            }
+                            if(su != '') {
+                                document.getElementById('{!$Component.formid.suAddErrorid}').value = 'Blank';         
+                            }
+                            if(su != '' && dta != '') {
+                                document.getElementById('{!$Component.formid.dtaAddErrorid}').value = 'Blank';      
+                            }
+                            if(billstreet != '') {
+                                document.getElementById('{!$Component.formid.billstreetAddErrorid}').value = 'Blank';         
+                            }
+                            if(billzipposcode != '') {
+                                document.getElementById('{!$Component.formid.billzipposcodeAddErrorid}').value = 'Blank';         
+                            }
+                            if(l1acc != '') {
+                                document.getElementById('{!$Component.formid.l1accAddErrorid}').value = 'Blank';         
+                            }
+                            if(accteam1 == '') {
+                                document.getElementById('{!$Component.formid.team1AddErrorid}').value = 'Required';         
+                            }
+                            document.getElementById('{!$Component.formid.whetherrrorid}').value = true;
+                            return;
+                        }
+                    }
+                    if(scenario == 'Other Issues') {
+                        if(accname != '' || industry != '' || newaccname != '' || newaccengname != '' || province != '' || 
+                         l1engacc != '' || su != '' || billstreet != '' ||
+                        billzipposcode != '' || l1acc != '' || accteam1 != '' || accteam2 != '' ||accteam3 != '' ||accteam4 != '' ||accteam5 != '' || description == '') {
+                            if(accname != '') {
+                                document.getElementById('{!$Component.formid.accnameAddErrorid}').value = 'Blank'; 
+                            }
+                            if(industry != '') {
+                                document.getElementById('{!$Component.formid.industryAddErrorid}').value = 'Blank';     
+                            }
+                            if(industry != '' && subindustry != '') {
+                                document.getElementById('{!$Component.formid.subindustryAddErrorid}').value = 'Blank';     
+                            }
+                            if(newaccname != '') {
+                                document.getElementById('{!$Component.formid.newaccnameAddErrorid}').value = 'Blank';       
+                            }
+                            if(newaccengname != '') {
+                                document.getElementById('{!$Component.formid.newaccengnameAddErrorid}').value = 'Blank';    
+                            }
+                            if(province != '') {
+                                document.getElementById('{!$Component.formid.provinceAddErrorid}').value = 'Blank';    
+                            }
+                            if(province != '' && city != '') {
+                                document.getElementById('{!$Component.formid.cityAddErrorid}').value = 'Blank';    
+                            }
+                            if(l1engacc != '') {
+                                document.getElementById('{!$Component.formid.l1engaccAddErrorid}').value = 'Blank';      
+                            }
+                            if(su != '') {
+                                document.getElementById('{!$Component.formid.suAddErrorid}').value = 'Blank';         
+                            }
+                            if(su != '' && dta != '') {
+                                document.getElementById('{!$Component.formid.dtaAddErrorid}').value = 'Blank';      
+                            }
+                            if(billstreet != '') {
+                                document.getElementById('{!$Component.formid.billstreetAddErrorid}').value = 'Blank';         
+                            }
+                            if(billzipposcode != '') {
+                                document.getElementById('{!$Component.formid.billzipposcodeAddErrorid}').value = 'Blank';         
+                            }
+                            if(l1acc != '') {
+                                document.getElementById('{!$Component.formid.l1accAddErrorid}').value = 'Blank';         
+                            }
+                            if(accteam1 != '') {
+                                document.getElementById('{!$Component.formid.team1AddErrorid}').value = 'Blank';         
+                            }
+                            if(accteam2 != '') {
+                                document.getElementById('{!$Component.formid.team2AddErrorid}').value = 'Blank';         
+                            }
+                            if(accteam3 != '') {
+                                document.getElementById('{!$Component.formid.team3AddErrorid}').value = 'Blank';         
+                            }
+                            if(accteam4 != '') {
+                                document.getElementById('{!$Component.formid.team4AddErrorid}').value = 'Blank';         
+                            }
+                            if(accteam5 != '') {
+                                document.getElementById('{!$Component.formid.team5AddErrorid}').value = 'Blank';         
+                            }
+                            if(description == '') {
+                                document.getElementById('{!$Component.formid.descriptionAddErrorid}').value = 'Required';      
+                            }
+                            document.getElementById('{!$Component.formid.whetherrrorid}').value = true;
+                            return;
+                        }
+                    }
+                    if(scenario == 'Update Account Address') {
+                        if(accname == '' || industry != '' || newaccname != '' ||  newaccengname != '' || province == '' ||
+                         l1engacc != '' || su != '' || billstreet == '' || (province != '' && city == '') || 
+                        billzipposcode == '' || l1acc != '' || accteam1 != '' || accteam2 != '' ||accteam3 != '' ||accteam4 != '' ||accteam5 != '') {
+                            if(accname == '') {
+                                document.getElementById('{!$Component.formid.accnameAddErrorid}').value = 'Required'; 
+                            }
+                            if(industry != '') {
+                                document.getElementById('{!$Component.formid.industryAddErrorid}').value = 'Blank';     
+                            }
+                            if(industry != '' && subindustry != '') {
+                                document.getElementById('{!$Component.formid.subindustryAddErrorid}').value = 'Blank';     
+                            }
+                            if(newaccname != '') {
+                                document.getElementById('{!$Component.formid.newaccnameAddErrorid}').value = 'Blank';       
+                            }
+                            if(newaccengname != '') {
+                                document.getElementById('{!$Component.formid.newaccengnameAddErrorid}').value = 'Blank';    
+                            }
+                            if(province == '') {
+                                document.getElementById('{!$Component.formid.provinceAddErrorid}').value = 'Required';  
+                                document.getElementById('{!$Component.formid.cityAddErrorid}').value = 'Required'; 
+                            }
+                            if(province != '' && city == '') {
+                                document.getElementById('{!$Component.formid.cityAddErrorid}').value = 'Required';    
+                            }
+                            if(l1engacc != '') {
+                                document.getElementById('{!$Component.formid.l1engaccAddErrorid}').value = 'Blank';      
+                            }
+                            if(su != '') {
+                                document.getElementById('{!$Component.formid.suAddErrorid}').value = 'Blank';         
+                            }
+                            if(su != '' && dta != '') {
+                                document.getElementById('{!$Component.formid.dtaAddErrorid}').value = 'Blank';      
+                            }
+                            if(billstreet == '') {
+                                document.getElementById('{!$Component.formid.billstreetAddErrorid}').value = 'Required';         
+                            }
+                            if(billzipposcode == '') {
+                                document.getElementById('{!$Component.formid.billzipposcodeAddErrorid}').value = 'Required';         
+                            }
+                            if(l1acc != '') {
+                                document.getElementById('{!$Component.formid.l1accAddErrorid}').value = 'Blank';         
+                            }
+                            if(accteam1 != '') {
+                                document.getElementById('{!$Component.formid.team1AddErrorid}').value = 'Blank';         
+                            }
+                            if(accteam2 != '') {
+                                document.getElementById('{!$Component.formid.team2AddErrorid}').value = 'Blank';         
+                            }
+                            if(accteam3 != '') {
+                                document.getElementById('{!$Component.formid.team3AddErrorid}').value = 'Blank';         
+                            }
+                            if(accteam4 != '') {
+                                document.getElementById('{!$Component.formid.team4AddErrorid}').value = 'Blank';         
+                            }
+                            if(accteam5 != '') {
+                                document.getElementById('{!$Component.formid.team5AddErrorid}').value = 'Blank';         
+                            }
+                            document.getElementById('{!$Component.formid.whetherrrorid}').value = true;
+                            return;  
+                        }
+                    }
+                }
+            }
+            
+        }
+        function numacctsrequire(rqsttype) {
+            if(document.getElementById('{!$Component.formid.pgblkid.pgblksectid.rqsttypeid}').value == 'Single Record' && whetheracctrqst == 'true') {
+                document.getElementById('{!$Component.formid.pgblkid.pgblksectid.numacctsid}').value = 1;
+                if(document.getElementById('{!$Component.formid.pgblkid.pgblksectid.scenarioid}').value == 'Transfer Account') {
+                    document.getElementById('errorMessageid').innerText = transferacceeormessage; 
+                    document.getElementById('errorMessageid').style.display = 'block';
+                }   
+            } 
+            if(document.getElementById('{!$Component.formid.pgblkid.pgblksectid.rqsttypeid}').value == 'Multiple Records' && whetheracctrqst == 'true' && 
+            document.getElementById('{!$Component.formid.pgblkid.pgblksectid.scenarioid}').value == 'Transfer Account') {
+                document.getElementById('errorMessageid').innerText = otherissueerrormessage; 
+                document.getElementById('errorMessageid').style.display = 'block';    
+            } 
+        }
+    </script>
+</apex:page>

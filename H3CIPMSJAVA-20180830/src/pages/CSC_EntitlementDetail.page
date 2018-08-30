@@ -1,0 +1,505 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="true" tabStyle="Account" controller="CSC_EntitlementController" action="{!getEntitlementDetail}">
+<script src="/support/api/34.0/interaction.js"></script>
+<script src="/support/console/34.0/integration.js"></script>
+<apex:includeScript value="{!$Resource.jQuery}"/>
+<script type="text/javascript">
+	var j$ = jQuery.noConflict();
+	j$(document).ready(function() {
+		j$("#content div").hide(); 
+		j$("[id$=hidden1]").hide();
+		j$("[id$=hidden2]").hide();
+		
+		var isShowContract = '{!isShowContract}';
+		var isShowWarranty = '{!isShowWarranty}';
+        
+		if (isShowContract =='true' && isShowWarranty =='false' ) {
+
+			var defualtSelectedContractOfferId = '{!defualtSelectedContractOfferId}';
+			var defualtselectedContractDelivId = '{!defualtselectedContractDelivId}';
+
+			if (defualtSelectedContractOfferId != undefined) {
+				setSelectedRow(defualtSelectedContractOfferId, 'contractOfferRadio');
+			}
+			
+			if (defualtselectedContractDelivId != undefined) {
+				setSelectedRow(defualtselectedContractDelivId, 'contractDelivRadio');
+			}
+
+			j$("#content div").hide(); 
+	        j$("#tabs li").attr("id",""); 
+	        j$('#contractTab').parent().attr("id","current"); 
+			j$('#tabs-contract').fadeIn();
+	        j$('#tabs-contract').find('div').fadeIn();
+	        j$('div[class="pbFooter secondaryPalette"]').hide(); 
+
+		} else if (isShowContract =='false' && isShowWarranty == 'true') {
+
+			var defaultSelectedWarrantyOfferId = '{!defaultSelectedWarrantyOfferId}';
+			var defaultSelectedWarrantyDelivId = '{!defaultSelectedWarrantyDelivId}';
+
+			if (defaultSelectedWarrantyOfferId != undefined) {
+				setSelectedRow(defaultSelectedWarrantyOfferId, 'warrantyOfferRadio');
+			}
+			
+			if (defaultSelectedWarrantyDelivId != undefined) {
+				setSelectedRow(defaultSelectedWarrantyDelivId, 'warrantyDelivRadio');
+			}
+
+			j$("#content div").hide(); 
+	        j$("#tabs li").attr("id",""); 
+	        j$('#warrantyTab').parent().attr("id","current"); 
+			j$('#tabs-warranty').fadeIn();
+			j$('#tabs-warranty').find('div').fadeIn();
+			j$('div[class="pbFooter secondaryPalette"]').hide(); 
+
+		} else {
+			j$("#tabs li:first").attr("id","current"); 
+		 	j$("#content div:first").fadeIn(); 
+			j$("#content div:first").find("div").fadeIn();
+			j$('div[class="pbFooter secondaryPalette"]').hide(); 
+		}
+
+	    j$('#tabs a').click(function(e) {
+	        e.preventDefault();        
+	        j$("#content div").hide(); 
+	        j$("#tabs li").attr("id",""); 
+	        j$(this).parent().attr("id","current"); 
+	        
+	        j$('#' + j$(this).attr('title')).fadeIn();
+
+	        var currentTab = j$(this).attr('title');
+
+	        if (currentTab == 'tabs-contract') {
+	        	j$('#tabs-contract').find('div').fadeIn();
+	        } else if (currentTab == 'tabs-warranty') {
+	        	j$('#tabs-warranty').find('div').fadeIn();
+	        }
+	        j$('div[class="pbFooter secondaryPalette"]').hide(); 
+	    });
+
+	});
+
+	function setSelectedRow(selectedRow, actionBlock){
+		j$('input[name=' + '"'+ actionBlock + '"' + ']').each(function(){
+			j$(this).attr("checked",false);
+		    j$(this).parent().parent().css('background-color', '#fff');
+		 });
+		j$('#'+selectedRow).attr("checked",true);
+		j$('input[name=' + '"'+ actionBlock + '"' + ']').filter(':checked').parent().parent().css('background-color', '#B9B9FF');
+
+		if (actionBlock == 'contractOfferRadio' || actionBlock == 'contractDelivRadio') {
+
+			j$('input[name="warrantyOfferRadio"]').each(function(){
+				j$(this).parent().parent().css('background-color', '#fff');
+			    j$(this).attr("checked",false);
+			});
+
+			j$('input[name="warrantyDelivRadio"]').each(function(){
+				j$(this).parent().parent().css('background-color', '#fff');
+			    j$(this).attr("checked",false);
+			});
+
+			j$('#hiddenSelectType').val('contract');
+			if (actionBlock == 'contractOfferRadio') {
+				//j$('#hiddenSelectOfferId').val(selectedRow);
+				j$("[id$=hiddenSelectOfferId]").val(selectedRow);
+			} else if (actionBlock == 'contractDelivRadio') {
+				//j$('#hiddenSelectDelivId').val(selectedRow);
+				j$("[id$=hiddenSelectDelivId]").val(selectedRow);
+			}
+		}
+		
+		if (actionBlock == 'warrantyOfferRadio' || actionBlock=='warrantyDelivRadio') {
+
+			j$('input[name="contractOfferRadio"]').each(function(){
+				j$(this).parent().parent().css('background-color', '#fff');
+			    j$(this).attr("checked",false);
+			});
+
+			j$('input[name="contractDelivRadio"]').each(function(){
+				j$(this).parent().parent().css('background-color', '#fff');
+			    j$(this).attr("checked",false);
+			});
+
+			j$('#hiddenSelectType').val('warranty');
+			if (actionBlock == 'warrantyOfferRadio') {
+				j$("[id$=hiddenSelectOfferId]").val(selectedRow);
+			} else if (actionBlock == 'warrantyDelivRadio') {
+				j$("[id$=hiddenSelectDelivId]").val(selectedRow);
+			}
+		}
+	}
+
+	function setDefaultDeliverables(actionBlock){
+		j$('input[name=' + '"'+ actionBlock + '"' + ']').each(function(){
+			j$(this).attr("checked",false);
+		    j$(this).parent().parent().css('background-color', '#fff');
+		 });
+		var hiddenSelectDelivId = j$("[id$=hiddenSelectDelivId]").val();
+		j$('#'+hiddenSelectDelivId).attr("checked",true);
+		j$('input[name=' + '"'+ actionBlock + '"' + ']').filter(':checked').parent().parent().css('background-color', '#B9B9FF');
+	}
+
+	function setData(){
+		window.opener.setEntitlementInfoByDetailPage(j$("#hiddenStrDetailInfo").val(),this.window);
+	}
+
+	function callActionMethod(){
+		var firstParam = j$("[id$=hiddenSelectOfferId]").val();
+		var secondParam = j$("[id$=hiddenSelectDelivId]").val();
+		var threeParam = j$("[id$=hiddenSelectType]").val();
+		getEntitlementInfo(firstParam, secondParam, threeParam);
+	}
+
+</script>
+<html>
+	<head>
+		<style>
+		body{  
+			width: 100%;
+			height:100%;
+			background-color: #f8f8f8;
+			margin:0 auto;  
+		}
+
+		#tabs {
+			overflow: hidden;
+			width: 100%;
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+		
+		#tabs li {
+			float: left;
+			margin: 0 .5em 0 0;
+		}
+		
+		#tabs a {
+			position: relative;
+			background: #ddd;
+			background-image: linear-gradient(to bottom, #fff, #ddd);
+			padding: .7em 3.5em;
+			float: left;
+			text-decoration: none;
+			color: #444;
+			text-shadow: 0 1px 0 rgba(255, 255, 255, .8);
+			border-radius: 5px 0 0 0;
+			box-shadow: 0 2px 2px rgba(0, 0, 0, .4);
+		}
+
+		#tabs a:hover, #tabs a:hover::after, #tabs a:focus, #tabs a:focus::after {
+			background: #fff;
+		}
+
+		#tabs a:focus {
+			outline: 0;
+		}
+		 
+		#tabs a::after {
+			 content:'';
+			 position:absolute;
+			 z-index: 1;
+			 top: 0;
+			 right: -.5em;
+			 bottom: 0;
+			 width: 1em;
+			 background: #ddd;
+			 background-image: linear-gradient(to bottom, #fff, #ddd);
+			 box-shadow: 2px 2px 2px rgba(0, 0, 0, .4);
+			 transform: skew(10deg);
+			 border-radius: 0 5px 0 0;
+		}
+
+		#tabs #current a, #tabs #current a::after {
+			background: #fff;
+			z-index: 3;
+		}
+
+		#content {
+			background: #f8f8f8;
+			padding: 2em;
+			height: 100%;
+			position: relative;
+			z-index: 2;
+			border-radius: 0 5px 5px 5px;
+			box-shadow: 0 -2px 3px -2px rgba(0, 0, 0, .5);
+		}
+
+		input.btn {
+		    padding: 4px 3px;
+		}
+		</style>
+	</head>
+	<body>
+		<apex:form >
+			<apex:pageBlock title="Entitlement Detail">
+				<div>
+					<ul id="tabs">
+					    <li><a href="#" title="tabs-contract" id="contractTab"><B>Contracts</B></a></li>
+					    <li><a href="#" title="tabs-warranty" id="warrantyTab"><B>Warranties</B></a></li>
+					    <div align="right"><input type="button" value="Done" class="btn" onclick="callActionMethod();"/></div>
+					    <apex:actionFunction action="{!getEntitlementInfo}" name="getEntitlementInfo" reRender="hidden2" oncomplete="setData();">
+					    	<apex:param name="firstParam" assignTo="{!selectOfferId}" value="" />
+					    	<apex:param name="secondParam" assignTo="{!selectDelivId}" value="" />
+					    	<apex:param name="threeParam" assignTo="{!selectType}" value="" />
+					    </apex:actionFunction>
+					 </ul>
+					<div id="content">
+						<div id="tabs-contract">
+							<apex:pageBlock title="Offers">
+								<apex:pageBlockTable value="{!contractOfferList}" var="item" width="auto;">
+									<apex:column style="width:100px;">
+										<apex:facet name="header">Action</apex:facet>
+										<apex:panelGroup >
+											<apex:commandLink action="{!searchContractDeliverablesListByOffer}" reRender="contractDeliverablesBlock,contractModifiersBlock,hiddenSelectOfferId,hiddenSelectDelivId" onclick="setSelectedRow('{!item.offerId}', 'contractOfferRadio');" oncomplete="setDefaultDeliverables('contractDelivRadio');">
+												select
+												<apex:param id="contractOfferId" name="contractOfferId" value="{!item.offerId}"/>
+											</apex:commandLink>
+											<input type="radio" name="contractOfferRadio" id="{!item.offerId}" style="display: none;"/>
+										</apex:panelGroup>
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Package Name</apex:facet>
+										<apex:outputText value="{!item.packageName}"  />
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Offer Code</apex:facet>
+										<apex:outputText value="{!item.offerCode}"  />
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Offer Name</apex:facet>
+										<apex:outputText value="{!item.offerDescription}"  />
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Start Date</apex:facet>
+										<apex:outputText value="{!item.startDate}"  />
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">End Date</apex:facet>
+										<apex:outputText value="{!item.endDate}"  />
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">status</apex:facet>
+										<apex:outputText value="{!item.status}"  />
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Qty sold</apex:facet>
+										<apex:outputText value="{!item.ServiceQuantity}"  />
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Qty Avail</apex:facet>
+										<apex:outputText value="{!item.AvailableQuantity}"  />
+									</apex:column>
+								</apex:pageBlockTable>
+						    </apex:pageBlock>
+						    <apex:pageBlock title="Deliverables" id="contractDeliverablesBlock">
+								<apex:pageBlockTable value="{!contractDeliverableList}" var="item" width="auto;">
+									<apex:column style="width:100px;">
+										<apex:facet name="header">Action</apex:facet>
+										<apex:panelGroup >
+											<apex:commandLink action="{!searchContractModifiersListByDeliverable}" reRender="contractModifiersBlock" onclick="setSelectedRow('{!item.delivCode}', 'contractDelivRadio');">
+												select
+												<apex:param id="contractDelivCode" name="contractDelivCode" value="{!item.delivCode}"/>
+												<apex:param id="contractDelivOfferId" name="contractDelivOfferId" value="{!item.offerId}"/>
+											</apex:commandLink>
+											<input type="radio" name="contractDelivRadio" id="{!item.delivCode}" style="display: none;"/>
+										</apex:panelGroup>
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Deliverable Code</apex:facet>
+										<apex:outputText value="{!item.delivCode}"/>
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Deliverable Name</apex:facet>
+										<apex:outputText value="{!item.delivName}"  />
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Value</apex:facet>
+										<apex:outputText value="{!item.delivValue}"  />
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Qty Sold</apex:facet>
+										<apex:outputText value="{!item.deliverableQuantity}"  />
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Qty Avail</apex:facet>
+										<apex:outputText value="{!item.availableQuantity}"  />
+									</apex:column>
+								</apex:pageBlockTable>
+						    </apex:pageBlock>
+						    <apex:pageBlock title="Modifiers" id="contractModifiersBlock">
+								<apex:pageBlockTable value="{!contractDelivModifierList}" var="item" width="auto;">
+									<apex:column >
+										<apex:facet name="header">Modifier Name</apex:facet>
+										<apex:outputText value="{!item.modName}"/>
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Modifier Description</apex:facet>
+										<apex:outputText value="{!item.modDesc}"  />
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Value</apex:facet>
+										<apex:outputText value="{!item.modValue}"  />
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Value2</apex:facet>
+										<apex:outputText value="{!item.redModValue2}"  />
+									</apex:column>
+								</apex:pageBlockTable>
+						    </apex:pageBlock>
+					    </div>
+					    <div id="tabs-warranty" style="width:auto;">
+							<apex:pageBlock title="Offers">
+								<div style="width:auto;overflow:auto;">
+									<apex:pageBlockTable value="{!warrantyOfferList}" var="item" style="width:1800px;">
+										<apex:column width="50px;">
+											<apex:facet name="header">Action</apex:facet>
+											<apex:panelGroup >
+												<apex:commandLink action="{!searchWarrantyDeliverablesListByOffer}" reRender="warrantyDeliverablesBlock,warrantyModifiersBlock,hiddenSelectOfferId,hiddenSelectDelivId" onclick="setSelectedRow('{!item.offerId}', 'warrantyOfferRadio');" oncomplete="setDefaultDeliverables('warrantyDelivRadio');">
+													select
+													<apex:param id="warrantyOfferId" name="warrantyOfferId" value="{!item.offerId}"/>
+												</apex:commandLink>
+												<input type="radio" name="warrantyOfferRadio" id="{!item.offerId}" style="display: none;" />
+											</apex:panelGroup>
+										</apex:column>
+										<apex:column width="80px;">
+											<apex:facet name="header">Offer Code</apex:facet>
+											<apex:outputText value="{!item.offerCode}"/>
+										</apex:column>
+										<apex:column width="220px;">
+											<apex:facet name="header">Offer Name</apex:facet>
+											<apex:outputText value="{!item.offerDescription}"/>
+										</apex:column>
+										<apex:column width="80px;">
+											<apex:facet name="header">Warranty Type</apex:facet>
+											<apex:outputText value="{!item.warrantyType}"  />
+										</apex:column>
+										<apex:column width="50px;">
+											<apex:facet name="header">status</apex:facet>
+											<apex:outputText value="{!item.status}"  />
+										</apex:column>
+										<apex:column width="70px;">
+											<apex:facet name="header">Start Date</apex:facet>
+											<apex:outputText value="{!item.startDate}"/>
+										</apex:column>
+										<apex:column width="70px;">
+											<apex:facet name="header">End Date</apex:facet>
+											<apex:outputText value="{!item.endDate}"  />
+										</apex:column>
+										<apex:column width="80px;">
+											<apex:facet name="header">Trem code</apex:facet>
+											<apex:outputText value="{!item.termCode}"  />
+										</apex:column>
+										<apex:column width="80px;">
+											<apex:facet name="header">Warranty Comm</apex:facet>
+											<apex:outputText value="{!item.warrantyComment}"  />
+										</apex:column>
+										<apex:column width="80px;">
+											<apex:facet name="header">Warranty Dete</apex:facet>
+											<apex:outputText value="{!item.warrantyDeterminationCode}"  />
+										</apex:column>
+										<apex:column width="80px;">
+											<apex:facet name="header">Warranty Determin</apex:facet>
+											<apex:outputText value="{!item.warrantyDeterminationDescription}"  />
+										</apex:column>
+										<apex:column width="80px;">
+											<apex:facet name="header">Sales Order number</apex:facet>
+											<apex:outputText value="{!item.salesOrderNumber}"  />
+										</apex:column>
+										<apex:column width="80px;">
+											<apex:facet name="header">Grace Period</apex:facet>
+											<apex:outputText value="{!item.gracePeriod}"  />
+										</apex:column>
+										<apex:column width="80px;">
+											<apex:facet name="header">Upgradable</apex:facet>
+											<apex:outputText value="{!item.upgradeable}"  />
+										</apex:column>
+										<apex:column width="80px;">
+											<apex:facet name="header">Global</apex:facet>
+											<apex:outputText value="{!item.sGlobal}"  />
+										</apex:column>
+										<apex:column width="80px;">
+											<apex:facet name="header">Installation Included</apex:facet>
+											<apex:outputText value="{!item.installationIncluded}"  />
+										</apex:column>
+										<apex:column width="80px;">
+											<apex:facet name="header">Site Preparation</apex:facet>
+											<apex:outputText value="{!item.sitePreparation}"  />
+										</apex:column>
+									</apex:pageBlockTable>
+								</div>
+						    </apex:pageBlock>
+						    <apex:pageBlock title="Deliverables" id="warrantyDeliverablesBlock">
+								<apex:pageBlockTable value="{!warrantyDeliverableList}" var="item" width="auto;">
+									<apex:column style="width:100px;">
+										<apex:facet name="header">Action</apex:facet>
+										<apex:panelGroup >
+											<apex:commandLink action="{!searchWarrantyModifiersListByDeliverable}" reRender="warrantyModifiersBlock" onclick="setSelectedRow('{!item.delivCode}', 'warrantyDelivRadio');">
+												select
+												<apex:param id="warrantyDelivCode" name="warrantyDelivCode" value="{!item.delivCode}"/>
+												<apex:param id="warrantyDelivOfferId" name="warrantyDelivOfferId" value="{!item.offerId}"/>
+											</apex:commandLink>
+											<input type="radio" name="warrantyDelivRadio" id="{!item.delivCode}" style="display: none;" />
+										</apex:panelGroup>
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Deliverable Code</apex:facet>
+										<apex:outputText value="{!item.delivCode}"/>
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Deliverable Name</apex:facet>
+										<apex:outputText value="{!item.delivName}"  />
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Value</apex:facet>
+										<apex:outputText value="{!item.delivValue}"  />
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Qty Sold</apex:facet>
+										<apex:outputText value="{!item.deliverableQuantity}"  />
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Qty Avail</apex:facet>
+										<apex:outputText value="{!item.availableQuantity}"  />
+									</apex:column>
+								</apex:pageBlockTable>
+						    </apex:pageBlock>
+						    <apex:pageBlock title="Modifiers" id="warrantyModifiersBlock">
+								<apex:pageBlockTable value="{!warrantyDelivModifierList}" var="item" width="auto;">
+									<apex:column >
+										<apex:facet name="header">Modifier Name</apex:facet>
+										<apex:outputText value="{!item.modName}"/>
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Modifier Description</apex:facet>
+										<apex:outputText value="{!item.modDesc}"  />
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Value</apex:facet>
+										<apex:outputText value="{!item.modValue}"  />
+									</apex:column>
+									<apex:column >
+										<apex:facet name="header">Value2</apex:facet>
+										<apex:outputText value="{!item.redModValue2}"  />
+									</apex:column>
+								</apex:pageBlockTable>
+						    </apex:pageBlock>
+					    </div>
+				    </div>
+				</div>
+			</apex:pageBlock>
+			<apex:pageBlock id="hidden1">
+				<!--input type="hidden" id="hiddenSelectOfferId" value="{!selectOfferId}" />
+				<input type="hidden" id="hiddenSelectDelivId" value="{!selectDelivId}" /-->
+				<input type="hidden" id="hiddenSelectType" value="" />
+				<apex:inputHidden id="hiddenSelectOfferId" value="{!selectOfferId}" />
+				<apex:inputHidden id="hiddenSelectDelivId" value="{!selectDelivId}" />
+			</apex:pageBlock>
+			<apex:pageBlock id="hidden2">
+			 	<input type="hidden" id="hiddenStrDetailInfo" value="{!strDetailInfo}" />
+			</apex:pageBlock>
+		</apex:form>
+	</body>
+</html>
+</apex:page>

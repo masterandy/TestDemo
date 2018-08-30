@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Role xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseAccessLevel>None</caseAccessLevel>
+    <contactAccessLevel>None</contactAccessLevel>
+    <description>中国电信集团黑龙江省电信公司 客户 用户</description>
+    <mayForecastManagerShare>false</mayForecastManagerShare>
+    <name>中国电信集团黑龙江省电信公司 客户 用户</name>
+    <opportunityAccessLevel>None</opportunityAccessLevel>
+    <parentRole>CustomerManager141</parentRole>
+</Role>

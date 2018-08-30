@@ -1,0 +1,15 @@
+{
+    "folders": [
+        {
+            "file_exclude_patterns": [
+                "*.*-meta.xml", 
+                "*.sublime-project", 
+                "package.zip"
+            ], 
+            "folder_exclude_patterns": [
+                ".templates"
+            ], 
+            "path": "D:/Sublime/H3CIPMSJAVA/H3CIPMSJAVA-20180830"
+        }
+    ]
+}

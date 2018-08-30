@@ -1,0 +1,10 @@
+<apex:page standardController="WorkOrder">
+    <apex:detail subject="{!WorkOrder.Id}" relatedListHover="true" inlineEdit="true" relatedList="true" title="true" showChatter="true"/>
+    <apex:includeScript value="/support/console/22.0/integration.js"/>
+    <script type="text/javascript">
+        if(sforce.console.isInConsole()) {
+            sforce.console.setTabTitle("{!WorkOrder.Work_Order_Name__c}");
+        }
+    </script>
+    
+</apex:page>

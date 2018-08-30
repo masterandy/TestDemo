@@ -1,0 +1,149 @@
+<apex:page standardController="case" extensions="CSC_SurveyQuestionsController" id="page" action="{!SurveyTypeSelected}">
+<div id="loading" style="position:absolute; width:83%; height:90%; z-index:100;background-color: #e3deb8;opacity:0.7;">
+<span style="position:absolute;top:5%;left:0%;font-size:20px;text-indent:2em;">正在载入中,请稍等.....</span></div>
+<script language="javascript">
+function closeDiv()
+{
+document.getElementById('loading').style.visibility='hidden';
+}
+</script>
+<style>
+.bPageBlock .detailList .labelCol{width:35%;}
+.mask{
+        background-color: #f7f7f7 ; height: 100%;opacity :0.35;width:100%;z-index: 999;
+    }
+    html{
+        position:relative;
+    }
+</style>
+    <script src="//code.jquery.com/jquery-2.2.2.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        onupload();
+        // $("html").addClass("mask");
+    });
+    function onupload(){
+        //$(".SB01").parents("tr:first").css('background-color', 'rgba(189, 167, 82, 0.5)');
+        $(".SB01").parents("tr:first").css('background-color', 'rgb(0, 112, 210)');
+        $(".SB01").parents("tr:first").children("th").css('font-size', 'large');
+        $(".SB01").parents("tr:first").children("th").children("label").css('color','#FFFFFF');
+        //$(".SC02").parents("tr:first").css('background-color', 'rgba(99, 183, 82, 0.5)');
+        $(".SC02").parents("tr:first").css('background-color', 'RGB(231, 237, 244)');
+        $(".SC02").parents("tr:first").children("th").css('font-size', 'large');
+        addbackgroundColor();
+    }
+    function checkTable(qSeq, aSelect) {
+       
+        if(qSeq == 'SB01' && aSelect == 'Yes'){
+          $(".SC02").val('No')  ;
+
+        }
+        if(qSeq == 'SC02' && (aSelect == 'New System' || aSelect == 'New Option/Upgrade')){
+          $(".SB01").val('No')  ;
+        }
+    }
+    
+   function addbackgroundColor(){
+       var next=$(".SC02").parents("tr:first").nextAll();
+       var prev=$(".SC02").parents("tr:first").prevAll();
+        for(var i=0;i<next.length-1;i++){
+            var item=next[i];
+            //item.style.backgroundColor="rgba(99, 183, 82, 0.2)";
+            item.style.backgroundColor="RGB(240, 240, 240)";
+        }
+       
+       $(".empty").eq(1).parents("tr:first").css('background-color', 'white');
+       for(var i=0;i<prev.length;i++){
+            var item=prev[i];
+           //item.style.backgroundColor="rgba(181, 183, 82, 0.19)";
+           item.style.backgroundColor="RGB(240, 240, 240)";
+           }
+           //$(".SB01").parents("tr:first").css('background-color', 'rgba(189, 167, 82, 0.5)');
+           $(".SB01").parents("tr:first").css('background-color', 'rgb(0, 112, 210)');
+    }
+    
+    
+    </script>
+    
+<apex:form >
+       <!-- <div class="query" >正在查询中</div>    -->
+    <apex:actionstatus id="actStatusId">
+    <apex:facet name="start">
+         
+    <div class="waitingSearchDiv " id="el_loading" style=" background-color: #ccc ;z-index: 99999;
+                   height: 100%;opacity :0.35;width:100%;" >
+                <div class="waitingHolder" style="top : 50%; width: 91px;" >
+                    <img class="waitingImage" src="/img/loading32.gif" title="正在处理..." />
+                    <span class="waitingDescription" >正在处理...</span >
+                </div>
+    </div>
+    </apex:facet>
+    
+    </apex:actionstatus>
+    <apex:actionfunction action="{!AnswerSelect}" name="methodOneInJavascript" rerender="SurveyQuestionsList" status="actStatusId" oncomplete="onupload();"> 
+    <apex:param name="firstParam" assignto="{!SelectedAnswer}" value="" />
+    <apex:param name="secondParam" assignto="{!QuestionIdStr}" value="" />
+    </apex:actionfunction> 
+    <apex:actionfunction action="{!AnswerSelect}" name="methodTwoInJavascript" rerender="SurveyQuestionsList" status="actStatusId" oncomplete="onupload();"> 
+    <apex:param name="firstParam" assignto="{!SelectedAnswer}" value="" />
+    <apex:param name="secondParam" assignto="{!QuestionIdStr}" value="" />
+    <apex:param name="thirdParam" assignto="{!AnswerOpr}" value="" />
+    </apex:actionfunction> 
+  <apex:pageMessages id="message"></apex:pageMessages>
+  <apex:pageBlock mode="maindetail" id="queryMain" rendered="{!iSNeedToPQRSurvey}" >
+  <apex:pageblockSection collapsible="false" id="SurveyQuestionsList" columns="1">
+  <apex:repeat value="{!SurveyQuestionsList}" var="SurveyQuestion">
+  <apex:pageblockSectionItem rendered="{!SurveyQuestion.question.Answer_Type__c == 'List' && SurveyQuestion.answer.If_rerender__c && Not(IfPQRmodify) }" labelStyle="word-wrap: break-word;text-align: left;white-space: pre-line;" dataStyle="padding-top:14px;vertical-align: middle;">
+      <apex:outputLabel > {!SurveyQuestion.questionStr}</apex:outputLabel>
+      <apex:selectList styleClass="S{!SurveyQuestion.question.Sequence__c}" size="1" value="{!SurveyQuestion.answer.Answer__c}" style="requireClass" onchange="checkTable('S{!SurveyQuestion.question.Sequence__c}',this.value);methodOneInJavascript($(this).val(),'{!SurveyQuestion.question.id}');">
+          <apex:selectoptions value="{!SurveyQuestion.questionOptions }"></apex:selectoptions>
+      </apex:selectList>
+  </apex:pageblockSectionItem>
+  <apex:pageblockSectionItem rendered="{!SurveyQuestion.question.Answer_Type__c == 'Radio' && SurveyQuestion.answer.If_rerender__c  && Not(IfPQRmodify)  }" labelStyle="word-wrap: break-word;text-align: left;white-space: pre-line;" dataStyle="padding-top:14px;vertical-align: middle;">
+      <apex:outputLabel > {!SurveyQuestion.questionStr }</apex:outputLabel>
+      <apex:selectRadio id="radio" layout="pageDirection"  onchange="methodOneInJavascript($(this).val(),'{!SurveyQuestion.question.id}')" value="{!SurveyQuestion.answer.Answer__c}">
+          <apex:selectoptions value="{!SurveyQuestion.questionOptions }"></apex:selectoptions>
+      </apex:selectRadio>
+  </apex:pageblockSectionItem>
+  <apex:pageblockSectionItem rendered="{!SurveyQuestion.question.Answer_Type__c == 'Multiselect' && SurveyQuestion.answer.If_rerender__c  && Not(IfPQRmodify)  }" labelStyle="word-wrap: break-word;text-align: left;white-space: pre-line;" dataStyle="padding-top:14px;vertical-align: middle;">
+      <apex:outputLabel > {!SurveyQuestion.questionStr }</apex:outputLabel>
+      <apex:selectCheckboxes layout="lineDirection" onchange="methodTwoInJavascript($(this).val(),'{!SurveyQuestion.question.id}','Multiselect')" value="{!SurveyQuestion.answerStrs}">
+          <apex:selectoptions value="{!SurveyQuestion.questionOptions }"></apex:selectoptions>
+      </apex:selectCheckboxes>
+  </apex:pageblockSectionItem>
+  <apex:pageblockSectionItem rendered="{! SurveyQuestion.question.Answer_Type__c == 'Checkboxes' && SurveyQuestion.answer.If_rerender__c  && Not(IfPQRmodify) }  " labelStyle="word-wrap: break-word;text-align: left;white-space: pre-line;" dataStyle="padding-top:14px;vertical-align: middle;">
+      <apex:outputLabel > {!SurveyQuestion.questionStr } </apex:outputLabel>
+      <apex:selectCheckboxes layout="pageDirection" onchange="methodOneInJavascript($(this).val(),'{!SurveyQuestion.question.id}')" value="{!SurveyQuestion.answer.Answer__c}">
+          <apex:selectoptions value="{!SurveyQuestion.questionOptions }"></apex:selectoptions><br/>
+      </apex:selectCheckboxes>
+  </apex:pageblockSectionItem>
+  <apex:pageblockSectionItem rendered="{!SurveyQuestion.question.Answer_Type__c == 'Text' && SurveyQuestion.answer.If_rerender__c  && Not(IfPQRmodify)  }" labelStyle="word-wrap: break-word;text-align: left;white-space: pre-line;" dataStyle="padding-top:14px;vertical-align: middle;">
+      <apex:outputLabel > {!SurveyQuestion.questionStr }</apex:outputLabel>
+      <apex:inputfield value="{!SurveyQuestion.answer.Answer__c}" onchange="methodOneInJavascript($(this).val(),'{!SurveyQuestion.question.id}')"/>
+  </apex:pageblockSectionItem>
+  <apex:pageblockSectionItem rendered="{!SurveyQuestion.question.Answer_Type__c == 'Label' && SurveyQuestion.answer.If_rerender__c }" labelStyle="word-wrap: break-word;text-align: left;white-space: pre-line;" dataStyle="padding-top:14px;vertical-align: middle;">
+      <apex:outputLabel > {!SurveyQuestion.questionStr }</apex:outputLabel>
+      <apex:outputfield value="{!SurveyQuestion.question.AnswerSelection__c}"/>
+  </apex:pageblockSectionItem>
+  <apex:pageblockSectionItem rendered="{! IfPQRmodify  && SurveyQuestion.answer.If_rerender__c}" labelStyle="word-wrap: break-word;text-align: left;white-space: pre-line;" dataStyle="padding-top:14px;vertical-align: middle;">
+      <apex:outputLabel styleclass="S{!SurveyQuestion.question.Sequence__c}" > {!SurveyQuestion.questionStr }</apex:outputLabel>
+      <apex:outputfield value="{!SurveyQuestion.answer.Answer__c}" styleClass="S{!SurveyQuestion.question.Sequence__c}" id="answer"/>
+  </apex:pageblockSectionItem>
+  </apex:repeat>
+  <apex:pageblockSectionItem >
+  </apex:pageblockSectionItem>
+      
+      
+      
+  <apex:pageblockSectionItem rendered="{!record.IfFinished__c =='Y'}">
+  <apex:outputText >感谢您完成本次问卷调查！</apex:outputText>
+  </apex:pageblockSectionItem>
+  </apex:pageblockSection>
+  </apex:pageBlock>
+  </apex:form>
+  <apex:pageblock mode="maindetail" rendered="{!(Not(iSNeedToPQRSurvey))}" id="Expired"><h1>此个案无进行中的问卷调查！</h1></apex:pageblock>
+ <script language="javascript">
+    //setTimeout(closeDiv(),20000);
+    closeDiv();
+</script>
+</apex:page>

@@ -1,0 +1,176 @@
+<apex:page extensions="CSC_Dispatch_Controller" standardController="WorkOrder" tabStyle="WorkOrder" id="page" showHeader="false">
+<apex:form id="form">
+<apex:inputtext id="row" value="{!row}" style="display:none;"/>
+<!-- Main Body Starts Here -->
+<div class="lookupSearch"><div class="individualPalette"><div class="list0">
+<!-- Begin RelatedListElement -->
+<div class="bRelatedList" id="User"><a name="User_target"></a>
+<div class="listRelatedObject userBlock">
+<div class="bPageBlock brandSecondaryBrd secondaryPalette">
+<div class="pbHeader">
+    <table  border="0" cellpadding="0" cellspacing="0" summary="Employee">
+        <tr>
+            <td class="pbTitle">
+                <img src="/s.gif" alt="Dispatch"  class="relatedListIcon" title="Dispatch"/>
+                <h3><span class="searchFirstCell">Dispatch To CE</span></h3>
+            </td>
+        </tr>
+    </table>  
+    <div class="pbBody" id="User_body">
+    <table class="list" border="0" cellspacing="0" cellpadding="0">
+        <tr class="headerRow">
+            <th scope="col" class=" zen-deemphasize">WorkOrder Name</th>
+            <th scope="col" class=" zen-deemphasize">Province</th>
+            <th scope="col" class=" zen-deemphasize">City</th>        
+            <th scope="col" class=" zen-deemphasize">Skill Category</th>
+            <th scope="col" class=" zen-deemphasize">Skill Name</th>
+            <th scope="col" class=" zen-deemphasize">Level</th>      
+            <th scope="col" class=" zen-deemphasize">Estimated Duration</th>
+            <th scope="col" class=" zen-deemphasize">Requested D/T</th>
+            <th scope="col" class=" zen-deemphasize">Latest D/T</th>
+            <th scope="col" class=" zen-deemphasize">Status</th>
+        </tr>
+        <tr class=" dataRow even first" onblur="if (window.hiOff){hiOff(this);}" onfocus="if (window.hiOn){hiOn(this);}" onmouseout="if (window.hiOff){hiOff(this);}" onmouseover="if (window.hiOn){hiOn(this);}">
+            <th>{!wo.Work_Order_Name__c}</th>
+            <th>{!wo.Province__c}</th>
+            <th>{!wo.City__c}</th>
+            <th>{!wo.Skill_Category__c}</th>
+            <th>{!wo.Skill_Name__c}</th>
+            <th>{!wo.Level__c}</th>     
+            <th>{!wo.Subcase_Estimated_Task_Duration__c}H</th>
+            <th>{!requestedDateTime}</th>
+            <th>{!latestDateTime}</th>
+            <th>{!wo.Status}</th>
+        </tr>   
+    </table>
+    </div>
+    <apex:pagemessages id="Messages"/>
+    <div class="searchFilterFieldsHolder searchFilterFieldsHolderFirst" id="field_name_User">
+    <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+            <table border="0"  class="searchFilterFields">
+                <tr>
+                    <td width="20%" style="text-align:right;">Province&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td width="30%" style="text-align:left;"><apex:inputField id="center" value="{!wo.Province__c}" label="Province"/></td>
+                    <td width="20%" style="text-align:right;">City&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td width="30%" style="text-align:left;"><apex:inputField id="city" value="{!wo.City__c}" label="City" required="true"/></td>
+                </tr>
+                <tr>
+                    <td width="20%" style="text-align:right;">Skill Category&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td width="30%" style="text-align:left;"><apex:inputField id="category" value="{!wo.Skill_Category__c}" label="Skill Category" required="true"/></td>
+                    <td width="20%" style="text-align:right;">Skill Name&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td width="30%" style="text-align:left;"><apex:inputField id="skill_name" value="{!wo.Skill_Name__c}" label="Skill Name" required="true"/></td> 
+                </tr>
+                <tr>
+                    <td width="20%" style="text-align:right;">Level&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td width="30%" style="text-align:left;"><apex:inputField id="level" value="{!wo.Level__c}" label="Level" required="true"/></td>
+                    <td width="20%" style="text-align:right;">Requested Date&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td width="30%" style="text-align:left;"><apex:inputField id="date" value="{!wo.Requested_Date__c}" label="Requested Date" required="true"/></td>
+                </tr>
+                <tr>
+                    <td width="20%" style="text-align:right;">Subcase Estimated Task Duration&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td width="30%" style="text-align:left;"><apex:inputField id="duration" value="{!wo.Subcase_Estimated_Task_Duration__c}" label="Subcase Estimated Task Duration" required="true"/></td>
+                    <td colspan="2" style="text-align:center" valign="center">
+                    All CEs:<apex:inputCheckbox value="{!searchType}" label="All CEs"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    All Time:<apex:inputCheckbox label="All Time" value="{!allTimeIndicator}"/></td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;" colspan="2"><apex:commandButton value="Search" action="{!Search}"/></td> 
+                    <td style="text-align:left;" colspan="2"><apex:commandButton value="Close" onclick="Reload();" /></td>   
+                </tr>
+            </table>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+    </div>
+      
+<div class="pbBody" id="User_body">
+<div style="overflow-x:auto;height:340px;overflow-y:auto">
+    <table class="list" border="0" cellspacing="0" cellpadding="0">
+        <tr class="headerRow">
+            <td scope="col" class="zen-deemphasize">Action</td>
+            <td scope="col" class="zen-deemphasize"><div style="min-width:70px;">WorkGroup</div></td>
+            <td scope="col" class="zen-deemphasize"><div style="width:70px;">UserName</div></td>
+            <td scope="col" class="zen-deemphasize"><div style="width:50px;">City</div></td>
+
+            <apex:repeat value="{!headerList}" var="header" id="headRepeat">
+            <td scope="col" class=" zen-deemphasize"><apex:outputText value="{!header}" escape="false" /></td>
+            </apex:repeat>
+        </tr>
+        <apex:repeat value="{!entityInitList}" var="entity" id="dispatchRepeat"> 
+        <tr class=" dataRow even first" onblur="if (window.hiOff){hiOff(this);}" onfocus="if (window.hiOn){hiOn(this);}" onmouseout="if (window.hiOff){hiOff(this);}" onmouseover="if (window.hiOn){hiOn(this);}">
+            <td><apex:commandButton disabled="{!showAssign}" value="Assign" onclick="AssignRow(this);" action="{!Assign}" reRender="Messages" oncomplete="Reload();"/></td>
+            <td>{!entity.workGroup}</td>
+            <td>{!entity.uName}</td>
+            <td>{!entity.city}</td>
+            <apex:variable var="colNum" value="{!0}"/>
+            <apex:repeat value="{!entity.tdList}" var="s" id="styleRepeat">
+            <apex:variable var="colNum" value="{!colNum + 1}"/>
+            <td style="{!s.style}" colspan="{!s.colspan}">
+            {!s.startTime}
+            <apex:outputField value="{!s.dId.WorkOrder__c}"/> &nbsp;&nbsp;
+            <apex:outputField value="{!s.dId.WorkOrder__r.Work_Order_Name__c}"/></td>
+            </apex:repeat>
+        </tr>
+        </apex:repeat> 
+    </table>
+</div>
+</div>
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</apex:form>  
+<script type="text/javascript"> 
+function AssignRow(obj)
+{
+    try
+    {
+        //alert(obj.parentNode.parentNode.rowIndex);
+        var e = e || window.event; 
+        var target = e.target || e.srcElement; 
+        if (target.parentNode.tagName.toLowerCase() == "td") 
+        { 
+            var rowIndex = target.parentNode.parentNode.rowIndex-1; 
+            var rowobj = document.getElementById('page:form:row');
+            rowobj.value = rowIndex;
+            //alert(rowIndex);
+            //alert({!row});
+        }
+        //obj.parentNode.parentNode.removeNode(true);
+    }
+    catch(e)
+    {
+    alert(e);
+    } 
+}
+function Reload()
+{
+    try
+    {
+        var Status=document.getElementById('page:form:Messages');
+        if(Status.innerText.indexOf('success')>0)
+        {
+            if(window.opener && !window.opener.closed)
+            { 
+                window.opener.location.href=window.opener.location.href; 
+                window.close();
+            } 
+        }
+    }
+    catch(ex)
+    {
+      alert(ex);
+    }
+}
+</script>   
+</apex:page>

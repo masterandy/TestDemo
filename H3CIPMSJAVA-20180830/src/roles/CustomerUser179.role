@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Role xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseAccessLevel>None</caseAccessLevel>
+    <contactAccessLevel>None</contactAccessLevel>
+    <description>太平洋保险（集团）股份有限公司佛山分公司 客户 用户</description>
+    <mayForecastManagerShare>false</mayForecastManagerShare>
+    <name>太平洋保险（集团）股份有限公司佛山分公司 客户 用户</name>
+    <opportunityAccessLevel>None</opportunityAccessLevel>
+    <parentRole>CustomerManager179</parentRole>
+</Role>

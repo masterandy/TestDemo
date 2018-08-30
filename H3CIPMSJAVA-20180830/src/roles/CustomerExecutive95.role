@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Role xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseAccessLevel>None</caseAccessLevel>
+    <contactAccessLevel>None</contactAccessLevel>
+    <description>沪东中华造船（集团）有限公司 客户 主管</description>
+    <mayForecastManagerShare>false</mayForecastManagerShare>
+    <name>沪东中华造船（集团）有限公司 客户 主管</name>
+    <opportunityAccessLevel>None</opportunityAccessLevel>
+    <parentRole>CA</parentRole>
+</Role>

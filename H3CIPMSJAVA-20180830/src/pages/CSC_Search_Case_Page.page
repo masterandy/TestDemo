@@ -1,0 +1,137 @@
+<apex:page controller="CSC_Search_Case_Controller" id="page2"> 
+<style>
+   ul li{
+     list-style-type: none;
+     display: inline;
+   }
+   .disabled{
+       display:none;
+   }
+
+</style>
+     <apex:form >             
+        <apex:pageBlock title="Search Case" mode="maindetail">
+        <!-- 搜索框部分  -->
+           
+           <apex:pageblockSection columns="2"> 
+                 <apex:inputtext value="{!CaseNumber}" id="CaseNumber" label="Case Number"/>
+                 <apex:inputtext value="{!SerialNumber}" id="SerialNumber" label="Serial Number"/>
+                 <apex:inputtext value="{!ContactNumber}" id="ContactNumber" label="Case Contact Phone"/> 
+                 <apex:inputField value=" {!sdc.Start_Date__c}" id="dateSearch" label="Date Opened"  />                             
+           </apex:pageblockSection>   
+          </apex:pageBlock> 
+         <div align="center">
+           <nav>
+               <ul style="list-style-type: none;">
+                  <li>
+                      <apex:commandButton value="Search" action="{!search}"/>
+                  </li>
+                  <li></li>
+                  <li>&nbsp;
+                      <apex:commandButton value="Reset" action="{!reset}"/>                    
+                  </li>
+                 
+              </ul>
+          </nav>
+      </div>    
+      </apex:form> 
+          
+      <apex:form >  
+           <apex:actionFunction name="nextPage" action="{!handleNextPage}" 
+               namespace="searchPage" reRender="resultPanel" oncomplete="hideLoading()"/>
+           <apex:actionFunction name="prevPage" action="{!handlePrevPage}" 
+               namespace="searchPage" reRender="resultPanel" oncomplete="hideLoading()"/>
+    <apex:pageBlock >
+    
+    <apex:outputPanel id="resultPanel">  
+        <strong>Cases(&nbsp;<apex:outputText value="{!showCaseCount}"/>&nbsp;)</strong>
+        <div align="center">
+           <nav>
+               <ul style="list-style-type: none;">
+                  <li class="{!IF(!hasPrev, 'disabled', '')}" onclick="{!IF(hasPrev, 'searchPage.prevPage();showLoading();','')}" oncomplete="hideLoading()">
+                      <button onclick="return false;">Previous</button>&nbsp;<!-- 阻止form表单的默认行为-->
+                  </li>
+                  <li>Page {!currentPage} of {!totalPages}</li>
+                  <li class="{!IF(!hasNext, 'disabled', '')}" onclick="{!IF(hasNext, 'searchPage.nextPage();showLoading();', '')}" oncomplete="hideLoading()">&nbsp;
+                      <button onclick="return false;">Next</button><!-- 阻止form表单的默认行为-->  
+                  </li>
+                  <!--<li>                   
+                       <button onclick="save()">Save</button>                     
+                  </li>-->
+              </ul>
+          </nav>
+      </div>
+
+   <!--   列表显示部分  -->
+   <apex:pageblockSection columns="1">
+          <apex:pageBlockTable value="{!SearchResult}" var="cl">
+         
+            <apex:column >
+                   
+                   <apex:facet name="header">Case Number</apex:facet>
+                   <apex:outputLink value="/{!cl.id}">{!cl.CaseNumber}</apex:outputLink>
+            </apex:column> 
+            <apex:column >          
+                   <apex:outputField value="{!cl.CSC_SN__c}" />
+                   <apex:facet name="header"> Serial Number</apex:facet>
+            </apex:column>
+            <apex:column >          
+                   <apex:outputField value="{!cl.CSC_Product_Description__c}" />
+                   <apex:facet name="header">Product Description</apex:facet>
+            </apex:column>
+            <apex:column >          
+                   <apex:outputField value="{!cl.Account.name}" />
+                   <apex:facet name="header">Account Name</apex:facet>
+            </apex:column>
+            <apex:column >          
+                   <apex:outputField value="{!cl.Contact.Name}" />
+                   <apex:facet name="header">Contact Name</apex:facet>
+            </apex:column>
+            <apex:column >
+            <apex:outputField value="{!cl.ContactPhone}" />
+                   <apex:facet name="header">Case Contact Phone1</apex:facet>
+            </apex:column> 
+            <apex:column >          
+                   <apex:outputField value="{!cl.Subject}" />
+                   <apex:facet name="header">Subject</apex:facet>
+            </apex:column>
+             <apex:column >
+                   <apex:outputField value="{!cl.Status}" />
+                   <apex:facet name="header">Status</apex:facet>
+           </apex:column>
+                
+            <apex:column >           
+                   <apex:outputField value="{!cl.CreatedDate }" />
+                   <apex:facet name="header">Date/Time Opened</apex:facet>
+           </apex:column>  
+           <apex:column >
+                   <apex:outputField value="{!cl.Owner.name}" />
+                   <apex:facet name="header">Owner Name</apex:facet>
+           </apex:column>                            
+           <!--<apex:inlineEditSupport event="ondblClick"/> -->
+          </apex:pageBlockTable>
+         </apex:pageblockSection>
+        <div align="center">
+           <nav>
+               <ul style="list-style-type: none;">
+                  <li class="{!IF(!hasPrev, 'disabled', '')}" onclick="{!IF(hasPrev, 'searchPage.prevPage();showLoading();','')}" oncomplete="hideLoading()">
+                      <button onclick="return false;">Previous</button>&nbsp;<!-- 阻止form表单的默认行为-->
+                  </li>
+                  <li>Page {!currentPage} of {!totalPages}</li>
+                  <li class="{!IF(!hasNext, 'disabled', '')}" onclick="{!IF(hasNext, 'searchPage.nextPage();showLoading();', '')}" oncomplete="hideLoading()">&nbsp;
+                      <button onclick="return false;">Next</button><!-- 阻止form表单的默认行为-->  
+                  </li>
+                  <!--<li>                   
+                       <button onclick="save()">Save</button>                     
+                  </li>-->
+              </ul>
+          </nav>
+      </div>
+      </apex:outputPanel>
+     </apex:pageBlock>
+     
+  
+     </apex:form>
+
+  
+</apex:page>

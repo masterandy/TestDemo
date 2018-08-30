@@ -1,0 +1,1303 @@
+<apex:page sidebar="false" showHeader="true" standardStylesheets="true" standardController="Case" tabStyle="Account" extensions="CSC_CallInCTIController" id="page">
+<script src="/support/api/34.0/interaction.js"></script>
+<script src="/support/console/34.0/integration.js"></script>
+<apex:includeScript value="{!$Resource.jQuery}"/>
+<html>
+    <head>
+        <style>
+            .wrap{  
+                min-width: 800px; 
+                width: auto;
+                height:auto;
+                background-color: #fff;
+                margin:0 auto;  
+            }  
+
+            .container{
+                position:relative;  
+                width:auto;
+                height:100%;  
+            }
+            
+            .left_side{  
+                position:absolute;  
+                top:0px;  
+                left:0px;  
+                width:360px;  
+                height:100%;  
+                overflow:auto;
+                background-color:#f8f8f8;
+            } 
+
+            .left_side_content{  
+                position:relative;  
+                top:0px;  
+                left:0px;  
+                width:360px;  
+                height:auto;  
+            } 
+
+            .content{  
+                margin:0px 360px 0px 360px;  
+                height:auto;  
+                overflow:auto;
+                background-color:#f8f8f8;
+            } 
+            
+        </style>
+    </head>
+    <body>
+        <!--added by Maccus-->
+        <apex:pageMessages id="msg" escape="false"/>
+        <!--added end-->
+        <apex:form id="form">
+            <apex:pageBlock title="CTI Login">
+            <input type="hidden" id="contactPhone" />
+            <input type="hidden" id="pinCode" />
+            <input type="hidden" id="CallingNumber" />
+            <input type="hidden" id="RecordingAddress" />
+            <input type="hidden" id="RecordingPort" />
+            <input type="hidden" id="callId" />
+            <input type="hidden" id="activeCallId" />
+            <input type="hidden" id="dnisId" />
+            <input type="hidden" id="uuiId" />
+            <input type="hidden" id="dataLenth" />
+            <input type="hidden" id="serAddr" />
+            <input type="hidden" id="serAddrPort" />
+            <input type="hidden" id="backSerAddr" />
+            <input type="hidden" id="backSerAddrPort" />
+            <input type="hidden" id="logoutFlg" />
+            <input type="hidden" id="agentModeHid" />
+            <input type="hidden" id="accessFlg" />
+            
+            <div id="loginDiv">
+                <div class="yui3-widget-bd" style="text-align: center">
+                    <form>
+                        <fieldset>
+                            <p>
+                                <label style="text-align:left;">Extension</label><br />
+                                <input id="deviceId" type="text" value=""/>
+                            </p>
+                            <p>
+                                <label for="labelUsername">Agent ID</label><br />
+                                <input id="agentId" type="text" value=""/>
+                            </p>
+                            <p>
+                                <label for="labelPassword">Password</label><br />
+                               <input id="password" type="password" value=""/>
+                            </p>
+                        </fieldset>
+                    </form>
+                </div>
+
+                <div class="yui3-tabview-panel" style="text-align: center">
+                    <input id="login" type="button" value="login" class="btn"/>
+                </div>
+            </div>
+
+             <div id="loginAfterDiv">
+                <apex:pageBlockSection >
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel for="deviceId">Extension</apex:outputLabel>
+                        <label id='deviceIdAfter'></label>
+                        <label id='deviceStatus'></label>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel for="agentId">Agent ID</apex:outputLabel>
+                        <label id='agentIdAfter'></label>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel for="phoneId">PhoneNumber</apex:outputLabel>
+                        <label id='phoneId'></label>
+                        <input type="checkbox" name="checkPhone" id="checkPhoneId" value="是否使用该电话" />
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel for="userId">UserName</apex:outputLabel>
+                        <label id='userId'></label>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel for="pinCodeId">PinCode</apex:outputLabel>
+                        <label id='pinCodeId'></label>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel for="callingNumberId">Avaya Voice ID</apex:outputLabel>
+                        <label id='callingNumberId'></label>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+
+                <div align="center" nowrap='nowrap'>
+                     <table cellpadding="0" cellspacing="0">
+                        <thead>
+                            <tr align="center" nowrap='nowrap'>
+                                <td><input type="button" id="logout" value="Logout" class="btn"/></td>
+                                <td><input type="button" id="newCase" value="New Case" class="btn"/></td>
+                            </tr>
+                        </thead>
+                     </table>
+                </div>
+             </div>
+
+
+            </apex:pageBlock>
+
+            <form name="myform">
+            <div id="DetailTableDivAccount">
+                <apex:pageBlock id="AccountData" title="Account" rendered="true">
+                    <table class="list" cellpadding="0" cellspacing="0" id="DetailTable">
+                        <thead>
+                            <tr class="headerRow">
+                                <td style="width:50px;">Action</td>
+                                <td style="width:100px;">Company Name</td>
+                                <td style="width:100px;">PinCode</td>
+                                <td style="width:100px;">City</td>
+                                <td style="width:100px;">Address</td>
+                                <td style="width:100px;">Contacts</td>
+                                <td style="width:100px;">Email</td>
+                                <td style="width:100px;">PhoneNumber</td>
+                                
+                            </tr>
+                        </thead>
+                        <tbody id="DetailTableBody">
+                        </tbody>                    
+                    </table>
+                </apex:pageBlock>
+            </div>
+            </form>
+
+            <div id ="DetailTableDivCase" class="selectResult">
+                <apex:pageBlock title="CaseHistory" id="caseHistoryList" rendered="true">
+                    
+                    <div class="yui3-tabview-panel" style="text-align: center">
+                        <button id="login" onclick="attachVoice()" >Attach Voice ID</button>
+                    </div>
+                    <apex:pageBlockTable value="{!caseList}" var="item" width="auto;">
+                        
+                        <apex:column >
+                            <apex:facet name="header">Action</apex:facet>
+                            <input type="radio" name="checkId" id="radCase" value="{!item.Id}" />
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">{!$ObjectType.Case.fields.CaseNumber.label}</apex:facet>
+                            <!--<apex:outputLink styleClass="newLink" id="CaseDetailBlock"
+                                onblur="LookupHoverDetail.getHover('{!$Component.CaseDetailBlock}').hide();"
+                                onfocus="LookupHoverDetail.getHover('{!$Component.CaseDetailBlock}', '/{!item.id}/m?retURL={!URLENCODE($CurrentPage.Url)}&isAjaxRequest=1').show();"
+                                onmouseout="LookupHoverDetail.getHover('{!$Component.CaseDetailBlock}').hide();" onmouseover="LookupHoverDetail.getHover('{!$Component.CaseDetailBlock}', '/{!item.id}/m?retURL={!URLENCODE($CurrentPage.Url)}&isAjaxRequest=1').show();" value="{!URLFOR('/' + item.id)}">
+                                {!item.CaseNumber}
+
+                            </apex:outputLink>-->
+                            <apex:outputField value="{!item.CaseNumber}"  />
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">Company Name</apex:facet>
+                            <apex:outputField value="{!item.Account.Name}"  />
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">{!$ObjectType.Case.fields.CSC_SN__c.label}</apex:facet>
+                            <apex:outputField value="{!item.CSC_SN__c}"  />
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">{!$ObjectType.Case.fields.CreatedDate.label}</apex:facet>
+                            <apex:outputField value="{!item.CreatedDate}"  />
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">{!$ObjectType.Case.fields.Subject.label}</apex:facet>
+                            <apex:outputField value="{!item.Subject}"  />
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">{!$ObjectType.Case.fields.CSC_Case_Status__c.label}</apex:facet>
+                            <apex:outputField value="{!item.Status}"  />
+                        </apex:column>
+                    </apex:pageBlockTable>
+                </apex:pageBlock>
+            </div>
+
+            <div>
+            <table>
+                <apex:actionFunction action="{!getCaseInfo}" name="getCaseInfo" reRender="caseHistoryList">
+                    <apex:param name="firstParam" assignTo="{!phone}" value="" />
+                    <apex:param name="SecondParam" assignTo="{!serchPinCode}" value="" />
+                </apex:actionFunction>
+
+            </table>
+            </div>
+        </apex:form>
+
+        <div>
+        <h4>log</h4>
+        <div contenteditable="true" spellcheck="false" id="log">
+        </div>
+    </div>
+
+        <object classid="clsid:2FA7FC61-8B41-44CF-AAF4-D1F2E7DC2BC4" id="cclaix" style="LEFT: 0px; TOP: 0px; width:10px;height:10px;"></object>
+
+        <apex:includeScript value="{!URLFOR($Resource.CCLAOCXJS, 'jquery.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.CCLAOCXJS, 'json2.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.CCLAOCXJS, 'promise.js')}" />
+    </body> 
+</html>
+<script type="text/javascript">
+
+    var ConnectionState = {
+        DISCONNECTED: 0,
+        CONNECTED: 1,
+        RECONNECTING: 2
+    };
+    var StationState = {
+        NOT_MONITORED: 0,
+        MONITORED: 1
+    };
+    var agent = {
+        agentId: '',
+        deviceId: '',
+        connectionState: ConnectionState.DISCONNECTED,
+        stationState: StationState.NOT_MONITORED,
+        retryTimes: 0,
+        loginTimer: 0
+    };
+
+    //判断CTI是否已经登录，没登录，登录CTI
+    var j$ = jQuery.noConflict();
+    j$(document).ready(function() {
+
+        // 页面初次加载时Acount,Case信息不显示
+        document.getElementById("DetailTableDivAccount").style.display="none";
+        document.getElementById("DetailTableDivCase").style.display="none";
+
+        document.getElementById("loginDiv").style.display="block";
+        document.getElementById("loginAfterDiv").style.display="none";
+        cnt = 0;
+        logger.log("页面初次加载");
+        loginCnt = 0;
+        setCtiData();
+        c = 0;
+    });
+
+    //获取cookie
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1);
+            if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+        }
+        return "";
+    }
+
+    //设置cookie
+    function setCookie(objName,objValue,objHours) {
+        var str = objName + "=" + escape(objValue);
+        if(objHours > 0){//为0时不设定过期时间，浏览器关闭时cookie自动消失
+            var date = new Date();
+            var ms = objHours*3600*1000;
+            date.setTime(date.getTime() + ms);
+            str += "; expires=" + date.toGMTString();
+       }
+        document.cookie = str;
+    }
+
+    //删除cookies
+    function delCookie(name)
+    {
+        var exp = new Date();
+        exp.setTime(exp.getTime() - 1);
+        var cval=getCookie(name);
+        if(cval!=null)
+            document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+    }
+
+    //////////////////////// 支持IE8 //////////////////////////////////////////////////
+    jQuery.support.cors = true;
+    if(!String.trim){
+        String.prototype.trim = function () {
+            return this .replace(/^\s\s*/, '' ).replace(/\s\s*$/, '' );
+        }
+    }
+    if (!Object.create) {
+        Object.create = (function(){
+        function F(){}
+
+        return function(o){
+            if (arguments.length != 1) {
+                throw new Error('Object.create implementation only accepts one parameter.');
+            }
+            F.prototype = o;
+            return new F()
+        }
+        })()
+    }
+    if(!Date.now){
+        Date.now = function() { return +new Date; };
+    }
+
+    function dateDiff(startTime, EndTime) {
+        if (!EndTime) {
+            EndTime = Date.now();
+        }
+        var res = {
+            D: 0,
+            H: 0,
+            M: 0,
+            S: 0,
+            MS: 0
+        };
+        var restTime = EndTime - startTime;
+        res.D = Math.floor(restTime / 864e5);
+        restTime = restTime - res.D * 864e5;
+        res.H = Math.floor(restTime / 36e5);
+        restTime = restTime - res.H * 36e5;
+        res.M = Math.floor(restTime / 6e4);
+        restTime = restTime - res.M * 6e4;
+        res.S = Math.floor(restTime / 1e3);
+        restTime = restTime - res.S * 1e3;
+        res.MS = restTime;
+        return res;
+    }
+    var format = function(template, args) {
+        if (arguments.length > 1 && typeof arguments[0] === "string") {
+            var result = arguments[0];
+            if (arguments.length == 2 && typeof arguments[1] === "object") {
+                var obj = arguments[1];
+                for (var key in obj) {
+                    if(obj[key] != undefined){
+                        var reg = new RegExp("({" + key + "})", "g");
+                        result = result.replace(reg, obj[key]);
+                    }
+                }
+            } else {
+                for(var i = 1, len = arguments.length; i < len; i++){
+                    if (arguments[i] != undefined) {
+                        // 这个在索引大于9时会有问题
+                        // var reg = new RegExp("({[" + (i - 1) + "]})", "g");
+                        var reg = new RegExp("({)" + (i - 1) + "(})", "g");
+                        result = result.replace(reg, arguments[i]);
+                    }
+                }
+            }
+            return result;
+        } else {
+            return arguments[0];
+        }
+    };
+    function log(level, text) {
+                var p = document.createElement("p");
+                p.appendChild(document.createTextNode(text));
+                p.className = level;
+                document.getElementById("log").appendChild(p);
+                document.getElementById("log").scrollTop = document.getElementById("log").scrollHeight;
+            }
+    /**
+     * 日志记录器
+     */
+    var logger = (function() {
+        return {
+            log: function(text) {
+                var outputText = "[" + new Date().toLocaleTimeString() + "] " + format.apply(this, arguments);
+                if(typeof console != 'undefined'){
+                    console.log(outputText);
+                }
+                log('label-secondary', outputText);
+            },
+            info: function(text) {
+                var outputText = "[" + new Date().toLocaleTimeString() + "] " + format.apply(this, arguments);
+                if(typeof console != 'undefined'){
+                    console.info(outputText);
+                }
+                log('label-info', outputText);
+            },
+            warn: function(text) {
+                var outputText = "[" + new Date().toLocaleTimeString() + "] " + format.apply(this, arguments);
+                if(typeof console != 'undefined'){
+                    console.warn(outputText);
+                }
+                log('label-warn', outputText);
+            },
+            error: function(text) {
+                var outputText = "[" + new Date().toLocaleTimeString() + "] " + format.apply(this, arguments);
+                if(typeof console != 'undefined'){
+                    console.error(outputText);
+                }
+                log('label-danger', outputText);
+            }
+        }
+    })();
+
+    function setCtiData(){
+
+        // 取得CTI的基本信息
+        CSC_CallInCTIController.getCtiData(function(result, event){
+            if(event.status && result){
+                // CTI服务器地址
+                var serAddr = result.serverAddress;
+                var serAddrPort = result.serverPort;
+
+                // CTI备用服务器地址
+                var backSerAddr = result.alternateServerAddress;
+                var backSerAddrPort = result.alternateServerPort;
+
+                document.getElementById("serAddr").value = serAddr;
+                document.getElementById("serAddrPort").value = serAddrPort;
+                document.getElementById("backSerAddr").value = backSerAddr;
+                document.getElementById("backSerAddrPort").value = backSerAddrPort;
+
+                // 录音的服务器地址和端口
+                document.getElementById("RecordingAddress").value = result.recordingAddress;
+                document.getElementById("RecordingPort").value = result.recordingPort;
+
+                // 后台得到的CTI信息，显示在页面上
+                document.getElementById("deviceId").value = result.extension;
+                document.getElementById("agentId").value = result.employeeId;
+                document.getElementById("password").value = result.usrPassword;
+            }
+        });
+    }
+    
+    function getNowFormatDate() { 
+        var date = new Date(); 
+        var seperator1 = "-"; 
+        var seperator2 = "-"; 
+        var month = date.getMonth() + 1; 
+        var strDate = date.getDate(); 
+        if (month >= 1 && month <= 9) { 
+            month = "0" + month; 
+        } 
+        if (strDate >= 0 && strDate <= 9) { 
+            strDate = "0" + strDate; 
+        } 
+        var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate 
+                + "-" + date.getHours() + seperator2 + date.getMinutes() 
+                + seperator2 + date.getSeconds(); 
+        return currentdate; 
+    }
+    
+    var bgExtextion = '';
+    var bgEmployeeId = '';
+    var loginInfo = '';
+//  var oldLoginInfo = '';
+    var pagehandlerpre = getNowFormatDate();
+    
+    function backgroundLog(){
+        var ctiFlag = null;
+    //  logger.log(cclaix);
+        if (typeof cclaix != "undefined" && cclaix)
+        {
+            ctiFlag = '|CCLAIx=active';
+        }else{
+            ctiFlag = '|CCLAIx=inactive';
+        }
+    //  logger.log(bgExtextion + ' : ' + bgEmployeeId + ctiFlag + ' : ' + loginInfo);
+        var pagehandler = pagehandlerpre + '-' + bgEmployeeId;
+        var loginInfoLog = ctiFlag + ' : ' + loginInfo;
+    //  var ipAddress = '10.11.11.11';
+        
+        jQuery.post( "http://10.8.1.101/log.ashx", { pagehandler: pagehandler, loginname:bgEmployeeId,seatnumber:bgEmployeeId,seatPhone:bgExtextion,softPhone:ctiFlag,logbody:loginInfoLog })
+                .done(function( data ) {
+                //  alert( "Data Loaded: " + data );
+            });
+    
+        setTimeout(function(){
+            backgroundLog();
+        }, 5000);
+        loginInfo = 'Normal ';
+    }
+    
+    
+    function login(){
+
+        var serAddr = document.getElementById("serAddr").value;
+        var serAddrPort = document.getElementById("serAddrPort").value;
+        var backSerAddr = document.getElementById("backSerAddr").value;
+        var backSerAddrPort = document.getElementById("backSerAddrPort").value;
+
+        var extension = document.getElementById("deviceId").value;
+        var employeeId = document.getElementById("agentId").value;
+        var usrPassword = document.getElementById("password").value;
+        
+        bgExtextion = extension;
+        bgEmployeeId = employeeId;
+
+        var accessFlg = document.getElementById('accessFlg').value;
+        //已经连接过服务器，不需要在连接
+        if (agent.connectionState == ConnectionState.DISCONNECTED){
+            logger.log('连接服务器');
+            var ret = cclaix.InitControlServer('5000', serAddrPort, backSerAddrPort, serAddr, backSerAddr);
+            
+            if(ret == 0){
+                agent.connectionState = ConnectionState.CONNECTED;
+            }
+        }
+
+        clearTimeout(agent.loginTimer);
+        agent.loginTimer = setTimeout(function(){
+            logger.log('登录超时(' + extension + ')');
+            if(agent.retryTimes < 5){
+                relogin();
+            } else {
+                agent.retryTimes = 0;
+                logger.log('登录失败');
+            }
+        }, 6000);
+            logger.log('监控分机(' + extension + ')');
+            cclaix.SendMonitorDevice(extension, 49);
+
+    //  document.getElementById("loginDiv").style.display="none";
+    //  document.getElementById("loginAfterDiv").style.display="block";
+    //    document.getElementById("DetailTableDivCase").style.display="block";
+    //    document.getElementById("DetailTableDivAccount").style.display="block";
+    //    document.getElementById('deviceIdAfter').innerHTML=extension;
+    //    document.getElementById('agentIdAfter').innerHTML=employeeId;
+      }
+
+    function relogin(){
+        var deviceId = document.getElementById('deviceId').value;
+        var agentId = document.getElementById('agentId').value;
+        var password = document.getElementById('password').value;
+
+        logger.log('退出登录，分机(' + deviceId + ')');
+        cclaix.SendSetAgentStateEx(deviceId, '', '', '', 49, 49);
+        logger.log('停止监控分机(' + deviceId + ')');
+        cclaix.SendStopMonitorDevice(deviceId);
+
+        agent.stationState = StationState.NOT_MONITORED;
+        agent.retryTimes++;
+        setTimeout(function(){
+            login();
+        }, 1000);
+    }
+
+    cclaix.OpenWritePath();
+
+    //login
+    j$(document).ready(function() {
+        j$("#login").click(function(){
+
+            logger.log('login,单击按钮时login');
+            login();
+
+        });
+    });
+
+    //newCase
+    j$(document).ready(function() {
+        j$("#newCase").click(function(){
+
+            var oldCall = getCookie('CallingNumber');
+            //var dataFlg = document.getElementById("dataFlg").value;
+            var selectData = j$('input[name="accountCheckId"]').filter(':checked').val();
+            var checkPhone = j$('input[name="checkPhone"]').filter(':checked').val();
+
+            var phone = document.getElementById("contactPhone").value;
+            var pinCode = document.getElementById("pinCode").value;
+            var callingNumber = document.getElementById("CallingNumber").value;
+
+            // 录音服务器地址和端口号
+            var recordingAddress = document.getElementById("RecordingAddress").value;
+            var recordingPort = document.getElementById("RecordingPort").value;
+
+            var extension = document.getElementById("deviceId").value
+
+            var recordingLink = 'http://' + recordingAddress + ':' + recordingPort + '/QAConnector/GetVoice/' + callingNumber + '/' + extension + '.wav';
+
+            var url = '';
+            var accountId = '';
+            var contactId = '';
+
+            if (selectData){
+                var selectDatas = selectData.split(":");
+                accountId = selectDatas[0];
+                contactId = selectDatas[1];
+            }
+
+            if (callingNumber){
+                if (checkPhone){
+                    url='/apex/CSC_CaseEdit?phone=' + phone + '&PIN=' + pinCode + '&CallNumber=' + callingNumber + '&aid=' + accountId + '&cid=' + '&RecordLink=' + recordingLink;
+                }else{
+                    url='/apex/CSC_CaseEdit?phone=' + phone + '&PIN=' + pinCode + '&CallNumber=' + callingNumber + '&aid=' + accountId + '&cid=' + contactId + '&RecordLink=' + recordingLink;
+                }
+            }else{
+                url='/apex/CSC_CaseEdit';
+            }
+            setCookie('CallingNumber',callingNumber,0);
+
+            //logger.log('url:' + url);
+
+            //sforce.console.openPrimaryTab(null,url,true);
+            sforce.interaction.screenPop(url, true, screenPopCallback);
+        });
+    });
+
+    //logout
+    j$(document).ready(function() {
+        j$("#logout").click(function(){
+
+            cnt = 0;
+
+            logger.log('logout1');
+            // 退出登录前，删除记录
+            var oldNode = document.getElementById("DetailTableBody");
+            var infoTable = document.getElementById("DetailTable");
+            if(oldNode != null){
+                infoTable.removeChild(oldNode); 
+            }
+
+            document.getElementById('phoneId').innerHTML="";
+            document.getElementById('pinCodeId').innerHTML="";
+            document.getElementById('callingNumberId').innerHTML="";
+            document.getElementById('userId').innerHTML="";
+            document.getElementById("loginDiv").style.display="block";
+            document.getElementById("loginAfterDiv").style.display="none";
+            document.getElementById("DetailTableDivAccount").style.display="none";
+            document.getElementById("DetailTableDivCase").style.display="none";
+            logger.log('退出cti系统');
+            
+            loginInfo = ' 0 : CTI Logout';
+
+            var deviceId = document.getElementById('deviceId').value;
+
+            logger.log('退出登录，分机(' + deviceId + ')');
+            cclaix.SendSetAgentStateEx(deviceId, '', '', '', 49, 49);
+            logger.log('停止监控分机(' + deviceId + ')');
+            cclaix.SendStopMonitorDevice(deviceId);
+
+
+
+            clearTimeout(agent.loginTimer);
+
+            agent.agentId = '';
+            agent.deviceId = '';
+            agent.stationState = StationState.NOT_MONITORED;
+            agent.retryTimes = 0;
+
+        });
+    });
+
+    // Callback for screenPop API method.
+    var screenPopCallback = function (response) {
+        if (response.result) {
+            //alert('Screen pop was set successfully.');
+        } else {
+            //alert('Screen pop failed.' + result.error);
+        }
+    };
+
+    //磋商
+    j$(document).ready(function() {
+        j$("#transferCall").click(function(){
+            var transferId = document.getElementById("transferId").value; // 要磋商的分机号码
+            var deviceId = document.getElementById("deviceId").value;
+            var callId = document.getElementById("callId").value;
+            var ani = document.getElementById("contactPhone").value; // 电话号码
+            var agentId = document.getElementById("agentId").value; // 坐席
+            var dnis = document.getElementById("dnisId").value; // 坐席
+
+            var uui = document.getElementById("uuiId").value;
+            //station.consultationCall(transferId);
+
+            if (!uui){
+
+                // 随路数据
+                uui = ani + '|' + dnis + '|' + callId + '||||||';
+            }
+
+            logger.info("磋商({0},{1},{2},{3})", deviceId, callId, transferId);
+            logger.info('uui:' + uui);
+            cclaix.SendConsultationCall(deviceId, callId, transferId, 49, uui);
+        });
+    });
+    
+    //转接
+    j$(document).ready(function() {
+        j$("#complete").click(function(){
+            //station.transferCall();
+
+            var activeCallId = document.getElementById('activeCallId').value;
+            var heldCallId = document.getElementById('callId').value;
+            var deviceId = document.getElementById('deviceId').value;
+
+            logger.info("转移({0},{1},{2},{3})", deviceId, heldCallId, deviceId, activeCallId);
+            cclaix.SendTransferCall(deviceId, heldCallId, deviceId, activeCallId);
+        });
+    });
+    
+    //取回
+    j$(document).ready(function() {
+        j$("#cancel").click(function(){
+            //station.retrieveCall();
+
+            /*var heldCallId = document.getElementById('callId').value;
+            var deviceId = document.getElementById('deviceId').value;
+
+            //logger.log('heldCallId:' + heldCallId);
+            logger.log('deviceId:' + deviceId);
+            cclaix.SendRetrieveCall(deviceId, heldCallId);*/
+
+            //station.releaseCall();
+            var heldDeviceID = document.getElementById('deviceId').value;
+            var heldCallID = document.getElementById('callId').value;
+            var activeDeviceID = document.getElementById('transferId').value;
+            var activeCallId = document.getElementById('activeCallId').value;
+
+            logger.log('cancel 处理');
+            logger.log('heldDeviceID:' + heldDeviceID);
+            logger.log('heldCallID:' + heldCallID);
+            logger.log('activeDeviceID:' + activeDeviceID);
+            logger.log('activeCallId:' + activeCallId);
+
+            cclaix.SendReconnectCall(heldDeviceID,heldCallID,heldDeviceID,activeCallId);
+        });
+    });
+
+    // checkbox只能选择一条
+    function checkData(n)
+    {
+        var dataLen = document.getElementById("dataLenth").value;
+        for (j = 0; j < dataLen; j++) {
+            if (eval("document.myform.accountCheckId[" + j + "].checked") == true) {
+                document.myform.accountCheckId[j].checked = false;
+            if (j == n) {
+                document.myform.accountCheckId[j].checked = true;
+                }
+            }
+        }
+    }
+
+    function attachVoice(){
+       
+       var selectData = j$('input[name="checkId"]').filter(':checked').val(); 
+
+        //alert('test:' + selectData);
+
+        if (!selectData){
+            alert("请选择一条记录");
+
+            return;
+        }
+
+        // Voice ID
+        var callingNumber = document.getElementById("CallingNumber").value;
+
+        // 录音
+        // 录音服务器地址和端口号
+        var recordingAddress = document.getElementById("RecordingAddress").value;
+        var recordingPort = document.getElementById("RecordingPort").value;
+
+        var extension = document.getElementById("deviceId").value;
+
+        var recordingLink = 'http://' + recordingAddress + ':' + recordingPort + '/QAConnector/GetVoice/' + callingNumber + '/' + extension + '.wav';
+
+        // 更新
+        CSC_CallInCTIController.addVoiceId(selectData,callingNumber,recordingLink,function(result, event){
+
+            if(event.status){
+                //alert('更新成功');
+            }
+        });
+        var url = '/' + selectData;
+
+        //sforce.console.openPrimaryTab(null,url,true);
+        sforce.interaction.screenPop(url, true, screenPopCallback);
+    }
+    
+    window.onbeforeunload = function() {   
+        logger.log('unload');
+    }
+
+    //心跳检测，超过30秒无反应，报错
+    function timedCount()  
+    {
+        hour = parseInt(c / 3600);// 小时数  
+        min = parseInt(c / 60);// 分钟数  
+        if(min>=60){  
+            minmin=min%60;
+        }  
+        lastsecs = c % 60;  
+      
+        c=c+1;
+        t=setTimeout("timedCount()",1000);
+
+        //logger.log(lastsecs);
+
+        if (lastsecs >= 30){
+            c=0;
+            loginFlag = '3 : CTI Fail';
+            clearTimeout(t);
+            
+            document.getElementById('deviceStatus').innerHTML="<font style='BACKGROUND-COLOR:Red'>CTI Fail</font>";
+            
+            logger.log("和CTI服务器失去连接，请关闭IE或者刷新页面,重新登录");
+            alert('和CTI服务器失去连接，请关闭IE或者刷新页面,重新登录');
+        }
+      
+    }
+
+    /*
+    *根据pinCode或电话号码做检索，把数据显示在画面上
+    */
+    function getDataInfo() {
+
+        logger.log('Start getDataInfo' );
+
+        //提取查询前Table显示内容
+        var oldNode = document.getElementById("DetailTableBody");
+        
+        //定义显示的HTML内容
+        var htmlTag = '';
+        var htmlTagCase = '';
+        //提取到电话号码
+        var phonenumber = document.getElementById("contactPhone").value;
+        var pincode = document.getElementById("pinCode").value;
+        var retUrls = new Array();
+        var retContacts = new Array();
+        var k = 0;
+        logger.log('Start getAccountCase');
+        CSC_CallInCTIController.getAccountCase(phonenumber,pincode,function(result, event){
+            logger.log('Ent getAccountCase');
+            //显示Account信息
+            if(event.status && result && (result.accountList.constructor === Array)){
+
+                // 根据分机号查询用户名(内部分机互拨)
+                var userName = result.userName;
+                var agent = result.agentId;
+
+                if (userName){
+                    document.getElementById('userId').innerHTML=userName;
+                    document.getElementById('phoneId').innerHTML=agent;
+                }
+                
+                //提取查询返回的结果
+                var searchDataList = result.accountList;
+                if(searchDataList.length > 0){
+
+                    //遍历结果，放入到HTML内容里
+                    for(var i=0; i<searchDataList.length; i++){
+                        var searchDataInfo = searchDataList[i];
+                        retUrls.push(searchDataInfo.Id);
+
+                        if(searchDataInfo.Contacts != null && searchDataInfo.Contacts.length > 0){
+                            // 有多个联系人，遍历联系人信息，显示在页面上
+                            for(var j=0;j<searchDataInfo.Contacts.length;j++){
+                                
+                                var serchContact = searchDataInfo.Contacts[j];
+                                retContacts.push(serchContact.phone);
+
+                                htmlTag += '<tr class="dataRow">';
+
+                                htmlTag += '<td class="dataCell">'+'<input type="checkbox" name="accountCheckId" id="radAccount" value="'+searchDataInfo.Id+ ':' + searchDataInfo.Contacts[j].Id +'" onclick="checkData(' + k + ')" />'+'</td>';
+                                k++;
+
+                                htmlTag += '<td class="dataCell">'+searchDataInfo.Name+'</td>';
+
+                                if (searchDataInfo.CSC_PinCode__c){
+                                    htmlTag += '<td class="dataCell">'+searchDataInfo.CSC_PinCode__c+'</td>';
+                                }else{
+                                    htmlTag += '<td class="dataCell">'+''+'</td>';
+                                }
+
+                                if (searchDataInfo.City__c){
+                                    htmlTag += '<td class="dataCell">'+searchDataInfo.City__c+'</td>';
+                                }else{
+                                    htmlTag += '<td class="dataCell">'+''+'</td>';
+                                }
+
+                                if (searchDataInfo.BillingStreet){
+                                    htmlTag += '<td class="dataCell">'+searchDataInfo.BillingStreet+'</td>';
+                                }else{
+                                    htmlTag += '<td class="dataCell">'+''+'</td>';
+                                }
+                                
+                                if (searchDataInfo.Contacts[j].Name){
+                                    htmlTag += '<td class="dataCell">'+searchDataInfo.Contacts[j].Name+'</td>';
+                                }else{
+                                    htmlTag += '<td class="dataCell">'+''+'</td>';
+                                }
+
+                                if (searchDataInfo.Contacts[j].Email){
+                                    htmlTag += '<td class="dataCell">'+searchDataInfo.Contacts[j].Email+'</td>';
+                                }else{
+                                    htmlTag += '<td class="dataCell">'+''+'</td>';
+                                }
+                                
+                                if (searchDataInfo.Contacts[j].Phone){
+                                    htmlTag += '<td class="dataCell">'+searchDataInfo.Contacts[j].Phone+'</td>';
+                                }else{
+                                    htmlTag += '<td class="dataCell">'+''+'</td>';
+                                }
+                                
+                                htmlTag += '</tr>';
+                            }
+                        }else{
+
+                            htmlTag += '<tr class="dataRow">';
+
+                            htmlTag += '<td class="dataCell">'+'<input type="checkbox" name="accountCheckId" id="radAccount" value="'+searchDataInfo.Id+ ':' + '' +'" onclick="checkData(' + k + ')" />'+'</td>';
+                                k++;
+                            htmlTag += '<td class="dataCell">'+searchDataInfo.Name+'</td>';
+                            if (searchDataInfo.CSC_PinCode__c){
+                                htmlTag += '<td class="dataCell">'+searchDataInfo.CSC_PinCode__c+'</td>';
+                            }else{
+                                htmlTag += '<td class="dataCell">'+''+'</td>';
+                            }
+
+                            if (searchDataInfo.City__c){
+                                htmlTag += '<td class="dataCell">'+searchDataInfo.City__c+'</td>';
+                            }else{
+                                htmlTag += '<td class="dataCell">'+''+'</td>';
+                            }
+
+                            if (searchDataInfo.BillingStreet){
+                                htmlTag += '<td class="dataCell">'+searchDataInfo.BillingStreet+'</td>';
+                            }else{
+                                htmlTag += '<td class="dataCell">'+''+'</td>';
+                            }
+
+                            htmlTag += '<td class="dataCell">'+''+'</td>';
+                            htmlTag += '<td class="dataCell">'+''+'</td>';
+                            htmlTag += '<td class="dataCell">'+''+'</td>';
+                            htmlTag += '</tr>';
+                        }
+                        
+                    }
+                    
+                    document.getElementById("dataLenth").value = k;
+                }
+            }
+            //logger.log('retUrls.length:' + retUrls.length);
+
+            //判断返回数据的记录Id集合
+            if(retUrls.length <= 0){
+
+                var infoTable = document.getElementById("DetailTable");
+                if(oldNode != null){
+                    infoTable.removeChild(oldNode); 
+                }
+                //document.getElementById("DetailTableDivAccount").style.display="none";
+            }else if(retUrls.length == 1){
+                document.getElementById("DetailTableDivAccount").style.display="block";
+                var infoTable = document.getElementById("DetailTable");
+                //判断查询前的内容不为空，需要Remove掉内容
+                if(oldNode != null){
+                    infoTable.removeChild(oldNode); 
+                }
+                    
+                var div = document.createElement('div'); 
+                div.innerHTML = '<table>' + htmlTag + '</table>';
+                    
+                //查询到的内容插入到显示页面
+                div.firstChild.firstChild.setAttribute('id', 'DetailTableBody');
+                infoTable.appendChild(div.firstChild.firstChild);
+            }else{
+                    document.getElementById("DetailTableDivAccount").style.display="block";
+                    //如果集合中有多条记录，只显示多条记录
+                    var infoTable = document.getElementById("DetailTable");
+                    if(oldNode != null){
+                        infoTable.removeChild(oldNode);
+                    }
+                    
+                    var div = document.createElement('div'); 
+                    div.innerHTML = '<table>' + htmlTag + '</table>';
+                    div.firstChild.firstChild.setAttribute('id', 'DetailTableBody');
+                    infoTable.appendChild(div.firstChild.firstChild);
+            }
+            });
+        }
+
+</script>
+
+<script type="text/javascript" for="cclaix" event="OnIncomingCallEvt(deviceId, callId, dnis, ani, callType, uui)"> 
+
+        logger.log('来电事件1:');
+        logger.log('uui1:' + uui);
+
+        j$('input[name="checkPhone"]').attr("checked",false);
+
+        document.getElementById("dnisId").value = dnis;
+        document.getElementById("uuiId").value = uui;
+        document.getElementById('userId').innerHTML="";
+        
+        loginInfo = '5: InComingCall1 ' + callId;
+        
+        // 监听来电事件
+        var pinCode1 = '';
+        var CallingNumber1 = "";
+        CallingNumber1 = callId;
+
+        if (uui) {
+
+            //从CTI控件中取到pinCode
+            var userD = uui.split("|");
+            pinCode1 = userD[3];
+            ani = userD[0];
+            dnis = userD[1];
+            //CallingNumber = userD[2];
+        }
+
+        if (ani.length == 12 && ani.substring(0,2) == '01' && ani.substring(0,3) != '010'){
+            ani = ani.substring(1,12);
+        }
+
+        //固话，不带区号
+        if (ani.length == 8){
+            if (dnis == '59080397' || dnis == '59080398' || dnis == '59080399' || dnis == '59080386'){
+                ani = '022' + ani;
+            }else{
+                ani = '0571' + ani;
+            }
+        }
+
+        //pinCode为null，设为空。
+        if (!pinCode1){
+            pinCode1 = '';
+        }
+
+        //电话号码为null，设为空。
+        if (!ani){
+            ani = '';
+        }
+
+        document.getElementById("callId").value = callId;
+
+        // 显示new Case按钮
+        document.getElementById("newCase").style.display="block";
+
+        //电话号码，pincode，voice id显示在画面上
+        document.getElementById('phoneId').innerHTML=ani;
+        document.getElementById('pinCodeId').innerHTML=pinCode1;
+        document.getElementById('callingNumberId').innerHTML=CallingNumber;
+
+        //为后台检索用，设定隐藏项字段
+        document.getElementById("contactPhone").value = ani;
+        document.getElementById("pinCode").value = pinCode1;
+        document.getElementById("CallingNumber").value = CallingNumber;
+
+        var phone = ani;
+        getCaseInfo(phone,pinCode1);
+
+        getDataInfo();
+    </script>
+
+<script type="text/javascript" for="cclaix" event="OnIncomingCallEvtV2(deviceId, callId, dnis, ani, callType, trunkGrp, trunkMem, uui, skillNo, vdn)"> 
+
+        logger.log('来电事件:');
+        logger.log('uui:' + uui);
+
+        j$('input[name="checkPhone"]').attr("checked",false);
+
+        document.getElementById("dnisId").value = dnis;
+        document.getElementById("uuiId").value = uui;
+        document.getElementById('userId').innerHTML="";
+        
+        loginInfo = '5: InComingCall ' + callId;
+        
+        // 监听来电事件
+        var pinCode = '';
+        var CallingNumber = "";
+        CallingNumber = callId;
+
+        if (uui) {
+
+            //从CTI控件中取到pinCode
+            var userD = uui.split("|");
+            pinCode = userD[3];
+            ani = userD[0];
+            dnis = userD[1];
+            //CallingNumber = userD[2];
+        }
+
+        if (ani.length == 12 && ani.substring(0,2) == '01' && ani.substring(0,3) != '010'){
+            ani = ani.substring(1,12);
+        }
+
+        //固话，不带区号
+        if (ani.length == 8){
+            if (dnis == '59080397' || dnis == '59080398' || dnis == '59080399' || dnis == '59080386'){
+                ani = '022' + ani;
+            }else{
+                ani = '0571' + ani;
+            }
+        }
+
+        //pinCode为null，设为空。
+        if (!pinCode){
+            pinCode = '';
+        }
+
+        //电话号码为null，设为空。
+        if (!ani){
+            ani = '';
+        }
+
+        document.getElementById("callId").value = callId;
+
+        // 显示new Case按钮
+        document.getElementById("newCase").style.display="block";
+
+        //电话号码，pincode，voice id显示在画面上
+        document.getElementById('phoneId').innerHTML=ani;
+        document.getElementById('pinCodeId').innerHTML=pinCode;
+        document.getElementById('callingNumberId').innerHTML=CallingNumber;
+
+        //为后台检索用，设定隐藏项字段
+        document.getElementById("contactPhone").value = ani;
+        document.getElementById("pinCode").value = pinCode;
+        document.getElementById("CallingNumber").value = CallingNumber;
+
+        var phone = ani;
+        getCaseInfo(phone,pinCode);
+
+        getDataInfo();
+    </script>
+
+    <script type="text/javascript" for="cclaix" event="OnHoldCallEvt(deviceID, callID, activingDeviceID,activedDeviceID)">
+
+        //logger.log('保持电话');
+        logger.log('activedDeviceID:' + activedDeviceID);
+
+    </script>
+
+    <script type="text/javascript" for="cclaix" event="OnSeizedEvt(callID, deviceID)">
+
+        //logger.log('摘机事件');
+        //logger.log('callID:' + callID);
+        document.getElementById('activeCallId').value = callID;
+
+    </script>
+
+    <script type="text/javascript" for="cclaix" event="OnCCLinkChangeEvt(ip, port, isActive)"> 
+
+        // 监听连接状态改变事件
+        if(isActive == 1){
+            logger.log('服务器(' + ip + ':' + port + ')连接成功.');
+            
+            if(agent.connectionState != ConnectionState.CONNECTED){
+                if(agent.agentId){
+                    var deviceId = document.getElementById('deviceId').value;
+                    agent.connectionState = ConnectionState.CONNECTED;
+                    logger.log('监控分机(' + deviceId + ')');
+                    // cclaix.Login(deviceId, agentId, password, '');
+                    cclaix.SendMonitorDevice(deviceId, 49);
+                    
+                    loginInfo = ' 7 : ConnectServer Success ' + deviceId;
+                }
+            }
+        } else {
+            logger.log('服务器(' + ip + ':' + port + ')连接失败!');
+            loginInfo = ' 8 : ConnectServer Failure ' + ip + ':' + port;
+        }
+    </script>
+
+    <script type="text/javascript" for="cclaix" event="OnAgentStateChangeEvtV2(deviceId, agentId, agentMode, reasonCode, reserve1, reserve2, agentName)">
+        
+        
+        // 监听坐席状态改变事件
+        logger.info('坐席(' + agentId + ')状态改变(' + agentMode + ',' + reasonCode + ').');
+        // 48 表示 登录
+        // 49 表示 退出
+        // 50 表示 暂停
+        // 51 表示 工作
+        // 52 表示 话后处理
+        if(agentMode == 48){
+
+            if (loginCnt == 0){
+                logger.log('CTI登录成功');
+                clearTimeout(agent.loginTimer);
+                timedCount();
+                
+                loginInfo = ' 1 : Login Successful!';
+                
+                
+                backgroundLog();
+                
+            }
+            loginCnt++;
+            agent.agentId = agentId;
+            agent.deviceId = deviceId;
+            
+            agent.retryTimes = 0;
+        } else if(agentMode == 49){
+            agent.agentId = '';
+            agent.deviceId = '';
+        }
+    </script>
+
+    <script type="text/javascript" for="cclaix" event="OnMonitorDeviceRespond(deviceId)">
+        // 监听监控成功响应
+        logger.log('监控分机(' + deviceId + ')成功.');
+        document.getElementById('deviceStatus').innerHTML="<font style='BACKGROUND-COLOR: YellowGreen'>Normal</font>";
+        if(!agent.agentId){
+            var deviceId = document.getElementById('deviceId').value;
+            var agentId = document.getElementById('agentId').value;
+            var password = document.getElementById('password').value;
+            
+             document.getElementById("loginDiv").style.display="none";
+        document.getElementById("loginAfterDiv").style.display="block";
+        document.getElementById("DetailTableDivCase").style.display="block";
+        document.getElementById("DetailTableDivAccount").style.display="block";
+        document.getElementById('deviceIdAfter').innerHTML=deviceId;
+        document.getElementById('agentIdAfter').innerHTML=agentId;
+        
+   //     document.getElementById('deviceStatus').innerHTML="<font style='BACKGROUND-COLOR: YellowGreen'>Normal</font>";
+
+            logger.log('登录(' + deviceId + ',' + agentId + ',' + password + ')');
+            
+            loginInfo = '10 : 登录(' + deviceId + ',' + agentId + ',' + password + ')';
+            
+            clearTimeout(agent.loginTimer);
+            
+            cclaix.SendSetAgentStateEx(deviceId, agentId, password, "", 48, 49);
+        }
+    </script>
+
+    <script type="text/javascript" for="cclaix" event="OnRequestFailureRespond(deviceId, opType, code)"> 
+        // 监听请求失败响应
+        //console.error('请求失败(' + code + ')!');
+        
+        // 监听请求失败响应
+        logger.log('请求失败(' + code + ')!');
+        clearTimeout(agent.loginTimer);
+        // 分机已登录
+        if(code == 128){
+
+            if (cnt != 0){
+                loginInfo = '0 : login Fail!';
+                logger.log("CTI登录失败，请重新登录");
+            }else{
+                relogin();
+                cnt++;
+            }
+            
+        } else if(code == 129){
+            logger.log('工号登录了其他分机');
+        } else if(code == 22){
+            logger.log('状态错误');
+        }
+    </script>
+
+    <script type="text/javascript" for="cclaix" event="OnCCLinkSwitchEvt(ip, port)"> 
+
+        logger.log("EVENT - 主备切换完成，{0}:{1}", ip, port);
+
+        if(agent.agentId){
+            var deviceId = document.getElementById('deviceId').value;
+            agent.connectionState = ConnectionState.CONNECTED;
+            logger.log('监控分机(' + deviceId + ')');
+            // cclaix.Login(deviceId, agentId, password, '');
+            cclaix.SendMonitorDevice(deviceId, 49);
+        }
+        
+    </script>
+
+    <script type="text/javascript" for="cclaix" event="OnCCLinkUnavailableEvt(mainIP, mainPort, backIP, backPort)"> 
+
+        // 监听连接不可用事件
+        logger.log('服务器不可用，主服务器：' + mainIp + ':' + mainPort + '，备服务器：' + backIp + ':' + backPort);
+        agent.connectionState = ConnectionState.RECONNECTING;
+
+    </script>
+
+    <script type="text/javascript" for="cclaix" event="OnHeartBeatV2Respond(sDeviceID, sState, Reserve1)">
+        //服务器断开，重新连接服务器
+        c=0;
+
+    </script>
+
+</apex:page>

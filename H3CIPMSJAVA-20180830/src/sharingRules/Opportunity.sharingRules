@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>IPMS_BU_BR</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>IPMS BU BR</label>
+        <sharedTo>
+            <role>B_R_Level2</role>
+        </sharedTo>
+        <booleanFilter>1</booleanFilter>
+        <criteriaItems>
+            <field>Business_Type__c</field>
+            <operation>equals</operation>
+            <value>BR</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>IPMS_BU_NEC</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>IPMS BU NEC</label>
+        <sharedTo>
+            <role>NEC_Dept_Level2</role>
+        </sharedTo>
+        <booleanFilter>1</booleanFilter>
+        <criteriaItems>
+            <field>Business_Type__c</field>
+            <operation>equals</operation>
+            <value>NEC</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>IPMS_BU_SEA</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>IPMS BU SEA</label>
+        <sharedTo>
+            <role>IPMS_SEA_Sales_Dept_Level2</role>
+        </sharedTo>
+        <booleanFilter>1</booleanFilter>
+        <criteriaItems>
+            <field>Business_Type__c</field>
+            <operation>equals</operation>
+            <value>SEA</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>IPMS_BU_WW</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>IPMS BU WW</label>
+        <sharedTo>
+            <role>IPMS_Business_Development_Level3</role>
+        </sharedTo>
+        <booleanFilter>1</booleanFilter>
+        <criteriaItems>
+            <field>Business_Type__c</field>
+            <operation>equals</operation>
+            <value>SEA,BR,WW</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>IPMS_Project_Sharing</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>IPMS Project Sharing</label>
+        <sharedTo>
+            <roleAndSubordinates>Operations_Support_Mgt</roleAndSubordinates>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Closed Project,IPMS Project</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+</SharingRules>

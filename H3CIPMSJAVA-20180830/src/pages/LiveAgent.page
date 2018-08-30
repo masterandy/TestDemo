@@ -1,0 +1,12 @@
+<apex:page >
+<img id="liveagent_button_online_573280000008T03" style="display: none; border: 0px none; cursor: pointer" onclick="liveagent.startChat('573280000008T03')" src="https://livechat.secure.force.com/resource/1472261302000/LiveAgentLogin" /><img id="liveagent_button_offline_573280000008T03" style="display: none; border: 0px none; " src="https://livechat.secure.force.com/resource/1472261302000/LiveAgentLogout" />
+<script type="text/javascript">
+if (!window._laq) { window._laq = []; }
+window._laq.push(function(){liveagent.showWhenOnline('573280000008T03', document.getElementById('liveagent_button_online_573280000008T03'));
+liveagent.showWhenOffline('573280000008T03', document.getElementById('liveagent_button_offline_573280000008T03'));
+});</script>
+<script type='text/javascript' src='https://c.la10.salesforceliveagent.com/content/g/js/37.0/deployment.js'></script>
+<script type='text/javascript'>
+liveagent.init('https://d.la10.salesforceliveagent.com/chat', '572280000004GNU', '00D2800000127Ge');
+</script>
+</apex:page>

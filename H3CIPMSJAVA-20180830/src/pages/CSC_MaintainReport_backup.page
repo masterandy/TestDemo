@@ -1,0 +1,633 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false" standardController="WorkOrder" extensions="CSC_MaintainReportController">
+    <!--<html>-->
+    <head>
+        <style>
+            @page {
+                size: letter;
+                font-family: Arial Unicode MS;
+                margin-top: 10px;
+                @bottom-center {
+                    font-family: Arial Unicode MS;
+                    font-size:8px;
+                    content: "Rev 2016 第一联（白）公司留存/For Unis Huashan 第二联（粉）客户留存/For Customer";
+                }
+            }
+            .page-break {
+                display:block;
+                page-break-after:always;
+            }
+            body {
+                font-family: Arial Unicode MS;
+            }
+
+        table.acrosstable {
+            font-family: 'Arial Unicode MS';
+            font-size:10px;
+            color:#333333;
+            border-width: 2px;
+            border-color: #666666;
+            border-collapse: collapse;
+            border-style: solid;
+            width: 98%;
+            padding: 5px;
+        }
+        table.acrosstable th {
+            border-width: 1px;
+            border-style: solid;
+            font-size:8px;
+            font-weight:normal;
+            text-align:center;
+            padding:2px;
+            font-family: 'Arial Unicode MS';
+            background-color: #EFEFEF;
+        }
+        table.acrosstable td {
+            border-width: 1px;
+            padding: 0px;
+            margin: 5px;
+            font-size:8px;
+            border-style: solid;
+            background-color: #ffffff;
+            font-family: 'Arial Unicode MS';
+        }
+        table.acrosstable font {
+        padding: 2px;
+        }
+
+        table.headerInformation {
+            border-width: 0px;
+            font-size: 12px;
+            font-family: 'Arial Unicode MS';
+        }
+
+        table.headerInformation td {
+            text-align:left;
+            font-family: 'Arial Unicode MS';
+        }
+        
+        table.parts{
+            width:100%;
+            border: none;
+            border-spacing: 0px;
+            border-collapse: collapse;
+        }
+        table.parts td{
+            border-spacing: 0px;
+        }
+
+        div.NoBreak {
+            page-break-inside: avoid;
+        }
+        div.footDiv {
+            text-align:left;
+            font-size: 6px;
+            font-family: 'Arial Unicode MS';
+            float:left;
+        }
+        div.headDiv {
+            border: 0px;
+            float: left;
+            display: block;
+        }
+        
+        div.headTitle h1 {
+            font-size: 20px;
+            position: absolute;
+            padding: 20px;
+            top: 10px;
+            left: 28%;
+            right: 28%;
+            width: 500px;
+        }
+        
+        div.headTitle h2 {
+            font-size: 18px;
+            font-style: italic;
+            position: absolute;
+            padding: 0px;
+            top: 80px;
+            left: 32%;
+            right: 32%;
+            display:block;
+        }
+        
+        div.headTitle h3 {
+            position: absolute;
+            top: 105px;
+            right: 15px;
+            font-size: 16px;
+        }
+        
+        div.headLeft {
+            min-height: 0px;
+            float: left;
+        }
+        div.headLeft img{
+            width: 100px;
+        }
+        
+        div.headRight {
+            min-height: 0px;
+            float: right;
+            position: absolute;
+            right: 50px;
+            top: 70px;
+        }
+        div.headRight img{
+            width: 120px;
+        }
+        
+        div.contentDiv {
+            width: 100%;
+            min-height: 700px;
+            float: left;
+            padding-top: 25px;
+        }
+        div.contentSection date {
+            position: relative;
+            left: 60%;
+        }
+        .signimg,table.signimg td{border:none;margin: 0 30px 0 0;}
+        .signimg img{height: 50px;border:0px;}
+        .selectedparts {
+                border:  none;
+            font-family: 'Arial Unicode MS';
+            }
+        .selectedparts tbody td{
+                border:  none;
+                padding: 0 8px;
+            font-family: 'Arial Unicode MS';
+            }
+        .selectedparts tbody td label{
+                border:  none;
+                color: green;
+                font-family: 'Arial Unicode MS';
+            }
+            div.floatleft{
+                float: left;
+            font-family: 'Arial Unicode MS';
+            }
+            div.floatright{
+                float: right;
+            font-family: 'Arial Unicode MS';
+            }
+            .noborder{
+                border:none;
+            font-family: 'Arial Unicode MS';
+            }
+        </style>
+    </head>
+    <!--<body>
+    <div class="page-break">Page A</div>
+    <div class="page-break">Page B</div>
+    <div>Page C</div>
+    </body>-->
+    <apex:form >
+        <apex:pageBlock mode="mainDetail">
+    <div class="headDiv">
+        <div class="headLeft">
+            <apex:image url="{!URLFOR($Resource.ECP_Logo)}" />
+        </div>
+        <div class="headTitle">
+            <h1>
+                企业级计算系统现场服务记录
+            </h1>
+            <h2>
+                On-site Service Report
+            </h2>
+            <h3>
+                紫光华山科技有限公司
+            </h3>
+        </div>
+        <div class="headRight">
+            <apex:image url="{!URLFOR($Resource.H3C_LOGO)}" />
+        </div>
+    </div>
+    <div class="contentDiv">
+        <div class="contentSection">
+            <table class="acrosstable ">
+                <tr>
+                    <th colspan="4">
+                        现场服务开始前请与客户详细沟通以下须知，客户签字确认后方可开始操作
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        序号
+                        <br/>
+                        No.
+                    </th>
+                    <th>
+                        内容
+                        <br/>
+                        Content
+                    </th>
+                    <th>
+                        完成
+                        <br/>
+                        Finished
+                    </th>
+                    <th>
+                        不适用
+                        <br/>
+                        N/A
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        1
+                    </td>
+                    <td>
+                        <font>
+                            客户已充分了解本次服务的内容、影响及风险。并根据需要尽可能安排非高峰时段进行操作。
+                        </font>
+                    </td>
+                    <td>
+                        <apex:outputField value="{!workorder.IsCheckContent1__c}"/>
+                    </td>
+                    <td>
+                        <apex:outputField value="{!workorder.IsCheckContent1_1__c}"/>                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        2
+                    </td>
+                    <td>
+                        <label>
+                            对于需要停机操作的内容，客户已事先申请停机时间。
+                        </label>
+                    </td>
+                    <td>
+                        <apex:outputField value="{!workorder.IsCheckContent2__c}"/>
+                    </td>
+                    <td>
+                        <apex:outputField value="{!workorder.IsCheckContent2_1__c}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        3
+                    </td>
+                    <td>
+                        <label>
+                            对于涉及主机重启或其他操作系统配置变更的服务实施，客户应当事先完成操作系统备份。
+最近一次备份时间：<apex:outputtext value="{0,date,yyyy-MM-dd} ">
+                            <apex:param value="{!workorder.Content1__c}"></apex:param>
+                        </apex:outputtext> 
+                        </label>
+                    </td>
+                    <td>
+                        <apex:outputField value="{!workorder.IsCheckContent3__c}"/>
+                    </td>
+                    <td>
+                        <apex:outputField value="{!workorder.IsCheckContent3_1__c}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        4
+                    </td>
+                    <td>
+                        <label>
+                            为确保数据安全，强烈建议客户在服务开始前完成业务相关数据备份，验证备份可以恢复，并填写以下信息：
+备份方法/介质: <apex:outputtext value="{!workorder.Content2__c} "/>  最近一次备份时间:  <apex:outputtext value="{0,date,yyyy-MM-dd} ">
+                            <apex:param value="{!workorder.Content3__c}"></apex:param>
+                        </apex:outputtext>   之前是否作过备份恢复测试
+                        
+                        <apex:image value="/img/checkbox_unchecked.gif" rendered="{! !workorder.IsBackUpTest__c}"/>
+                        <apex:image value="/img/checkbox_checked.gif" rendered="{! workorder.IsBackUpTest__c}"/>
+                        </label>
+                    </td>
+                    <td>
+                        <apex:outputField value="{!workorder.IsCheckContent4__c}"/>
+                    </td>
+                    <td>
+                        <apex:outputField value="{!workorder.IsCheckContent4_1__c}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        5
+                    </td>
+                    <td>
+                        <label>
+                            服务开始前，客户应当保留原有配置技术信息和文档以用于可能必要的恢复。
+                        </label>
+                    </td>
+                    <td>
+                        <font><apex:outputField value="{!workorder.IsCheckContent5__c}"/></font>
+                    </td>
+                    <td>
+                        <apex:outputField value="{!workorder.IsCheckContent5_1__c}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                            <strong>
+                                我已充分了解上述须知及维修声明，并已做好相应准备，同意工程师开始服务实施。
+                            </strong><br/><br/>
+                        <div class="floatleft">客户签字：</div>
+                        <div class="floatleft"><apex:repeat value="{!attachList}" var="att" rows="1">
+                            <apex:panelgrid columns="1" styleclass="signimg">
+                                <apex:image url="{!URLFOR($Action.Attachment.Download, att.id)}"/>
+                            </apex:panelgrid>
+                </apex:repeat></div>
+                <div class="floatright"><apex:outputtext value="{0,date,yyyy-MM-dd} ">
+                            <apex:param value="{!Now()}"></apex:param>
+                        </apex:outputtext>        </div>
+                        <div class="floatright">
+                            日期：
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="contentSection">
+            <table  class="acrosstable">
+                <tr>
+                    <td>
+                        客户名称
+                        <br/>
+                        Customer
+                    </td>
+                    <td colspan="4">
+                        <apex:outputField value="{!workorder.Case.Account.name}"/>
+                    </td>
+                    <td>
+                        客户地址
+                        <br/>
+                        Address
+                    </td>
+                    <td colspan="4">
+                        <apex:outputField value="{!workorder.Case.Billing_State_Province__c}"/>&nbsp;<apex:outputField value="{!workorder.Case.Billing_City__c}"/>&nbsp;<apex:outputField value="{!workorder.Case.Billing_Street__c}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        联系人
+                        <br/>
+                        Contact
+                    </td>
+                    <td>
+                        <apex:outputField value="{!workorder.Case.Contact.Name}"/>
+                    </td>
+                    <td>
+                        联系电话
+                        <br/>
+                        Phone
+                    </td>
+                    <td colspan="3">
+                        <apex:outputField value="{!workorder.Case.CSC_Report_Contact_Phone__c}"/>
+                    </td>
+                    <td>
+                        电子邮件
+                        <br/>
+                        E-Mail
+                    </td>
+                    <td>
+                        <apex:outputLabel value="{!workorder.Case.CSC_Report_Contact_Email__c}"></apex:outputLabel>
+                    </td>
+                    <td>
+                        邮编
+                        <br/>
+                        Postcode
+                    </td>
+                    <td>
+                        <apex:outputField value="{!workorder.Case.Billing_Zip_Postal_Code__c} "/>&nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        维修单号 
+                        <br/>
+                        Subcase ID
+                    </td>
+                    <td colspan="4">
+                        <apex:outputField value="{!workorder.Work_Order_Name__c} "/>
+                    </td>
+                    <td>
+                        服务类型
+                        <br/>
+                        Service Type
+                    </td>
+                    <td colspan="4">
+                    <div style="border:none;">
+                        <apex:repeat value="{!serviceType}" var="s">
+                        <apex:image value="/img/checkbox_unchecked.gif" rendered="{!serviceTypeString <> s.stValue}"/>
+                        <apex:image value="/img/checkbox_checked.gif" rendered="{!serviceTypeString == s.stValue}"/>
+                        <font>{!s.stDescriptioin}</font>
+                        </apex:repeat>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        产品型号
+                        <br/>
+Product Model
+                    </td>
+                    <td colspan="4">
+                        <apex:outputField value="{!workorder.CASE.CSC_PN__c } "/>
+                    </td>
+                    <td>
+                        序列号
+                        <br/>
+Serial No.
+                    </td>
+                    <td colspan="4">
+                        <apex:outputField value="{!workorder.CASE.CSC_SN__c  } "/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        约定时间
+                        <br/>
+                        Scheduled D/T
+                    </td>
+                    <td colspan="3">
+                        <apex:outputField value="{!workorder.Requested_Date__c} "/>
+                    </td>
+                    <td>
+                        到达时间
+                        <br/>
+                        Arrival D/T
+                    </td>
+                    <td colspan="2">
+                        <apex:outputField value="{!workorder.Subcase_Onsite_Start_Date__c} "/>
+                    </td>
+                    <td>
+                        离开时间
+                        <br/>
+                        Departure D/T
+                    </td>
+                    <td colspan="2">
+                        <apex:outputField value="{!workorder.Subcase_Onsite_Stop_Date__c} "/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        工作小时
+                        <br/>
+                        Office Hours
+                    </td>
+                    <td colspan="3">
+                        <apex:outputtext value="{0,number,0.0} ">
+                            <apex:param value="{!workorder.CSC_Report_Subcase_DAH__c}"></apex:param>
+                        </apex:outputtext>        
+                    </td>
+                    <td>
+                        加班小时
+                        <br/>
+                        OT Hours
+                    </td>
+                    <td colspan="2">
+                        
+                    </td>
+                    <td>
+                        差旅小时
+                        <br/>
+                        Travel Hours
+                    </td>
+                    <td colspan="2">
+                        <apex:outputtext value="{0,number,0.0} ">
+                            <apex:param value="{!workorder.Subcase_Travel_Time__c}"></apex:param>
+                        </apex:outputtext>        
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="10">
+                        故障现象 / Problem Description:    <date> <apex:outputField value="{!workorder.IsCeProblemDescription__c} "/> CISCO 产品整机交换 / CISCO Unit Exchange</date>
+                        <br/>
+                        <apex:outputField value="{!workorder.ProblemDescription__c } "/>
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="10">
+                        处理过程 / Summary of Work:
+                        <br/>
+                        <apex:outputField value="{!workorder.Summary_of_Work__c} "/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="10">
+                        <table class="parts">
+                            <tr>
+                                <td rowspan="{!orderNumber}">
+                                    备件使用情况
+                                </td>
+                                <td>
+                                    备件号<br/>Parts No.
+                                </td>
+                                <td>
+                                    备件使用情况<br/>Parts Usage
+                                </td>
+                                <td>
+                                    新件序列号<br/>New Serial No.
+                                </td>
+                                <td>
+                                    旧件序列号<br/>Old Serial No.
+                                </td>
+                                <td>
+                                    旧件备件号<br/>Return Part No.
+                                </td>
+                                <td>
+                                    备件出处<br/>Warehouse
+                                </td>
+                            </tr>
+                            <apex:repeat value="{!PartsOrderList }" var="part" id="order">
+                                <tr>
+                                    <td>
+                                        <apex:outputField value="{!part.Request_Parts__c} "/>
+                                    </td>
+                                    <td>
+                                        <apex:repeat value="{!partsUsage}" var="p">
+                                            
+                                            <apex:image value="/img/checkbox_unchecked.gif" rendered="{!part.Parts_Usage__c <> p.stValue}"/>
+                                            <apex:image value="/img/checkbox_checked.gif" rendered="{!part.Parts_Usage__c == p.stValue}"/>
+                        
+                                            <font>{!p.stDescriptioin}</font>
+                                        </apex:repeat>
+                                    </td>
+                                    <td>
+                                        <apex:outputField value="{!part.Parts_Serial_Number__c} "/>
+                                    </td>
+                                    <td>
+                                        <apex:outputField value="{!part.Removed_Parts_Serial_Number__c } "/>
+                                    </td>
+                                    <td>
+                                        <apex:outputField value="{!part.Removed_Parts__c  } "/>
+                                    </td>
+                                    <td>
+                                        <apex:outputField value="{!part.Offered_S_Plant__c } "/>
+                                    </td>
+                                </tr>
+                            </apex:repeat>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="10">
+                        功能测试/备注: 
+                        <apex:outputField value="{!workorder.IsVerificationRemarks1__c} "/> 测试新更换部件(CPU,内存,硬盘,IO板卡)的功能 
+                        <apex:outputField value="{!workorder.IsVerificationRemarks2__c} "/> 检查系统时钟及各项软硬件设置
+                        <br/>
+                        Verification/Remarks: <apex:outputField value="{!workorder.IsVerificationRemarks3__c} "/> 检查系统日志, 在备注栏注明结果
+                        <br/>
+                        <apex:outputField value="{!workorder.VerificationRemarks__c} "/>
+                        <br/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <div class="floatleft">
+                            客户签名
+                            <br/>
+                            Customer Sign
+                        </div>
+                        <div class="floatright">
+                            <apex:repeat value="{!attachClosedList}" var="att" id="image" rows="1" >
+                                <apex:panelgrid columns="1" styleclass="signimg">
+                                    <apex:image url="{!URLFOR($Action.Attachment.Download, att.id)}"/>
+                                </apex:panelgrid>
+                            </apex:repeat>
+                        </div>
+                    </td>
+                    <td colspan="3">
+                        <div class="floatleft">工程师签名
+                        <br/>
+                        Engineer Sign</div>
+                        <div class="floatright">{! $User.LastName} &nbsp;{! $User.FirstName}</div>
+                    </td>
+                    <td colspan="3">
+                        <div class="floatleft">日期
+                        <br/>
+                        Date</div>
+                        <div class="floatright"><apex:outputtext value="{0} ">
+                            <apex:param value="{!Now()}"></apex:param>
+                        </apex:outputtext> </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    
+            <div class="footDiv">
+        维修声明：
+        <br/>
+        1. 新华三集团紫光华山科技有限公司不承担数据，程序或可移动存储机制的损坏或丢失的责任，用户对数据的安全性自行负责；
+        <br/>
+        2. 产品中非紫光华山认可的产品不能享受保修服务；
+        <br/>
+        3. 维修更换硬盘时，客户需要向紫光华山返还完整旧硬盘；如果不返还，需承担备件买断费用。
+        <br/>
+        如果您对服务有任何的意见或建议，请拨打“企业级产品服务投诉热线”：800-820-6039 或400-820-6039
+        <br/>
+        Any comment    &#38; suggestion, please dial “Enterprise product compliant hotline”: 800-820-6039 / 400-820-6039
+    </div>
+        </apex:pageBlock>
+    </apex:form>
+   <!--</html>-->
+</apex:page>

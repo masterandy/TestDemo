@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Role xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseAccessLevel>None</caseAccessLevel>
+    <contactAccessLevel>None</contactAccessLevel>
+    <description>UNIS GPCOMM MANAGER</description>
+    <mayForecastManagerShare>false</mayForecastManagerShare>
+    <name>UNIS GPCOMM MANAGER</name>
+    <opportunityAccessLevel>Edit</opportunityAccessLevel>
+    <parentRole>UNIS_CME_MDI_GPCOMM_MANAGER</parentRole>
+</Role>

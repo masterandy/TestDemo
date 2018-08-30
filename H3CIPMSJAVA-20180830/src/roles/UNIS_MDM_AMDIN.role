@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Role xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseAccessLevel>None</caseAccessLevel>
+    <contactAccessLevel>None</contactAccessLevel>
+    <description>UNIS MDM AMDIN</description>
+    <mayForecastManagerShare>false</mayForecastManagerShare>
+    <name>UNIS MDM AMDIN</name>
+    <opportunityAccessLevel>Edit</opportunityAccessLevel>
+    <parentRole>UNIS_MDM_AMDIN_LEADER</parentRole>
+</Role>
