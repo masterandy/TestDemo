@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>400,SOHO,办事处,大客户</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>engineer__c</fullName>
+        <description>工程师电话</description>
+        <externalId>false</externalId>
+        <label>Engineer Tel</label>
+        <length>100</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>h3c__c</fullName>
+        <description>H3C 400</description>
+        <externalId>false</externalId>
+        <label>H3C 400</label>
+        <length>254</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>soho__c</fullName>
+        <description>SOHO</description>
+        <externalId>false</externalId>
+        <label>SOHO</label>
+        <length>100</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>vip__c</fullName>
+        <description>大客户电话</description>
+        <externalId>false</externalId>
+        <label>VIP Customer</label>
+        <length>100</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Cti Tel</label>
+    <visibility>Public</visibility>
+</CustomObject>
