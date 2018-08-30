@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>All_Lead_share_to_marketing</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>All Lead share to marketing</label>
+        <sharedTo>
+            <roleAndSubordinates>UNIS_Marketing_Ops</roleAndSubordinates>
+        </sharedTo>
+        <criteriaItems>
+            <field>Status</field>
+            <operation>equals</operation>
+            <value>Open,Qualified,Contacted,Unqualified</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingOwnerRules>
+        <fullName>Marketing_ops_sharing</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Marketing ops sharing</label>
+        <sharedTo>
+            <role>UNIS_Marketing_Ops</role>
+        </sharedTo>
+        <sharedFrom>
+            <role>UNIS_Marketing_Ops</role>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Sales_Leads_sharing_to_Maketing</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Sales Leads sharing to Maketing</label>
+        <sharedTo>
+            <roleAndSubordinates>UNIS_Marketing_Ops</roleAndSubordinates>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinates>UNIS_MANAGER</roleAndSubordinates>
+        </sharedFrom>
+    </sharingOwnerRules>
+</SharingRules>

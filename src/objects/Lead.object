@@ -1,0 +1,1998 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>AddToCampaign</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CallHighlightAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ChangeStatus</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Convert</actionName>
+        <content>UpdateLeadInWorkFlow</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>EmailHighlightAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>FindDup</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ListClean</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SmsHighlightAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <businessProcesses>
+        <fullName>Lead Process-H3C</fullName>
+        <isActive>true</isActive>
+        <values>
+            <fullName>Qualified</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Unqualified</fullName>
+            <default>true</default>
+        </values>
+    </businessProcesses>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <fields>
+        <fullName>Account_AMID2_ID__c</fullName>
+        <description>Create this field to show AMID2 on report &apos;Leads with converted information&apos;</description>
+        <externalId>false</externalId>
+        <formula>Account__r.AMID__c</formula>
+        <inlineHelpText>Create this field to show AMID2 on report &apos;Leads with converted information&apos;</inlineHelpText>
+        <label>Account_AMID2</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Account_Account_18_ID__c</fullName>
+        <description>Create this field to add &apos;Account 18 ID&apos; on report &apos;Leads with converted information&apos;</description>
+        <externalId>false</externalId>
+        <formula>Account__r.Account_18_ID__c</formula>
+        <inlineHelpText>Create this field to add &apos;Account 18 ID&apos; on report &apos;Leads with converted information&apos;</inlineHelpText>
+        <label>Account_Account 18 ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Account_MDM_ID__c</fullName>
+        <description>Create this field to add &apos;MDM ID&apos; on report &apos;Leads with converted information&apos;</description>
+        <externalId>false</externalId>
+        <formula>Account__r.MDM_ID__c</formula>
+        <inlineHelpText>Create this field to add &apos;MDM ID&apos; on report &apos;Leads with converted information&apos;</inlineHelpText>
+        <label>Account_MDM ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>UL @ibreakingpoint 20151027</description>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Account.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Customer</value>
+            </filterItems>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Leads</relationshipLabel>
+        <relationshipName>Leads</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Address</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>AnnualRevenue</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Authorized_Buyer__c</fullName>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Authorized Buyer</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Yes</fullName>
+                    <default>false</default>
+                    <label>Yes</label>
+                </value>
+                <value>
+                    <fullName>No</fullName>
+                    <default>false</default>
+                    <label>No</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Budget__c</fullName>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Budget</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Yes</fullName>
+                    <default>false</default>
+                    <label>Yes</label>
+                </value>
+                <value>
+                    <fullName>No</fullName>
+                    <default>false</default>
+                    <label>No</label>
+                </value>
+                <value>
+                    <fullName>Unknown</fullName>
+                    <default>false</default>
+                    <label>Unknown</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>CampaignId</fullName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Cancel_Workflow__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>*Cancel Workflow</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Closed_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Closed Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Closed_Reason__c</fullName>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Closed Reason</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>No Defined Need or Project</fullName>
+                    <default>false</default>
+                    <label>No Defined Need or Project</label>
+                </value>
+                <value>
+                    <fullName>Insufficient Budget</fullName>
+                    <default>false</default>
+                    <label>Insufficient Budget</label>
+                </value>
+                <value>
+                    <fullName>Missing/Incorrect info</fullName>
+                    <default>false</default>
+                    <label>Missing/Incorrect info</label>
+                </value>
+                <value>
+                    <fullName>Contact is not a decision maker</fullName>
+                    <default>false</default>
+                    <label>Contact is not a decision maker</label>
+                </value>
+                <value>
+                    <fullName>Inadequate Timeframe</fullName>
+                    <default>false</default>
+                    <label>Inadequate Timeframe</label>
+                </value>
+                <value>
+                    <fullName>Duplicate Lead/Oppty</fullName>
+                    <default>false</default>
+                    <label>Duplicate Lead/Oppty</label>
+                </value>
+                <value>
+                    <fullName>Unable to Contact</fullName>
+                    <default>false</default>
+                    <label>Unable to Contact</label>
+                </value>
+                <value>
+                    <fullName>Created Contact</fullName>
+                    <default>false</default>
+                    <label>Created Contact</label>
+                </value>
+                <value>
+                    <fullName>Admin Use Only : Lead Expired</fullName>
+                    <default>false</default>
+                    <label>Admin Use Only : Lead Expired</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Company</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Conv_Lead_Owner__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>User lookup, used in code &amp; should not be added to page layout.</description>
+        <externalId>false</externalId>
+        <label>Conv Lead Owner</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Leads</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>CurrencyIsoCode</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Deal_Source__c</fullName>
+        <defaultValue>&apos;Lead&apos;</defaultValue>
+        <description>UL @ibreakingpoint 20151116 for mapping to opportunity</description>
+        <externalId>false</externalId>
+        <label>*Deal Source</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Department__c</fullName>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Department</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Description</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>DoNotCall</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Email</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Email2__c</fullName>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Email2</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Email_Effective_Date__c</fullName>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Email Effective Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Email_Opt_In__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Email Opt In</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Estimated_Budget__c</fullName>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Estimated Budget</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>Externally_Qualified__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Externally Qualified</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Fax</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>First_Assignment_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>First Assignment Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>First_No_Action_Date__c</fullName>
+        <description>UL @ibreakingpoint 20151104</description>
+        <externalId>false</externalId>
+        <label>*First No Action Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>HPE_SFDC_ID__c</fullName>
+        <description>UL @ibreakingpoint 20151117</description>
+        <externalId>true</externalId>
+        <label>HPE SFDC ID</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>HasOptedOutOfEmail</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>HasOptedOutOfFax</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Industry</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Isolation_Status_Date__c</fullName>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Isolation Status Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Isolation_Status__c</fullName>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Isolation Status</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Jigsaw</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Job_Class__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(AND( ISPICKVAL( Job_Function__c ,  &apos;Decision Office&apos; ) , ISPICKVAL( Job_Level__c , &apos;C Level&apos; ) ) , &apos;CEO&apos;, 
+IF(AND( ISPICKVAL(Job_Function__c, &apos;IT department&apos;) ,ISPICKVAL( Job_Level__c , &apos;C Level&apos; )) , &apos;CIO&apos;, 
+IF( AND( ISPICKVAL(Job_Function__c, &apos;Finance &amp; Procurement&apos;) ,ISPICKVAL( Job_Level__c , &apos;C Level&apos; )) , &apos;CFO&apos; ,
+IF( AND( ISPICKVAL(Job_Function__c, &apos;Line of Business&apos;) ,ISPICKVAL( Job_Level__c , &apos;C Level&apos; )) , &apos;CXO&apos;,
+IF( AND( ISPICKVAL(Job_Function__c, &apos;Unknown&apos;) ,ISPICKVAL( Job_Level__c , &apos;C Level&apos; )) , &apos;CXO&apos; ,
+IF(AND( ISPICKVAL( Job_Function__c ,  &apos;Decision Office&apos; ) , ISPICKVAL( Job_Level__c , &apos;Executive&apos; ) ) , &apos;CXO&apos;, 
+IF( AND( ISPICKVAL(Job_Function__c, &apos;IT department&apos;) ,ISPICKVAL( Job_Level__c , &apos;Executive&apos;) ) , &apos;CIO&apos;, 
+IF( AND( ISPICKVAL(Job_Function__c, &apos;Finance &amp; Procurement&apos;) ,ISPICKVAL( Job_Level__c , &apos;Executive&apos;) ) , &apos;CFO&apos;,
+IF( AND( ISPICKVAL(Job_Function__c, &apos;Line of Business&apos;) ,ISPICKVAL( Job_Level__c , &apos;Executive&apos; )) , &apos;CXO&apos;,
+IF( AND( ISPICKVAL(Job_Function__c, &apos;Unknown&apos;) ,ISPICKVAL( Job_Level__c , &apos;Executive&apos;) ) , &apos;CXO&apos; ,
+IF(AND( ISPICKVAL( Job_Function__c ,  &apos;Decision Office&apos; ) , ISPICKVAL( Job_Level__c , &apos;Manager&apos; ) ) , &apos;LOB manager&apos;, 
+IF( AND( ISPICKVAL(Job_Function__c, &apos;IT department&apos;) ,ISPICKVAL( Job_Level__c , &apos;Manager&apos; )) , &apos;IT Manager&apos;, 
+IF( AND( ISPICKVAL(Job_Function__c, &apos;Finance &amp; Procurement&apos;) ,ISPICKVAL( Job_Level__c , &apos;Manager&apos; )) , &apos;Procurement Manager&apos; ,
+IF( AND( ISPICKVAL(Job_Function__c, &apos;Line of Business&apos;) ,ISPICKVAL( Job_Level__c , &apos;Manager&apos; )) , &apos;LOB manager&apos; ,
+IF( AND( ISPICKVAL(Job_Function__c, &apos;Unknown&apos;) ,ISPICKVAL( Job_Level__c , &apos;Manager&apos; )) , &apos;Unknown&apos; ,
+IF(AND( ISPICKVAL( Job_Function__c ,  &apos;Decision Office&apos; ) , ISPICKVAL( Job_Level__c , &apos;Professional&apos; ) ) , &apos;LOB professional&apos;, 
+IF( AND( ISPICKVAL(Job_Function__c, &apos;IT department&apos;) ,ISPICKVAL( Job_Level__c , &apos;Professional&apos;) ) , &apos;IT Professional&apos;, 
+IF( AND( ISPICKVAL(Job_Function__c, &apos;Finance &amp; Procurement&apos;) ,ISPICKVAL( Job_Level__c , &apos;Professional&apos; ) ), &apos;Procurement Professional&apos; ,
+IF( AND( ISPICKVAL(Job_Function__c, &apos;Line of Business&apos;) ,ISPICKVAL( Job_Level__c , &apos;Professional&apos; )) , &apos;LOB professional&apos; ,
+IF( AND( ISPICKVAL(Job_Function__c, &apos;Unknown&apos;) ,ISPICKVAL( Job_Level__c , &apos;Professional&apos;)), &apos;Unknown&apos;,&apos;Unknown&apos;))))))))))))))))))))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Job Class</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Job_Function__c</fullName>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Job Function</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Decision Office</fullName>
+                    <default>false</default>
+                    <label>Decision Office</label>
+                </value>
+                <value>
+                    <fullName>Finance &amp; Procurement</fullName>
+                    <default>false</default>
+                    <label>Finance &amp; Procurement</label>
+                </value>
+                <value>
+                    <fullName>IT department</fullName>
+                    <default>false</default>
+                    <label>IT department</label>
+                </value>
+                <value>
+                    <fullName>Line of Business</fullName>
+                    <default>false</default>
+                    <label>Line of Business</label>
+                </value>
+                <value>
+                    <fullName>Unknown</fullName>
+                    <default>false</default>
+                    <label>Unknown</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Job_Level__c</fullName>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Job Level</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>C Level</fullName>
+                    <default>false</default>
+                    <label>C Level</label>
+                </value>
+                <value>
+                    <fullName>Executive</fullName>
+                    <default>false</default>
+                    <label>Executive</label>
+                </value>
+                <value>
+                    <fullName>Manager</fullName>
+                    <default>false</default>
+                    <label>Manager</label>
+                </value>
+                <value>
+                    <fullName>Professional</fullName>
+                    <default>false</default>
+                    <label>Professional</label>
+                </value>
+                <value>
+                    <fullName>Unknown</fullName>
+                    <default>false</default>
+                    <label>Unknown</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>LastTransferDate</fullName>
+    </fields>
+    <fields>
+        <fullName>Last_Assignment_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Last Assignment Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>LeadSource</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Lead_18_ID__c</fullName>
+        <externalId>false</externalId>
+        <formula>CASESAFEID(Id)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Lead 18 ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Lead_ID1__c</fullName>
+        <externalId>false</externalId>
+        <formula>Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>**Lead ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Lead_ID_MS__c</fullName>
+        <description>UL @ibreakingpoint 20151110</description>
+        <externalId>false</externalId>
+        <label>Lead ID MS</label>
+        <length>80</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Lead_Owner_Email__c</fullName>
+        <externalId>false</externalId>
+        <formula>Owner:User.Email</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Lead Owner Email</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Lead_Qualifier__c</fullName>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Lead Qualifier</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Lead_Source_Most_Recent__c</fullName>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Lead Source-Most Recent</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Telemarketing-inbound</fullName>
+                    <default>false</default>
+                    <label>Telemarketing-inbound</label>
+                </value>
+                <value>
+                    <fullName>Sales</fullName>
+                    <default>false</default>
+                    <label>Sales</label>
+                </value>
+                <value>
+                    <fullName>3rd party pay by leads (Telemarketing-outbound)</fullName>
+                    <default>false</default>
+                    <label>3rd party pay by leads (Telemarketing-outbound)</label>
+                </value>
+                <value>
+                    <fullName>Event registration</fullName>
+                    <default>false</default>
+                    <label>Event registration</label>
+                </value>
+                <value>
+                    <fullName>Virtual event</fullName>
+                    <default>false</default>
+                    <label>Virtual event</label>
+                </value>
+                <value>
+                    <fullName>SEM-paid search</fullName>
+                    <default>false</default>
+                    <label>SEM-paid search</label>
+                </value>
+                <value>
+                    <fullName>WeChat/QQ/Weibo</fullName>
+                    <default>false</default>
+                    <label>WeChat/QQ/Weibo</label>
+                </value>
+                <value>
+                    <fullName>Web site (organic, SEO)</fullName>
+                    <default>false</default>
+                    <label>Web site (organic, SEO)</label>
+                </value>
+                <value>
+                    <fullName>Digital media coop</fullName>
+                    <default>false</default>
+                    <label>Digital media coop</label>
+                </value>
+                <value>
+                    <fullName>Vendor-MI/Survey</fullName>
+                    <default>false</default>
+                    <label>Vendor-MI/Survey</label>
+                </value>
+                <value>
+                    <fullName>Vendor-Data purchase</fullName>
+                    <default>false</default>
+                    <label>Vendor-Data purchase</label>
+                </value>
+                <value>
+                    <fullName>Sms</fullName>
+                    <default>false</default>
+                    <label>Sms</label>
+                </value>
+                <value>
+                    <fullName>Edm registration</fullName>
+                    <default>false</default>
+                    <label>Edm registration</label>
+                </value>
+                <value>
+                    <fullName>DM registration</fullName>
+                    <default>false</default>
+                    <label>DM registration</label>
+                </value>
+                <value>
+                    <fullName>Sponsorship</fullName>
+                    <default>false</default>
+                    <label>Sponsorship</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Lead_Status__c</fullName>
+        <description>UL @ibreakingpoint 20151112 for Report, 18 changed</description>
+        <externalId>false</externalId>
+        <label>Lead Status</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Open</fullName>
+                    <default>true</default>
+                    <label>Open</label>
+                </value>
+                <value>
+                    <fullName>Closed</fullName>
+                    <default>false</default>
+                    <label>Closed</label>
+                </value>
+                <value>
+                    <fullName>Reject</fullName>
+                    <default>false</default>
+                    <label>Reject</label>
+                </value>
+                <value>
+                    <fullName>Reassign</fullName>
+                    <default>false</default>
+                    <label>Reassign</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Manager_Email__c</fullName>
+        <description>UL @ibreakingpoint 20151103</description>
+        <externalId>false</externalId>
+        <label>*Manager Email</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Marketing_Notes__c</fullName>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Marketing Notes</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>LongTextArea</type>
+        <visibleLines>2</visibleLines>
+    </fields>
+    <fields>
+        <fullName>MobilePhone</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Mobile_Effective_Date__c</fullName>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Mobile Effective Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Mobile_Opt_In__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Mobile Opt In</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Name</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>New_Customer__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>New Customer</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>NumberOfEmployees</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>OwnerId</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PartnerAccountId</fullName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Phone</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Phone_Effective_Date__c</fullName>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Phone Effective Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Phone_Extension__c</fullName>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Phone Extension</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Phone_Opt_In__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Phone Opt In</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Preferred_Method_of_Contact__c</fullName>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Preferred Method of Contact</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Email</fullName>
+                    <default>false</default>
+                    <label>Email</label>
+                </value>
+                <value>
+                    <fullName>Mobile</fullName>
+                    <default>false</default>
+                    <label>Mobile</label>
+                </value>
+                <value>
+                    <fullName>Office Phone</fullName>
+                    <default>false</default>
+                    <label>Office Phone</label>
+                </value>
+                <value>
+                    <fullName>SMS</fullName>
+                    <default>false</default>
+                    <label>SMS</label>
+                </value>
+                <value>
+                    <fullName>Wechat</fullName>
+                    <default>false</default>
+                    <label>Wechat</label>
+                </value>
+                <value>
+                    <fullName>Fax</fullName>
+                    <default>false</default>
+                    <label>Fax</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Prointerest_Quntity__c</fullName>
+        <externalId>false</externalId>
+        <label>Prointerest_Quntity</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Purchaser_Role__c</fullName>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Purchaser Role</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Business Sponsor</fullName>
+                    <default>false</default>
+                    <label>Business Sponsor</label>
+                </value>
+                <value>
+                    <fullName>Buyer</fullName>
+                    <default>false</default>
+                    <label>Buyer</label>
+                </value>
+                <value>
+                    <fullName>Decision Maker</fullName>
+                    <default>false</default>
+                    <label>Decision Maker</label>
+                </value>
+                <value>
+                    <fullName>Evaluator/Recommender</fullName>
+                    <default>false</default>
+                    <label>Evaluator/Recommender</label>
+                </value>
+                <value>
+                    <fullName>Influencer</fullName>
+                    <default>false</default>
+                    <label>Influencer</label>
+                </value>
+                <value>
+                    <fullName>Key Contact</fullName>
+                    <default>false</default>
+                    <label>Key Contact</label>
+                </value>
+                <value>
+                    <fullName>No Role</fullName>
+                    <default>false</default>
+                    <label>No Role</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Rating</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Reassign_Date__c</fullName>
+        <description>UL @ibreakingpoint 20151104</description>
+        <externalId>false</externalId>
+        <label>*Reassign Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Region__c</fullName>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Region</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>East</fullName>
+                    <default>false</default>
+                    <label>East</label>
+                </value>
+                <value>
+                    <fullName>West</fullName>
+                    <default>false</default>
+                    <label>West</label>
+                </value>
+                <value>
+                    <fullName>South</fullName>
+                    <default>false</default>
+                    <label>South</label>
+                </value>
+                <value>
+                    <fullName>North</fullName>
+                    <default>false</default>
+                    <label>North</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Second_Line_Manager__c</fullName>
+        <description>For 8D email notification. 
+UL @ibreakingpoint 20151103</description>
+        <externalId>false</externalId>
+        <label>*Second Line Manager</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Status</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Timeframe_to_Buy__c</fullName>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Timeframe to Buy</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>&lt;1 week</fullName>
+                    <default>false</default>
+                    <label>&lt;1 week</label>
+                </value>
+                <value>
+                    <fullName>&lt;1 month</fullName>
+                    <default>false</default>
+                    <label>&lt;1 month</label>
+                </value>
+                <value>
+                    <fullName>1-3 month</fullName>
+                    <default>false</default>
+                    <label>1-3 month</label>
+                </value>
+                <value>
+                    <fullName>4-6 month</fullName>
+                    <default>false</default>
+                    <label>4-6 month</label>
+                </value>
+                <value>
+                    <fullName>7-9month</fullName>
+                    <default>false</default>
+                    <label>7-9month</label>
+                </value>
+                <value>
+                    <fullName>10-12month</fullName>
+                    <default>false</default>
+                    <label>10-12month</label>
+                </value>
+                <value>
+                    <fullName>&gt;12month</fullName>
+                    <default>false</default>
+                    <label>&gt;12month</label>
+                </value>
+                <value>
+                    <fullName>Unclear</fullName>
+                    <default>false</default>
+                    <label>Unclear</label>
+                </value>
+                <value>
+                    <fullName>No Plan</fullName>
+                    <default>false</default>
+                    <label>No Plan</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Title</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Website</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Wechat__c</fullName>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>Wechat</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>WeiBo__c</fullName>
+        <description>UL @ibreakingpoint 20151028</description>
+        <externalId>false</externalId>
+        <label>WeiBo</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <listViews>
+        <fullName>AllOpenLeads</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>LEAD.COMPANY</columns>
+        <columns>LEAD.STATE</columns>
+        <columns>LEAD.PHONE</columns>
+        <columns>LEAD.EMAIL</columns>
+        <columns>LEAD.STATUS</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>LEAD.CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>LEAD.STATUS</field>
+            <operation>notEqual</operation>
+            <value>Qualified</value>
+        </filters>
+        <label>All Open Leads</label>
+    </listViews>
+    <listViews>
+        <fullName>Call_Center_Queue_Lead</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>LEAD.SALUTATION</columns>
+        <columns>Account__c</columns>
+        <columns>LEAD.STATUS</columns>
+        <columns>Lead_Status__c</columns>
+        <columns>Budget__c</columns>
+        <columns>LEAD.EMAIL</columns>
+        <columns>LEAD.PHONE</columns>
+        <filterScope>Queue</filterScope>
+        <label>Call Center Queue</label>
+        <language>en_US</language>
+        <queue>Call_Center_Queue</queue>
+    </listViews>
+    <listViews>
+        <fullName>MyUnreadLeads</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>LEAD.COMPANY</columns>
+        <columns>LEAD.STATE</columns>
+        <columns>LEAD.PHONE</columns>
+        <columns>LEAD.EMAIL</columns>
+        <columns>LEAD.UNREAD</columns>
+        <columns>LEAD.STATUS</columns>
+        <filterScope>Mine</filterScope>
+        <filters>
+            <field>LEAD.UNREAD</field>
+            <operation>equals</operation>
+            <value>1</value>
+        </filters>
+        <filters>
+            <field>Lead_Status__c</field>
+            <operation>notEqual</operation>
+            <value>Closed</value>
+        </filters>
+        <label>My Unread Leads</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>My_Leads</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>LEAD.COMPANY</columns>
+        <columns>Account__c</columns>
+        <columns>LEAD.STATUS</columns>
+        <columns>Lead_Status__c</columns>
+        <columns>LEAD.EMAIL</columns>
+        <columns>LEAD.CREATED_DATE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>LEAD.UNREAD</columns>
+        <filterScope>Mine</filterScope>
+        <label>My Leads</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Nurture_Queue_Lead</fullName>
+        <filterScope>Queue</filterScope>
+        <label>Nurture Queue</label>
+        <queue>Nurture_Queue</queue>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Operation_Queue_Lead</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>LEAD.COMPANY</columns>
+        <columns>LEAD.STATE</columns>
+        <columns>LEAD.STATUS</columns>
+        <columns>Lead_Qualifier__c</columns>
+        <columns>Lead_Status__c</columns>
+        <columns>LEAD.CREATED_DATE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>LEAD.UNREAD</columns>
+        <filterScope>Queue</filterScope>
+        <label>Operation Queue</label>
+        <language>en_US</language>
+        <queue>Operation_Queue</queue>
+    </listViews>
+    <listViews>
+        <fullName>Reassign_Leads</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>LEAD.COMPANY</columns>
+        <columns>LEAD.STATE</columns>
+        <columns>Lead_Status__c</columns>
+        <columns>LEAD.EMAIL</columns>
+        <columns>LEAD.STATUS</columns>
+        <columns>LEAD.CREATED_DATE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>LEAD.UNREAD</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Lead_Status__c</field>
+            <operation>equals</operation>
+            <value>Reassign</value>
+        </filters>
+        <label>Reassign Leads</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Reject_Leads</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>LEAD.COMPANY</columns>
+        <columns>Lead_Status__c</columns>
+        <columns>LEAD.STATE</columns>
+        <columns>LEAD.EMAIL</columns>
+        <columns>LEAD.STATUS</columns>
+        <columns>LEAD.CREATED_DATE</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <columns>LEAD.UNREAD</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Lead_Status__c</field>
+            <operation>equals</operation>
+            <value>Reject</value>
+        </filters>
+        <label>Reject Leads</label>
+        <language>en_US</language>
+    </listViews>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Lead_H3C</fullName>
+        <active>true</active>
+        <businessProcess>Lead Process-H3C</businessProcess>
+        <description>UL @ibreakingpoint 20151028</description>
+        <label>Lead-H3C</label>
+        <picklistValues>
+            <picklist>Authorized_Buyer__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Budget__c</picklist>
+            <values>
+                <fullName>No</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unknown</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yes</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Closed_Reason__c</picklist>
+            <values>
+                <fullName>Admin Use Only %3A Lead Expired</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Contact is not a decision maker</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Created Contact</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Duplicate Lead%2FOppty</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Inadequate Timeframe</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Insufficient Budget</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Missing%2FIncorrect info</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Defined Need or Project</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unable to Contact</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Industry</picklist>
+            <values>
+                <fullName>交通运输</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>公共事业</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>其他</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>制造</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>医药</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>医院</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>国资委企业</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>媒体</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>政府</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>教育%2F研究</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>流通%2F零售</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>电信</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>石油%2F石化</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>金融服务</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>银行</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Job_Function__c</picklist>
+            <values>
+                <fullName>Decision Office</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Finance %26 Procurement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>IT department</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Line of Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unknown</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Job_Level__c</picklist>
+            <values>
+                <fullName>C Level</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Executive</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Manager</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Professional</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unknown</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>3rd party pay by leads%28Telemarketing-OB%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>DM registration</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Digital media coop</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Edm registration</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Event registration</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Physical Event</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SEM-paid search</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sms</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sponsorship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Telemarketing-inbound</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vendor-Data purchase</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vendor-MI%2FSurvey</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Virtual event</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WeChat%2FQQ%2FWeibo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web site %28organic%2C SEO%29</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Lead_Source_Most_Recent__c</picklist>
+            <values>
+                <fullName>3rd party pay by leads %28Telemarketing-outbound%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>DM registration</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Digital media coop</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Edm registration</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Event registration</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SEM-paid search</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sms</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sponsorship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Telemarketing-inbound</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vendor-Data purchase</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vendor-MI%2FSurvey</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Virtual event</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WeChat%2FQQ%2FWeibo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web site %28organic%2C SEO%29</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Lead_Status__c</picklist>
+            <values>
+                <fullName>Closed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Open</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Preferred_Method_of_Contact__c</picklist>
+            <values>
+                <fullName>Email</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Fax</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mobile</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Office Phone</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SMS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Wechat</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Purchaser_Role__c</picklist>
+            <values>
+                <fullName>Business Sponsor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Buyer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Decision Maker</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Evaluator%2FRecommender</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Influencer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Key Contact</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Role</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Rating</picklist>
+            <values>
+                <fullName>Cold</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hot</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Warm</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Region__c</picklist>
+            <values>
+                <fullName>East</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>North</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>South</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>West</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Timeframe_to_Buy__c</picklist>
+            <values>
+                <fullName>%3C1 month</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%3C1 week</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%3E12month</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>1-3 month</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>10-12month</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>4-6 month</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>7-9month</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Plan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unclear</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <customTabListAdditionalFields>FULL_NAME</customTabListAdditionalFields>
+        <customTabListAdditionalFields>LEAD.COMPANY</customTabListAdditionalFields>
+        <customTabListAdditionalFields>LEAD.PHONE</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>FULL_NAME</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>LEAD.COMPANY</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>FULL_NAME</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>LEAD.COMPANY</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>LEAD.PHONE</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>LEAD.MOBILE_PHONE</lookupPhoneDialogsAdditionalFields>
+        <searchResultsAdditionalFields>FULL_NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>LEAD.TITLE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>LEAD.COMPANY</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>LEAD.PHONE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>LEAD.MOBILE_PHONE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>LEAD.EMAIL</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>LEAD.STATUS</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CORE.USERS.ALIAS</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>Private</sharingModel>
+    <validationRules>
+        <fullName>At_Least_1_phone</fullName>
+        <active>true</active>
+        <description>UL @ibreakingpoint 20151103</description>
+        <errorConditionFormula>AND( 
+OR( 
+ISBLANK(MobilePhone), 
+ISNULL(MobilePhone) 
+), 
+OR( 
+ISBLANK(Phone), 
+ISNULL(Phone) 
+))</errorConditionFormula>
+        <errorMessage>Phone and mobile should provide at least one.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Check_Lead_Owner_ProfileSales</fullName>
+        <active>true</active>
+        <errorConditionFormula>and(!ISNEW(),ischanged(OwnerId ),CONTAINS(Owner:User.Profile.Name , &apos;Sales&apos;),or(ISBLANK(Account__c), ISBLANK( text(Timeframe_to_Buy__c) ), ISBLANK( text(Budget__c )), Prointerest_Quntity__c &lt;= 0  
+)
+)</errorConditionFormula>
+        <errorMessage>If you want to assign lead to sales, Budget, Timeframe to Buy, Account and Product Interest are required.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Closed_Status_Closed_Reason_Required</fullName>
+        <active>true</active>
+        <description>UL @ibreakingpoint 20151103created , 18 changed status API name</description>
+        <errorConditionFormula>AND( 
+ISPICKVAL(  Lead_Status__c  ,&apos;Closed&apos;), 
+ISPICKVAL( Closed_Reason__c , &apos;&apos; 
+))</errorConditionFormula>
+        <errorDisplayField>Closed_Reason__c</errorDisplayField>
+        <errorMessage>Closed Reason should be chosen if Lead Status is Closed.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>Close</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Close</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/25.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/25.0/apex.js&quot;)} 
+var sitePrefix = &apos;{!$Site.Prefix}&apos;==&apos;&apos; || &apos;{!$Site.prefix}&apos; ==null ? &apos;/apex&apos; : &apos;{!$Site.prefix}&apos;;
+if (navigator.appName==&quot;Microsoft Internet Explorer&quot;) { 
+var retval = window.showModalDialog(sitePrefix+&apos;/ReasonForLeadClosureIE?id={!Lead.Id}&apos;, null, 
+
+&apos;dialogHeight:230px;dialogWidth:360px;scroll:no;edge:sunken;status:no;unadorned:no;&apos;); 
+
+if (retval){window.location = retval;} 
+} 
+else { 
+window.open(sitePrefix+&apos;/ReasonForLeadClosure?id={!Lead.Id}&apos;,null, 
+
+&apos;height=240,width=380,left=600,top=100,resizable=yes,scrollbars=yes&apos;); 
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Convert_Lead</fullName>
+        <availability>online</availability>
+        <description>Custom Convert Button</description>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Convert Lead</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/apex.js&quot;)} 
+var lead = new sforce.SObject(&quot;Lead&quot;); 
+lead.Id = &apos;{!Lead.Id}&apos;; 
+var status = &quot;{!Lead.Lead_Status__c}&quot;;
+var accid = &quot;{!Lead.AccountId__c}&quot;;
+
+if(status == &apos;Closed&apos;){ 
+alert(&quot;该潜在客户已经被关闭，您不能进行转换！&quot;); 
+}
+
+else if(accid == &apos;&apos;){ 
+alert(&quot;该潜在客户的客户名为空，您不能进行转换！&quot;); 
+}
+
+else{ 
+window.location.href=&quot;/apex/LeadConvert?retURL=%2F{!Lead.Id}&amp;scontrolCaching=1&amp;id={!Lead.Id}&amp;id={!Lead.Id}&amp;sfdc.override=1&quot;; 
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>GoogleMaps</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Google Maps</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>http://maps.google.com/maps?f=q&amp;hl=en&amp;q={!Lead_Street}+{!Lead_City}+{!Lead_State}&amp;om=1</url>
+    </webLinks>
+    <webLinks>
+        <fullName>GoogleNews</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Google News</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>http://www.google.com/news?&amp;q={!Lead_Company}&amp;btnG=Search+News</url>
+    </webLinks>
+    <webLinks>
+        <fullName>GoogleSearch</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Google Search</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>http://www.google.com/search?q={!Lead_Company}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Manual_Assign</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Manual Assign</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <url>/apex/LeadManualAssignOwner?ldid={!Lead.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Reject</fullName>
+        <availability>online</availability>
+        <description>To Reject the Lead by Changing field value as follows: 
+&quot;Lead_State__c&quot; to &quot;Wrong Assignment&quot;.  
+Button also prevents user from Rejecting a Lead with a Lead Status of &quot;Closed&quot;.</description>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Reject</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/apex.js&quot;)} 
+var lead = new sforce.SObject(&quot;Lead&quot;); 
+lead.Id = &apos;{!Lead.Id}&apos;; 
+var status = &quot;{!Lead.Lead_Status__c}&quot;; 
+var r = confirm(&quot;你认为这条商机不应该由你来跟进吗？&quot;); 
+if(r == true)
+{
+if(status == &apos;Closed&apos;){ 
+
+document.getElementById(&apos;errorDiv_ep&apos;).innerHTML=&quot;Lead is already closed. You cannot reject.&quot;; 
+document.getElementById(&apos;errorDiv_ep&apos;).style.display=&apos;block&apos;; 
+
+} 
+
+else{ 
+lead.Lead_Status__c = &quot;Reject&quot;; 
+sforce.connection.update([lead]); 
+//window.location.reload(); 
+alert(&quot;您的Reject操作已经完成，请点击确认回到Lead页面。&quot;);
+window.location.href=&quot;/00Q/o&quot;; 
+}
+}</url>
+    </webLinks>
+</CustomObject>

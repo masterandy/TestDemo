@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Close</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>DeleteSeries</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>NewTask</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <enableFeeds>true</enableFeeds>
+    <fields>
+        <fullName>ActivityDate</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>CallDisposition</fullName>
+    </fields>
+    <fields>
+        <fullName>CallDurationInSeconds</fullName>
+    </fields>
+    <fields>
+        <fullName>CallObject</fullName>
+    </fields>
+    <fields>
+        <fullName>CallType</fullName>
+    </fields>
+    <fields>
+        <fullName>Description</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>Email</fullName>
+    </fields>
+    <fields>
+        <fullName>IsRecurrence</fullName>
+    </fields>
+    <fields>
+        <fullName>IsReminderSet</fullName>
+    </fields>
+    <fields>
+        <fullName>IsVisibleInSelfService</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>OwnerId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Phone</fullName>
+    </fields>
+    <fields>
+        <fullName>Priority</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>RecurrenceInterval</fullName>
+    </fields>
+    <fields>
+        <fullName>RecurrenceRegeneratedType</fullName>
+    </fields>
+    <fields>
+        <fullName>Status</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Subject</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>TaskSubtype</fullName>
+    </fields>
+    <fields>
+        <fullName>Type</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>WhatId</fullName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>WhoId</fullName>
+        <type>Lookup</type>
+    </fields>
+    <sharingModel>Private</sharingModel>
+    <validationRules>
+        <fullName>Lock_Record</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(Text(Status)==&apos;Completed&apos;, OR( ISCHANGED( Action_Type__c ),ISCHANGED( CSC_Add_Notes_Flag__c ), ISCHANGED( Description ), ISCHANGED( Date_Initiated__c ), ISCHANGED( Duration_Hour__c ), ISCHANGED( Duration_Minute__c ), ISCHANGED( WhoId ) , ISCHANGED( Note_type__c ), ISCHANGED( Presales_Sub_Type__c ), ISCHANGED( Priority ), ISCHANGED( WhatId ), ISCHANGED( Subject ), ISCHANGED( Type ) ) )</errorConditionFormula>
+        <errorMessage>This task is completed.You can&apos;t modify it.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Lock_Record2</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(Text(Status)==&apos;Open&apos;, ISCHANGED( Status ) )</errorConditionFormula>
+        <errorMessage>This task is completed.You can&apos;t modify it.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>View_All_Case</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>View All</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/15.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/15.0/apex.js&quot;)} 
+var id = &apos;{!Case.Id}&apos;; 
+var iHeight = 360; 
+var iWidth = 600; 
+var iTop = (window.screen.availHeight-30-iHeight)/2; 
+var iLeft = (window.screen.availWidth-10-iWidth)/2; 
+var url=&apos;{!$Site.BaseUrl}&apos;;
+window.open (&apos;/apex/CSC_View_all_open_activities_Case?Id=&apos;+id,&apos;newwindow&apos;,&apos;height=&apos;+iHeight +&apos;,width=&apos;+iWidth +&apos;,top=&apos;+iTop+&apos;,left=&apos;+iLeft+&apos;,alwaysRaised=yes,toolbar=no,menubar=no,scrollbars=yes, resizable=no,location=no, status=no&apos;);</url>
+    </webLinks>
+    <webLinks>
+        <fullName>View_All_Workorder</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>View All</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/15.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/15.0/apex.js&quot;)} 
+var id = &apos;{!WorkOrder.Id}&apos;; 
+var iHeight = 360; 
+var iWidth = 600; 
+var iTop = (window.screen.availHeight-30-iHeight)/2; 
+var iLeft = (window.screen.availWidth-10-iWidth)/2; 
+var url=&apos;{!$Site.BaseUrl}&apos;; 
+window.open (&apos;/apex/CSC_ViewAllOpenActivities_WorkOrder?Id=&apos;+id,&apos;newwindow&apos;,&apos;height=&apos;+iHeight +&apos;,width=&apos;+iWidth +&apos;,top=&apos;+iTop+&apos;,left=&apos;+iLeft+&apos;,alwaysRaised=yes,toolbar=no,menubar=no,scrollbars=yes, resizable=yes,location=no, status=no&apos;);</url>
+    </webLinks>
+</CustomObject>

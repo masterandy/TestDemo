@@ -1,0 +1,1984 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>true</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>CSC_CreateDate__c</fullName>
+        <externalId>false</externalId>
+        <label>CSC_CreateDate</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Case_Id__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Case Id</label>
+        <referenceTo>Case</referenceTo>
+        <relationshipLabel>Process QA</relationshipLabel>
+        <relationshipName>Process_QA_Case_ID</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Case__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Case</label>
+        <referenceTo>Case</referenceTo>
+        <relationshipLabel>Process QA (Case)</relationshipLabel>
+        <relationshipName>Process_QA_Case</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Employee__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Employee</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Process_QA</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>QA_Code__c</fullName>
+        <externalId>false</externalId>
+        <label>QA Code</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <controllingField>QA_Type__c</controllingField>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>0A-See comments</fullName>
+                    <default>false</default>
+                    <label>0A-See comments</label>
+                </value>
+                <value>
+                    <fullName>0B-HP IT system down</fullName>
+                    <default>false</default>
+                    <label>0B-HP IT system down</label>
+                </value>
+                <value>
+                    <fullName>AA-Entitlement Problem</fullName>
+                    <default>false</default>
+                    <label>AA-Entitlement Problem</label>
+                </value>
+                <value>
+                    <fullName>ZZ-No Issues</fullName>
+                    <default>false</default>
+                    <label>ZZ-No Issues</label>
+                </value>
+                <value>
+                    <fullName>BA-Diag.wrong/incomp</fullName>
+                    <default>false</default>
+                    <label>BA-Diag.wrong/incomp</label>
+                </value>
+                <value>
+                    <fullName>BH-wrong parts info</fullName>
+                    <default>false</default>
+                    <label>BH-wrong parts info</label>
+                </value>
+                <value>
+                    <fullName>LA-Local issue A</fullName>
+                    <default>false</default>
+                    <label>LA-Local issue A</label>
+                </value>
+                <value>
+                    <fullName>LB-Local issue B</fullName>
+                    <default>false</default>
+                    <label>LB-Local issue B</label>
+                </value>
+                <value>
+                    <fullName>PC-Missing part info</fullName>
+                    <default>false</default>
+                    <label>PC-Missing part info</label>
+                </value>
+                <value>
+                    <fullName>PF-Damaged/DOA</fullName>
+                    <default>false</default>
+                    <label>PF-Damaged/DOA</label>
+                </value>
+                <value>
+                    <fullName>SC-Addl prob found</fullName>
+                    <default>false</default>
+                    <label>SC-Addl prob found</label>
+                </value>
+                <value>
+                    <fullName>XB-Lack skill/knowledge</fullName>
+                    <default>false</default>
+                    <label>XB-Lack skill/knowledge</label>
+                </value>
+                <value>
+                    <fullName>XG-Tool/Manual missing</fullName>
+                    <default>false</default>
+                    <label>XG-Tool/Manual missing</label>
+                </value>
+                <value>
+                    <fullName>XH-Manual/Documentation not read</fullName>
+                    <default>false</default>
+                    <label>XH-Manual/Documentation not read</label>
+                </value>
+                <value>
+                    <fullName>XI-CE Assist open with wrong Priority</fullName>
+                    <default>false</default>
+                    <label>XI-CE Assist open with wrong Priority</label>
+                </value>
+                <value>
+                    <fullName>XJ-CE was not onsite anymore</fullName>
+                    <default>false</default>
+                    <label>XJ-CE was not onsite anymore</label>
+                </value>
+                <value>
+                    <fullName>MR-Misrouted Call</fullName>
+                    <default>false</default>
+                    <label>MR-Misrouted Call</label>
+                </value>
+                <value>
+                    <fullName>SD-Sys Down Dependency</fullName>
+                    <default>false</default>
+                    <label>SD-Sys Down Dependency</label>
+                </value>
+                <value>
+                    <fullName>D1-IRS Assistance</fullName>
+                    <default>false</default>
+                    <label>D1-IRS Assistance</label>
+                </value>
+                <value>
+                    <fullName>D2-Proactive Scan</fullName>
+                    <default>false</default>
+                    <label>D2-Proactive Scan</label>
+                </value>
+                <value>
+                    <fullName>D3-FW&amp;SW Patch Analysis</fullName>
+                    <default>false</default>
+                    <label>D3-FW&amp;SW Patch Analysis</label>
+                </value>
+                <value>
+                    <fullName>D4-FW Analysis</fullName>
+                    <default>false</default>
+                    <label>D4-FW Analysis</label>
+                </value>
+                <value>
+                    <fullName>D5-SW Patch Analysis</fullName>
+                    <default>false</default>
+                    <label>D5-SW Patch Analysis</label>
+                </value>
+                <value>
+                    <fullName>D6-Incident Reporting</fullName>
+                    <default>false</default>
+                    <label>D6-Incident Reporting</label>
+                </value>
+                <value>
+                    <fullName>Demo Center</fullName>
+                    <default>false</default>
+                    <label>Demo Center</label>
+                </value>
+                <value>
+                    <fullName>Ink and Media</fullName>
+                    <default>false</default>
+                    <label>Ink and Media</label>
+                </value>
+                <value>
+                    <fullName>Ink Conversion</fullName>
+                    <default>false</default>
+                    <label>Ink Conversion</label>
+                </value>
+                <value>
+                    <fullName>Trade Show</fullName>
+                    <default>false</default>
+                    <label>Trade Show</label>
+                </value>
+                <value>
+                    <fullName>Machine Recertification</fullName>
+                    <default>false</default>
+                    <label>Machine Recertification</label>
+                </value>
+                <value>
+                    <fullName>Service Delivery Absorbed</fullName>
+                    <default>false</default>
+                    <label>Service Delivery Absorbed</label>
+                </value>
+                <value>
+                    <fullName>Print Head Allotment</fullName>
+                    <default>false</default>
+                    <label>Print Head Allotment</label>
+                </value>
+                <value>
+                    <fullName>Ramp Up</fullName>
+                    <default>false</default>
+                    <label>Ramp Up</label>
+                </value>
+                <value>
+                    <fullName>Refurb</fullName>
+                    <default>false</default>
+                    <label>Refurb</label>
+                </value>
+                <value>
+                    <fullName>Shared Maintenance Vist</fullName>
+                    <default>false</default>
+                    <label>Shared Maintenance Vist</label>
+                </value>
+                <value>
+                    <fullName>Upgrade and Site Prep</fullName>
+                    <default>false</default>
+                    <label>Upgrade and Site Prep</label>
+                </value>
+                <value>
+                    <fullName>Parts on Installs</fullName>
+                    <default>false</default>
+                    <label>Parts on Installs</label>
+                </value>
+                <value>
+                    <fullName>P5-Bus Practice</fullName>
+                    <default>false</default>
+                    <label>P5-Bus Practice</label>
+                </value>
+                <value>
+                    <fullName>S2-Missing Warranty</fullName>
+                    <default>false</default>
+                    <label>S2-Missing Warranty</label>
+                </value>
+                <value>
+                    <fullName>S5-Incorrect Warranty</fullName>
+                    <default>false</default>
+                    <label>S5-Incorrect Warranty</label>
+                </value>
+                <value>
+                    <fullName>V2-No Obligation</fullName>
+                    <default>false</default>
+                    <label>V2-No Obligation</label>
+                </value>
+                <value>
+                    <fullName>W1-POP Forced</fullName>
+                    <default>false</default>
+                    <label>W1-POP Forced</label>
+                </value>
+                <value>
+                    <fullName>W3-WUE</fullName>
+                    <default>false</default>
+                    <label>W3-WUE</label>
+                </value>
+                <value>
+                    <fullName>W4-Hand-off to Other Party</fullName>
+                    <default>false</default>
+                    <label>W4-Hand-off to Other Party</label>
+                </value>
+                <value>
+                    <fullName>W5-GSC Quality Delay</fullName>
+                    <default>false</default>
+                    <label>W5-GSC Quality Delay</label>
+                </value>
+                <value>
+                    <fullName>W6-Out of Scope</fullName>
+                    <default>false</default>
+                    <label>W6-Out of Scope</label>
+                </value>
+                <value>
+                    <fullName>W7-POP Recd Upfront</fullName>
+                    <default>false</default>
+                    <label>W7-POP Recd Upfront</label>
+                </value>
+                <value>
+                    <fullName>W8-Investigation required</fullName>
+                    <default>false</default>
+                    <label>W8-Investigation required</label>
+                </value>
+                <value>
+                    <fullName>W9-No POP received</fullName>
+                    <default>false</default>
+                    <label>W9-No POP received</label>
+                </value>
+                <value>
+                    <fullName>1B-Customer agreed to extended DBD</fullName>
+                    <default>false</default>
+                    <label>1B-Customer agreed to extended DBD</label>
+                </value>
+                <value>
+                    <fullName>1D-Cust delayed work</fullName>
+                    <default>false</default>
+                    <label>1D-Cust delayed work</label>
+                </value>
+                <value>
+                    <fullName>1J-Customer delayed solution</fullName>
+                    <default>false</default>
+                    <label>1J-Customer delayed solution</label>
+                </value>
+                <value>
+                    <fullName>1K-Cust not reachable</fullName>
+                    <default>false</default>
+                    <label>1K-Cust not reachable</label>
+                </value>
+                <value>
+                    <fullName>1L-Syst mis-config</fullName>
+                    <default>false</default>
+                    <label>1L-Syst mis-config</label>
+                </value>
+                <value>
+                    <fullName>1N-Cust partial tech info</fullName>
+                    <default>false</default>
+                    <label>1N-Cust partial tech info</label>
+                </value>
+                <value>
+                    <fullName>1P-Sufficient Information without Customer Contract</fullName>
+                    <default>false</default>
+                    <label>1P-Sufficient Information without Customer Contract</label>
+                </value>
+                <value>
+                    <fullName>1R-Cust refused CSR,etc</fullName>
+                    <default>false</default>
+                    <label>1R-Cust refused CSR,etc</label>
+                </value>
+                <value>
+                    <fullName>1T-Customer refused DbD</fullName>
+                    <default>false</default>
+                    <label>1T-Customer refused DbD</label>
+                </value>
+                <value>
+                    <fullName>1V-Customer Rescheduled</fullName>
+                    <default>false</default>
+                    <label>1V-Customer Rescheduled</label>
+                </value>
+                <value>
+                    <fullName>1X-Cust/3d pty fault</fullName>
+                    <default>false</default>
+                    <label>1X-Cust/3d pty fault</label>
+                </value>
+                <value>
+                    <fullName>AB-Prod#/info wrong</fullName>
+                    <default>false</default>
+                    <label>AB-Prod#/info wrong</label>
+                </value>
+                <value>
+                    <fullName>AC-late to qual/dbd</fullName>
+                    <default>false</default>
+                    <label>AC-late to qual/dbd</label>
+                </value>
+                <value>
+                    <fullName>AD-sent to wrong Q</fullName>
+                    <default>false</default>
+                    <label>AD-sent to wrong Q</label>
+                </value>
+                <value>
+                    <fullName>AE-case w/o problem description</fullName>
+                    <default>false</default>
+                    <label>AE-case w/o problem description</label>
+                </value>
+                <value>
+                    <fullName>BB-Late from qualif</fullName>
+                    <default>false</default>
+                    <label>BB-Late from qualif</label>
+                </value>
+                <value>
+                    <fullName>BG-should be Remote Solved</fullName>
+                    <default>false</default>
+                    <label>BG-should be Remote Solved</label>
+                </value>
+                <value>
+                    <fullName>BJ-No tech doc</fullName>
+                    <default>false</default>
+                    <label>BJ-No tech doc</label>
+                </value>
+                <value>
+                    <fullName>BK-L1/L2/L3 issue</fullName>
+                    <default>false</default>
+                    <label>BK-L1/L2/L3 issue</label>
+                </value>
+                <value>
+                    <fullName>BL-SW/HW issue</fullName>
+                    <default>false</default>
+                    <label>BL-SW/HW issue</label>
+                </value>
+                <value>
+                    <fullName>BM- Trade request</fullName>
+                    <default>false</default>
+                    <label>BM- Trade request</label>
+                </value>
+                <value>
+                    <fullName>BP-More parts recommended for FTF</fullName>
+                    <default>false</default>
+                    <label>BP-More parts recommended for FTF</label>
+                </value>
+                <value>
+                    <fullName>C1-C2 Button not used</fullName>
+                    <default>false</default>
+                    <label>C1-C2 Button not used</label>
+                </value>
+                <value>
+                    <fullName>C2-Severity/Priority wrong</fullName>
+                    <default>false</default>
+                    <label>C2-Severity/Priority wrong</label>
+                </value>
+                <value>
+                    <fullName>C3-Problem desc inadequate</fullName>
+                    <default>false</default>
+                    <label>C3-Problem desc inadequate</label>
+                </value>
+                <value>
+                    <fullName>C4-Contact details wrong</fullName>
+                    <default>false</default>
+                    <label>C4-Contact details wrong</label>
+                </value>
+                <value>
+                    <fullName>C5-CE Assist not used</fullName>
+                    <default>false</default>
+                    <label>C5-CE Assist not used</label>
+                </value>
+                <value>
+                    <fullName>C6-Sent to wrong queue</fullName>
+                    <default>false</default>
+                    <label>C6-Sent to wrong queue</label>
+                </value>
+                <value>
+                    <fullName>C7-Known probl/not elevation</fullName>
+                    <default>false</default>
+                    <label>C7-Known probl/not elevation</label>
+                </value>
+                <value>
+                    <fullName>CC-reinstall RoHS part</fullName>
+                    <default>false</default>
+                    <label>CC-reinstall RoHS part</label>
+                </value>
+                <value>
+                    <fullName>CN-NonRoHS Part Install</fullName>
+                    <default>false</default>
+                    <label>CN-NonRoHS Part Install</label>
+                </value>
+                <value>
+                    <fullName>Configuration</fullName>
+                    <default>false</default>
+                    <label>Configuration</label>
+                </value>
+                <value>
+                    <fullName>CS-Cust sign RoHS mail</fullName>
+                    <default>false</default>
+                    <label>CS-Cust sign RoHS mail</label>
+                </value>
+                <value>
+                    <fullName>Damaged</fullName>
+                    <default>false</default>
+                    <label>Damaged</label>
+                </value>
+                <value>
+                    <fullName>DA-No CE available</fullName>
+                    <default>false</default>
+                    <label>DA-No CE available</label>
+                </value>
+                <value>
+                    <fullName>DG-sent to field late</fullName>
+                    <default>false</default>
+                    <label>DG-sent to field late</label>
+                </value>
+                <value>
+                    <fullName>DU-Date Outage During Rpr</fullName>
+                    <default>false</default>
+                    <label>DU-Date Outage During Rpr</label>
+                </value>
+                <value>
+                    <fullName>Faulty Part</fullName>
+                    <default>false</default>
+                    <label>Faulty Part</label>
+                </value>
+                <value>
+                    <fullName>Functional Issue</fullName>
+                    <default>false</default>
+                    <label>Functional Issue</label>
+                </value>
+                <value>
+                    <fullName>Incomplete</fullName>
+                    <default>false</default>
+                    <label>Incomplete</label>
+                </value>
+                <value>
+                    <fullName>J1-SD Cust Satisf Loc Code</fullName>
+                    <default>false</default>
+                    <label>J1-SD Cust Satisf Loc Code</label>
+                </value>
+                <value>
+                    <fullName>J2-SD Cust Satisf No Loc Code</fullName>
+                    <default>false</default>
+                    <label>J2-SD Cust Satisf No Loc Code</label>
+                </value>
+                <value>
+                    <fullName>J3-Special Contract Cust List</fullName>
+                    <default>false</default>
+                    <label>J3-Special Contract Cust List</label>
+                </value>
+                <value>
+                    <fullName>J4-Federal Customer List</fullName>
+                    <default>false</default>
+                    <label>J4-Federal Customer List</label>
+                </value>
+                <value>
+                    <fullName>L1-Local issue 1</fullName>
+                    <default>false</default>
+                    <label>L1-Local issue 1</label>
+                </value>
+                <value>
+                    <fullName>L2-Local issue 2</fullName>
+                    <default>false</default>
+                    <label>L2-Local issue 2</label>
+                </value>
+                <value>
+                    <fullName>L3-Local issue 3</fullName>
+                    <default>false</default>
+                    <label>L3-Local issue 3</label>
+                </value>
+                <value>
+                    <fullName>L4-Local issue 4</fullName>
+                    <default>false</default>
+                    <label>L4-Local issue 4</label>
+                </value>
+                <value>
+                    <fullName>L5-Local issue 5</fullName>
+                    <default>false</default>
+                    <label>L5-Local issue 5</label>
+                </value>
+                <value>
+                    <fullName>L6-Local issue 6</fullName>
+                    <default>false</default>
+                    <label>L6-Local issue 6</label>
+                </value>
+                <value>
+                    <fullName>L7-IRS migration</fullName>
+                    <default>false</default>
+                    <label>L7-IRS migration</label>
+                </value>
+                <value>
+                    <fullName>L8-CTR Met</fullName>
+                    <default>false</default>
+                    <label>L8-CTR Met</label>
+                </value>
+                <value>
+                    <fullName>L9-Local issue 9</fullName>
+                    <default>false</default>
+                    <label>L9-Local issue 9</label>
+                </value>
+                <value>
+                    <fullName>LC-Local Code</fullName>
+                    <default>false</default>
+                    <label>LC-Local Code</label>
+                </value>
+                <value>
+                    <fullName>LC-Not Booting</fullName>
+                    <default>false</default>
+                    <label>LC-Not Booting</label>
+                </value>
+                <value>
+                    <fullName>LD-MV Desktop</fullName>
+                    <default>false</default>
+                    <label>LD-MV Desktop</label>
+                </value>
+                <value>
+                    <fullName>LE-MV Software</fullName>
+                    <default>false</default>
+                    <label>LE-MV Software</label>
+                </value>
+                <value>
+                    <fullName>LF-MV IMAC</fullName>
+                    <default>false</default>
+                    <label>LF-MV IMAC</label>
+                </value>
+                <value>
+                    <fullName>LG-MV Storage</fullName>
+                    <default>false</default>
+                    <label>LG-MV Storage</label>
+                </value>
+                <value>
+                    <fullName>LH-MV Terminal(ATMs)</fullName>
+                    <default>false</default>
+                    <label>LH-MV Terminal(ATMs)</label>
+                </value>
+                <value>
+                    <fullName>LJ-MV Networking(Router/Switch)</fullName>
+                    <default>false</default>
+                    <label>LJ-MV Networking(Router/Switch)</label>
+                </value>
+                <value>
+                    <fullName>LK-MV Server</fullName>
+                    <default>false</default>
+                    <label>LK-MV Server</label>
+                </value>
+                <value>
+                    <fullName>LL-MV Mid Range</fullName>
+                    <default>false</default>
+                    <label>LL-MV Mid Range</label>
+                </value>
+                <value>
+                    <fullName>LM-MV Mainframe</fullName>
+                    <default>false</default>
+                    <label>LM-MV Mainframe</label>
+                </value>
+                <value>
+                    <fullName>LN-MV High End Printer</fullName>
+                    <default>false</default>
+                    <label>LN-MV High End Printer</label>
+                </value>
+                <value>
+                    <fullName>LP-MV Low End Printer</fullName>
+                    <default>false</default>
+                    <label>LP-MV Low End Printer</label>
+                </value>
+                <value>
+                    <fullName>LT-Non HP Toner</fullName>
+                    <default>false</default>
+                    <label>LT-Non HP Toner</label>
+                </value>
+                <value>
+                    <fullName>Missing</fullName>
+                    <default>false</default>
+                    <label>Missing</label>
+                </value>
+                <value>
+                    <fullName>NB-HW/SW not ordered</fullName>
+                    <default>false</default>
+                    <label>NB-HW/SW not ordered</label>
+                </value>
+                <value>
+                    <fullName>NC-HW/SW not delivered</fullName>
+                    <default>false</default>
+                    <label>NC-HW/SW not delivered</label>
+                </value>
+                <value>
+                    <fullName>ND-Cust Site not ready</fullName>
+                    <default>false</default>
+                    <label>ND-Cust Site not ready</label>
+                </value>
+                <value>
+                    <fullName>NE-sys not released</fullName>
+                    <default>false</default>
+                    <label>NE-sys not released</label>
+                </value>
+                <value>
+                    <fullName>NF-Factory Integ issue</fullName>
+                    <default>false</default>
+                    <label>NF-Factory Integ issue</label>
+                </value>
+                <value>
+                    <fullName>NG-Not deliverd inside</fullName>
+                    <default>false</default>
+                    <label>NG-Not deliverd inside</label>
+                </value>
+                <value>
+                    <fullName>NH-Rack height/wght pb</fullName>
+                    <default>false</default>
+                    <label>NH-Rack height/wght pb</label>
+                </value>
+                <value>
+                    <fullName>NK-DOA/Needs repair</fullName>
+                    <default>false</default>
+                    <label>NK-DOA/Needs repair</label>
+                </value>
+                <value>
+                    <fullName>NL-Firmware rev issue</fullName>
+                    <default>false</default>
+                    <label>NL-Firmware rev issue</label>
+                </value>
+                <value>
+                    <fullName>NO-Cust expects more</fullName>
+                    <default>false</default>
+                    <label>NO-Cust expects more</label>
+                </value>
+                <value>
+                    <fullName>OC-IRS Case, Part information available</fullName>
+                    <default>false</default>
+                    <label>OC-IRS Case, Part information available</label>
+                </value>
+                <value>
+                    <fullName>OD-IRS Case, Missing part number</fullName>
+                    <default>false</default>
+                    <label>OD-IRS Case, Missing part number</label>
+                </value>
+                <value>
+                    <fullName>OE-IRS Case, No part information available</fullName>
+                    <default>false</default>
+                    <label>OE-IRS Case, No part information available</label>
+                </value>
+                <value>
+                    <fullName>Overship</fullName>
+                    <default>false</default>
+                    <label>Overship</label>
+                </value>
+                <value>
+                    <fullName>P1-Misuse Trust</fullName>
+                    <default>false</default>
+                    <label>P1-Misuse Trust</label>
+                </value>
+                <value>
+                    <fullName>P2-Wrong Obligation</fullName>
+                    <default>false</default>
+                    <label>P2-Wrong Obligation</label>
+                </value>
+                <value>
+                    <fullName>P3-No Entitlement</fullName>
+                    <default>false</default>
+                    <label>P3-No Entitlement</label>
+                </value>
+                <value>
+                    <fullName>P4-No Req D/T</fullName>
+                    <default>false</default>
+                    <label>P4-No Req D/T</label>
+                </value>
+                <value>
+                    <fullName>P6-Cancel Per Customer</fullName>
+                    <default>false</default>
+                    <label>P6-Cancel Per Customer</label>
+                </value>
+                <value>
+                    <fullName>PA-Parts unavail in SLA</fullName>
+                    <default>false</default>
+                    <label>PA-Parts unavail in SLA</label>
+                </value>
+                <value>
+                    <fullName>PB-Incmp FE info</fullName>
+                    <default>false</default>
+                    <label>PB-Incmp FE info</label>
+                </value>
+                <value>
+                    <fullName>PD-Part late/not sent</fullName>
+                    <default>false</default>
+                    <label>PD-Part late/not sent</label>
+                </value>
+                <value>
+                    <fullName>PE-Wrong part in Box(Logistics)</fullName>
+                    <default>false</default>
+                    <label>PE-Wrong part in Box(Logistics)</label>
+                </value>
+                <value>
+                    <fullName>PG-No part@stk loc</fullName>
+                    <default>false</default>
+                    <label>PG-No part@stk loc</label>
+                </value>
+                <value>
+                    <fullName>Q1-Quot no Quote sent to Cust</fullName>
+                    <default>false</default>
+                    <label>Q1-Quot no Quote sent to Cust</label>
+                </value>
+                <value>
+                    <fullName>Q2-Quot Pass Approval rejected</fullName>
+                    <default>false</default>
+                    <label>Q2-Quot Pass Approval rejected</label>
+                </value>
+                <value>
+                    <fullName>Q3-Quot Quote not accepted</fullName>
+                    <default>false</default>
+                    <label>Q3-Quot Quote not accepted</label>
+                </value>
+                <value>
+                    <fullName>Q4-Quot Quote accepted by Cust</fullName>
+                    <default>false</default>
+                    <label>Q4-Quot Quote accepted by Cust</label>
+                </value>
+                <value>
+                    <fullName>RB-CE assist failed</fullName>
+                    <default>false</default>
+                    <label>RB-CE assist failed</label>
+                </value>
+                <value>
+                    <fullName>S0-Contract Missing SN</fullName>
+                    <default>false</default>
+                    <label>S0-Contract Missing SN</label>
+                </value>
+                <value>
+                    <fullName>S1-Missing Contract</fullName>
+                    <default>false</default>
+                    <label>S1-Missing Contract</label>
+                </value>
+                <value>
+                    <fullName>S3-Missing CarePack</fullName>
+                    <default>false</default>
+                    <label>S3-Missing CarePack</label>
+                </value>
+                <value>
+                    <fullName>S4-Incorrect Contract</fullName>
+                    <default>false</default>
+                    <label>S4-Incorrect Contract</label>
+                </value>
+                <value>
+                    <fullName>S6-Incorrect CarePack</fullName>
+                    <default>false</default>
+                    <label>S6-Incorrect CarePack</label>
+                </value>
+                <value>
+                    <fullName>S7-Data Leakage GCSS</fullName>
+                    <default>false</default>
+                    <label>S7-Data Leakage GCSS</label>
+                </value>
+                <value>
+                    <fullName>S8-Data Leakage ES</fullName>
+                    <default>false</default>
+                    <label>S8-Data Leakage ES</label>
+                </value>
+                <value>
+                    <fullName>S9-Data Lkg GCSS/ES</fullName>
+                    <default>false</default>
+                    <label>S9-Data Lkg GCSS/ES</label>
+                </value>
+                <value>
+                    <fullName>SA-WIP/more time</fullName>
+                    <default>false</default>
+                    <label>SA-WIP/more time</label>
+                </value>
+                <value>
+                    <fullName>SB-Battery replacement</fullName>
+                    <default>false</default>
+                    <label>SB-Battery replacement</label>
+                </value>
+                <value>
+                    <fullName>SE-Escalated</fullName>
+                    <default>false</default>
+                    <label>SE-Escalated</label>
+                </value>
+                <value>
+                    <fullName>SF-Safety req&gt;1 CE</fullName>
+                    <default>false</default>
+                    <label>SF-Safety req&gt;1 CE</label>
+                </value>
+                <value>
+                    <fullName>SG-XP HB miss no degrade</fullName>
+                    <default>false</default>
+                    <label>SG-XP HB miss no degrade</label>
+                </value>
+                <value>
+                    <fullName>SH-Long HDD data copy</fullName>
+                    <default>false</default>
+                    <label>SH-Long HDD data copy</label>
+                </value>
+                <value>
+                    <fullName>Short ship</fullName>
+                    <default>false</default>
+                    <label>Short ship</label>
+                </value>
+                <value>
+                    <fullName>SI-Cust delay mid repair</fullName>
+                    <default>false</default>
+                    <label>SI-Cust delay mid repair</label>
+                </value>
+                <value>
+                    <fullName>T0-Cust not reachable 1st time</fullName>
+                    <default>false</default>
+                    <label>T0-Cust not reachable 1st time</label>
+                </value>
+                <value>
+                    <fullName>T1-Cust not reachable 2nd time</fullName>
+                    <default>false</default>
+                    <label>T1-Cust not reachable 2nd time</label>
+                </value>
+                <value>
+                    <fullName>T2-No Entitl Details from Cust</fullName>
+                    <default>false</default>
+                    <label>T2-No Entitl Details from Cust</label>
+                </value>
+                <value>
+                    <fullName>T3-CA not reachable 1st time</fullName>
+                    <default>false</default>
+                    <label>T3-CA not reachable 1st time</label>
+                </value>
+                <value>
+                    <fullName>T4-CA not reachable 2nd time</fullName>
+                    <default>false</default>
+                    <label>T4-CA not reachable 2nd time</label>
+                </value>
+                <value>
+                    <fullName>T5-CA Contr Usage not approved</fullName>
+                    <default>false</default>
+                    <label>T5-CA Contr Usage not approved</label>
+                </value>
+                <value>
+                    <fullName>T6-SD SC closed within Valid TAT</fullName>
+                    <default>false</default>
+                    <label>T6-SD SC closed within Valid TAT</label>
+                </value>
+                <value>
+                    <fullName>T7-SD SC closed after Valid TAT</fullName>
+                    <default>false</default>
+                    <label>T7-SD SC closed after Valid TAT</label>
+                </value>
+                <value>
+                    <fullName>T8-MC OTC update delayed</fullName>
+                    <default>false</default>
+                    <label>T8-MC OTC update delayed</label>
+                </value>
+                <value>
+                    <fullName>T9-No OTC updated as Partner SC</fullName>
+                    <default>false</default>
+                    <label>T9-No OTC updated as Partner SC</label>
+                </value>
+                <value>
+                    <fullName>V1-Disputed SLA</fullName>
+                    <default>false</default>
+                    <label>V1-Disputed SLA</label>
+                </value>
+                <value>
+                    <fullName>V3-Invalid Obligtn</fullName>
+                    <default>false</default>
+                    <label>V3-Invalid Obligtn</label>
+                </value>
+                <value>
+                    <fullName>W2-Intemal Gratis</fullName>
+                    <default>false</default>
+                    <label>W2-Intemal Gratis</label>
+                </value>
+                <value>
+                    <fullName>Wrong Part</fullName>
+                    <default>false</default>
+                    <label>Wrong Part</label>
+                </value>
+                <value>
+                    <fullName>Wrong ship</fullName>
+                    <default>false</default>
+                    <label>Wrong ship</label>
+                </value>
+                <value>
+                    <fullName>XA-Intermittent failure</fullName>
+                    <default>false</default>
+                    <label>XA-Intermittent failure</label>
+                </value>
+                <value>
+                    <fullName>XC-Repeated fail</fullName>
+                    <default>false</default>
+                    <label>XC-Repeated fail</label>
+                </value>
+                <value>
+                    <fullName>XF-Exhausted Agents Skill/Knowledge</fullName>
+                    <default>false</default>
+                    <label>XF-Exhausted Agents Skill/Knowledge</label>
+                </value>
+                <value>
+                    <fullName>XK-Product  DOA Onsite Inspection Required</fullName>
+                    <default>false</default>
+                    <label>XK-Product  DOA Onsite Inspection Required</label>
+                </value>
+                <value>
+                    <fullName>ZY-No Issues on site</fullName>
+                    <default>false</default>
+                    <label>ZY-No Issues on site</label>
+                </value>
+            </valueSetDefinition>
+            <valueSettings>
+                <controllingFieldValue>Parts Allocation</controllingFieldValue>
+                <controllingFieldValue>Qualifier/DBD</controllingFieldValue>
+                <controllingFieldValue>Software Support</controllingFieldValue>
+                <controllingFieldValue>Call Agent</controllingFieldValue>
+                <controllingFieldValue>CE Assist</controllingFieldValue>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <controllingFieldValue>Insight RS</controllingFieldValue>
+                <valueName>0A-See comments</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Parts Allocation</controllingFieldValue>
+                <controllingFieldValue>Qualifier/DBD</controllingFieldValue>
+                <controllingFieldValue>Software Support</controllingFieldValue>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <controllingFieldValue>Warranty POP Validation</controllingFieldValue>
+                <controllingFieldValue>Call Agent</controllingFieldValue>
+                <controllingFieldValue>CE Assist</controllingFieldValue>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>0B-HP IT system down</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Parts Allocation</controllingFieldValue>
+                <controllingFieldValue>CE Assist</controllingFieldValue>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>BH-wrong parts info</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Parts Allocation</controllingFieldValue>
+                <controllingFieldValue>CE Assist</controllingFieldValue>
+                <valueName>PC-Missing part info</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Parts Allocation</controllingFieldValue>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <controllingFieldValue>Other</controllingFieldValue>
+                <controllingFieldValue>CE SAFE</controllingFieldValue>
+                <controllingFieldValue>Depot Repair</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <controllingFieldValue>DOA Fulfillment</controllingFieldValue>
+                <controllingFieldValue>DOA Functional</controllingFieldValue>
+                <valueName>MR-Misrouted Call</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Parts Allocation</controllingFieldValue>
+                <controllingFieldValue>Other</controllingFieldValue>
+                <controllingFieldValue>CE SAFE</controllingFieldValue>
+                <controllingFieldValue>Depot Repair</controllingFieldValue>
+                <controllingFieldValue>DOA Fulfillment</controllingFieldValue>
+                <controllingFieldValue>DOA Functional</controllingFieldValue>
+                <valueName>SD-Sys Down Dependency</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Parts Allocation</controllingFieldValue>
+                <controllingFieldValue>Software Support</controllingFieldValue>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>AB-Prod#/info wrong</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Parts Allocation</controllingFieldValue>
+                <controllingFieldValue>Qualifier/DBD</controllingFieldValue>
+                <valueName>BP-More parts recommended for FTF</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Parts Allocation</controllingFieldValue>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>PA-Parts unavail in SLA</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Parts Allocation</controllingFieldValue>
+                <valueName>PB-Incmp FE info</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Parts Allocation</controllingFieldValue>
+                <valueName>PG-No part@stk loc</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Qualifier/DBD</controllingFieldValue>
+                <controllingFieldValue>Software Support</controllingFieldValue>
+                <controllingFieldValue>Call Agent</controllingFieldValue>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Competency Center</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>AA-Entitlement Problem</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Qualifier/DBD</controllingFieldValue>
+                <controllingFieldValue>Software Support</controllingFieldValue>
+                <controllingFieldValue>Call Agent</controllingFieldValue>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Competency Center</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>ZZ-No Issues</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Qualifier/DBD</controllingFieldValue>
+                <valueName>1B-Customer agreed to extended DBD</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Qualifier/DBD</controllingFieldValue>
+                <controllingFieldValue>Software Support</controllingFieldValue>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>1K-Cust not reachable</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Qualifier/DBD</controllingFieldValue>
+                <controllingFieldValue>Software Support</controllingFieldValue>
+                <valueName>1N-Cust partial tech info</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Qualifier/DBD</controllingFieldValue>
+                <valueName>1P-Sufficient Information without Customer Contract</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Qualifier/DBD</controllingFieldValue>
+                <valueName>1R-Cust refused CSR,etc</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Qualifier/DBD</controllingFieldValue>
+                <controllingFieldValue>Software Support</controllingFieldValue>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>1T-Customer refused DbD</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Qualifier/DBD</controllingFieldValue>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>1V-Customer Rescheduled</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Qualifier/DBD</controllingFieldValue>
+                <controllingFieldValue>Software Support</controllingFieldValue>
+                <valueName>AC-late to qual/dbd</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Qualifier/DBD</controllingFieldValue>
+                <controllingFieldValue>Software Support</controllingFieldValue>
+                <valueName>AD-sent to wrong Q</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Qualifier/DBD</controllingFieldValue>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>L1-Local issue 1</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Qualifier/DBD</controllingFieldValue>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>L2-Local issue 2</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Qualifier/DBD</controllingFieldValue>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>L3-Local issue 3</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Qualifier/DBD</controllingFieldValue>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>L4-Local issue 4</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Qualifier/DBD</controllingFieldValue>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>L5-Local issue 5</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Qualifier/DBD</controllingFieldValue>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>L6-Local issue 6</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Qualifier/DBD</controllingFieldValue>
+                <valueName>LC-Local Code</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Qualifier/DBD</controllingFieldValue>
+                <valueName>XK-Product  DOA Onsite Inspection Required</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Software Support</controllingFieldValue>
+                <valueName>1J-Customer delayed solution</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Software Support</controllingFieldValue>
+                <valueName>1L-Syst mis-config</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Software Support</controllingFieldValue>
+                <valueName>AE-case w/o problem description</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Software Support</controllingFieldValue>
+                <valueName>BJ-No tech doc</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Software Support</controllingFieldValue>
+                <valueName>BK-L1/L2/L3 issue</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Software Support</controllingFieldValue>
+                <valueName>BL-SW/HW issue</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Software Support</controllingFieldValue>
+                <valueName>BM- Trade request</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Software Support</controllingFieldValue>
+                <valueName>XA-Intermittent failure</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Software Support</controllingFieldValue>
+                <valueName>XC-Repeated fail</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Software Support</controllingFieldValue>
+                <valueName>XF-Exhausted Agents Skill/Knowledge</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <controllingFieldValue>Warranty POP Validation</controllingFieldValue>
+                <valueName>P5-Bus Practice</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <controllingFieldValue>Warranty POP Validation</controllingFieldValue>
+                <valueName>S2-Missing Warranty</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <controllingFieldValue>Warranty POP Validation</controllingFieldValue>
+                <valueName>S5-Incorrect Warranty</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <controllingFieldValue>Warranty POP Validation</controllingFieldValue>
+                <valueName>V2-No Obligation</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>J1-SD Cust Satisf Loc Code</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>J2-SD Cust Satisf No Loc Code</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>J3-Special Contract Cust List</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>J4-Federal Customer List</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>P1-Misuse Trust</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>P2-Wrong Obligation</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>P3-No Entitlement</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>P4-No Req D/T</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>P6-Cancel Per Customer</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>Q1-Quot no Quote sent to Cust</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>Q2-Quot Pass Approval rejected</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>Q3-Quot Quote not accepted</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>Q4-Quot Quote accepted by Cust</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>S0-Contract Missing SN</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>S1-Missing Contract</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>S3-Missing CarePack</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>S4-Incorrect Contract</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>S6-Incorrect CarePack</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>S7-Data Leakage GCSS</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>S8-Data Leakage ES</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>S9-Data Lkg GCSS/ES</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>T0-Cust not reachable 1st time</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>T1-Cust not reachable 2nd time</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>T2-No Entitl Details from Cust</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>T3-CA not reachable 1st time</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>T4-CA not reachable 2nd time</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>T5-CA Contr Usage not approved</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>T6-SD SC closed within Valid TAT</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>T7-SD SC closed after Valid TAT</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>T8-MC OTC update delayed</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>T9-No OTC updated as Partner SC</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>V1-Disputed SLA</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Trust Entitlement</controllingFieldValue>
+                <valueName>V3-Invalid Obligtn</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Warranty POP Validation</controllingFieldValue>
+                <valueName>W1-POP Forced</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Warranty POP Validation</controllingFieldValue>
+                <valueName>W3-WUE</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Warranty POP Validation</controllingFieldValue>
+                <valueName>W4-Hand-off to Other Party</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Warranty POP Validation</controllingFieldValue>
+                <valueName>W5-GSC Quality Delay</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Warranty POP Validation</controllingFieldValue>
+                <valueName>W6-Out of Scope</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Warranty POP Validation</controllingFieldValue>
+                <valueName>W7-POP Recd Upfront</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Warranty POP Validation</controllingFieldValue>
+                <valueName>W8-Investigation required</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Warranty POP Validation</controllingFieldValue>
+                <valueName>W9-No POP received</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>GSB-PSP Services QA</controllingFieldValue>
+                <valueName>Demo Center</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>GSB-PSP Services QA</controllingFieldValue>
+                <valueName>Ink and Media</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>GSB-PSP Services QA</controllingFieldValue>
+                <valueName>Ink Conversion</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>GSB-PSP Services QA</controllingFieldValue>
+                <valueName>Trade Show</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>GSB-PSP Services QA</controllingFieldValue>
+                <valueName>Machine Recertification</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>GSB-PSP Services QA</controllingFieldValue>
+                <valueName>Service Delivery Absorbed</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>GSB-PSP Services QA</controllingFieldValue>
+                <valueName>Print Head Allotment</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>GSB-PSP Services QA</controllingFieldValue>
+                <valueName>Ramp Up</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>GSB-PSP Services QA</controllingFieldValue>
+                <valueName>Refurb</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>GSB-PSP Services QA</controllingFieldValue>
+                <valueName>Shared Maintenance Vist</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>GSB-PSP Services QA</controllingFieldValue>
+                <valueName>Upgrade and Site Prep</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>GSB-PSP Services QA</controllingFieldValue>
+                <valueName>Parts on Installs</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Proactive Care</controllingFieldValue>
+                <valueName>D1-IRS Assistance</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Proactive Care</controllingFieldValue>
+                <valueName>D2-Proactive Scan</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Proactive Care</controllingFieldValue>
+                <valueName>D3-FW&amp;SW Patch Analysis</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Proactive Care</controllingFieldValue>
+                <valueName>D4-FW Analysis</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Proactive Care</controllingFieldValue>
+                <valueName>D5-SW Patch Analysis</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Proactive Care</controllingFieldValue>
+                <valueName>D6-Incident Reporting</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE Assist</controllingFieldValue>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>BA-Diag.wrong/incomp</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE Assist</controllingFieldValue>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>LA-Local issue A</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE Assist</controllingFieldValue>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>LB-Local issue B</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE Assist</controllingFieldValue>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>PF-Damaged/DOA</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE Assist</controllingFieldValue>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>SC-Addl prob found</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE Assist</controllingFieldValue>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>XB-Lack skill/knowledge</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE Assist</controllingFieldValue>
+                <valueName>XG-Tool/Manual missing</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE Assist</controllingFieldValue>
+                <valueName>XH-Manual/Documentation not read</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE Assist</controllingFieldValue>
+                <valueName>XI-CE Assist open with wrong Priority</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE Assist</controllingFieldValue>
+                <valueName>XJ-CE was not onsite anymore</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>1D-Cust delayed work</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>1X-Cust/3d pty fault</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>BG-should be Remote Solved</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>CC-reinstall RoHS part</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>CN-NonRoHS Part Install</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>CS-Cust sign RoHS mail</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>DA-No CE available</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>DG-sent to field late</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>DU-Date Outage During Rpr</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>L7-IRS migration</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>L8-CTR Met</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>L9-Local issue 9</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>LC-Not Booting</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>LD-MV Desktop</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>LE-MV Software</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>LF-MV IMAC</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>LG-MV Storage</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>LH-MV Terminal(ATMs)</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>LJ-MV Networking(Router/Switch)</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>LK-MV Server</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>LL-MV Mid Range</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>LM-MV Mainframe</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>LN-MV High End Printer</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>LP-MV Low End Printer</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>LT-Non HP Toner</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>NB-HW/SW not ordered</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>NC-HW/SW not delivered</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>ND-Cust Site not ready</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>NE-sys not released</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>NF-Factory Integ issue</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>NG-Not deliverd inside</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>NH-Rack height/wght pb</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>NK-DOA/Needs repair</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>NL-Firmware rev issue</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>NO-Cust expects more</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>PD-Part late/not sent</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>PE-Wrong part in Box(Logistics)</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>RB-CE assist failed</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>SA-WIP/more time</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>SB-Battery replacement</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>SE-Escalated</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>SF-Safety req&gt;1 CE</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>SG-XP HB miss no degrade</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>SH-Long HDD data copy</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>SI-Cust delay mid repair</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>CE QA</controllingFieldValue>
+                <valueName>ZY-No Issues on site</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Competency Center</controllingFieldValue>
+                <valueName>C1-C2 Button not used</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Competency Center</controllingFieldValue>
+                <valueName>C2-Severity/Priority wrong</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Competency Center</controllingFieldValue>
+                <valueName>C3-Problem desc inadequate</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Competency Center</controllingFieldValue>
+                <valueName>C4-Contact details wrong</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Competency Center</controllingFieldValue>
+                <valueName>C5-CE Assist not used</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Competency Center</controllingFieldValue>
+                <valueName>C6-Sent to wrong queue</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Competency Center</controllingFieldValue>
+                <valueName>C7-Known probl/not elevation</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Dispatcher/RC</controllingFieldValue>
+                <valueName>BB-Late from qualif</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>DOA Fulfillment</controllingFieldValue>
+                <valueName>Configuration</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>DOA Fulfillment</controllingFieldValue>
+                <valueName>Damaged</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>DOA Fulfillment</controllingFieldValue>
+                <valueName>Incomplete</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>DOA Fulfillment</controllingFieldValue>
+                <valueName>Missing</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>DOA Fulfillment</controllingFieldValue>
+                <valueName>Overship</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>DOA Fulfillment</controllingFieldValue>
+                <valueName>Short ship</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>DOA Fulfillment</controllingFieldValue>
+                <valueName>Wrong ship</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>DOA Functional</controllingFieldValue>
+                <valueName>Faulty Part</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>DOA Functional</controllingFieldValue>
+                <valueName>Functional Issue</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>DOA Functional</controllingFieldValue>
+                <valueName>Wrong Part</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Insight RS</controllingFieldValue>
+                <valueName>OC-IRS Case, Part information available</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Insight RS</controllingFieldValue>
+                <valueName>OD-IRS Case, Missing part number</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Insight RS</controllingFieldValue>
+                <valueName>OE-IRS Case, No part information available</valueName>
+            </valueSettings>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>QA_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>QA Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Call Agent</fullName>
+                    <default>false</default>
+                    <label>Call Agent</label>
+                </value>
+                <value>
+                    <fullName>CE Assist</fullName>
+                    <default>false</default>
+                    <label>CE Assist</label>
+                </value>
+                <value>
+                    <fullName>CE QA</fullName>
+                    <default>false</default>
+                    <label>CE QA</label>
+                </value>
+                <value>
+                    <fullName>CE SAFE</fullName>
+                    <default>false</default>
+                    <label>CE SAFE</label>
+                </value>
+                <value>
+                    <fullName>Competency Center</fullName>
+                    <default>false</default>
+                    <label>Competency Center</label>
+                </value>
+                <value>
+                    <fullName>Depot Repair</fullName>
+                    <default>false</default>
+                    <label>Depot Repair</label>
+                </value>
+                <value>
+                    <fullName>Dispatcher/RC</fullName>
+                    <default>false</default>
+                    <label>Dispatcher/RC</label>
+                </value>
+                <value>
+                    <fullName>DOA Fulfillment</fullName>
+                    <default>false</default>
+                    <label>DOA Fulfillment</label>
+                </value>
+                <value>
+                    <fullName>DOA Functional</fullName>
+                    <default>false</default>
+                    <label>DOA Functional</label>
+                </value>
+                <value>
+                    <fullName>Insight RS</fullName>
+                    <default>false</default>
+                    <label>Insight RS</label>
+                </value>
+                <value>
+                    <fullName>Parts Allocation</fullName>
+                    <default>false</default>
+                    <label>Parts Allocation</label>
+                </value>
+                <value>
+                    <fullName>Qualifier/DBD</fullName>
+                    <default>false</default>
+                    <label>Qualifier/DBD</label>
+                </value>
+                <value>
+                    <fullName>Software Support</fullName>
+                    <default>false</default>
+                    <label>Software Support</label>
+                </value>
+                <value>
+                    <fullName>Trust Entitlement</fullName>
+                    <default>false</default>
+                    <label>Trust Entitlement</label>
+                </value>
+                <value>
+                    <fullName>Warranty POP Validation</fullName>
+                    <default>false</default>
+                    <label>Warranty POP Validation</label>
+                </value>
+                <value>
+                    <fullName>GSB-PSP Services QA</fullName>
+                    <default>false</default>
+                    <label>GSB-PSP Services QA</label>
+                </value>
+                <value>
+                    <fullName>Proactive Care</fullName>
+                    <default>false</default>
+                    <label>Proactive Care</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>WorkOrder__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Work Order</label>
+        <referenceTo>WorkOrder</referenceTo>
+        <relationshipLabel>Process QA</relationshipLabel>
+        <relationshipName>Process_QA</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>Process QA</label>
+    <nameField>
+        <displayFormat>P-{000000}</displayFormat>
+        <label>ProcessQAId</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>ASC_Can_Not_Create_PQA</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND( $Profile.Name == &apos;CSC&amp;FST ASC&apos;, Case_Id__r.Id !=null,Case_Id__r.Id !=&apos;&apos;)</errorConditionFormula>
+        <errorMessage>The ASC can not create process QA on case!</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>The_Case_Cannot_be_Close</fullName>
+        <active>true</active>
+        <description>除管理员外，其他用户在Case关闭后禁止更新Process QA结果。</description>
+        <errorConditionFormula>AND($User.Username != &apos;help@h3c.com.prd&apos; , $User.Username != &apos;spms@h3c.com&apos; , $User.Username != &apos;ying.liao@h3c.com.prd&apos; ,Text( Case_Id__r.Status ) == &apos;Closed&apos;)</errorConditionFormula>
+        <errorMessage>The Case has been Closed and can not add Process QA.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>The_WorkOrder_can_not_be_closed</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND( $User.Username != &apos;help@h3c.com.prd&apos;,Text(WorkOrder__r.Status) == &apos;Closed&apos;)</errorConditionFormula>
+        <errorDisplayField>Case__c</errorDisplayField>
+        <errorMessage>The workorder status can not be closed.</errorMessage>
+    </validationRules>
+    <visibility>Public</visibility>
+</CustomObject>

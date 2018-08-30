@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingOwnerRules>
+        <fullName>Marketing_Manager_Sharing</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Marketing Manager Sharing</label>
+        <sharedTo>
+            <role>UNIS_Marketing_Specialist</role>
+        </sharedTo>
+        <sharedFrom>
+            <group>Marketing_Manager_Group</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Ops_sharing</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Ops sharing</label>
+        <sharedTo>
+            <role>UNIS_Marketing_Ops</role>
+        </sharedTo>
+        <sharedFrom>
+            <role>UNIS_Marketing_Ops</role>
+        </sharedFrom>
+    </sharingOwnerRules>
+</SharingRules>

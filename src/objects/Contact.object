@@ -1,0 +1,1131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>AddCampaign</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>AddToCampaign</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CallHighlightAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>EmailHighlightAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>EnableCustomerPortal</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>EnablePartnerPortalUser</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>EnableSelfService</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ListClean</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Merge</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>NewContact</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>RequestUpdate</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SmsHighlightAction</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <comment>Action override created by Lightning App Builder during activation.</comment>
+        <content>Contact_Record_Page</content>
+        <formFactor>Large</formFactor>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Flexipage</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ViewCustomerPortal</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ViewPartnerPortalUser</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ViewSelfService</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>AccountId</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Account_Pincode__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account.CSC_PinCode__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Account Pincode</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Account_adress__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account.BillingStreet</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Account adress</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AssistantName</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>AssistantPhone</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Birthdate</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>CSC_Country_Code__c</fullName>
+        <externalId>false</externalId>
+        <label>Country Code</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>86</fullName>
+                    <default>true</default>
+                    <label>86</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>CSC_District__c</fullName>
+        <externalId>false</externalId>
+        <label>District</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CSC_Phone_Extension__c</fullName>
+        <externalId>false</externalId>
+        <label>Phone Extension</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CSC_Privacy__c</fullName>
+        <externalId>false</externalId>
+        <label>Privacy</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>no automatic email</fullName>
+                    <default>false</default>
+                    <label>no automatic email</label>
+                </value>
+                <value>
+                    <fullName>no email for quality survey</fullName>
+                    <default>false</default>
+                    <label>no email for quality survey</label>
+                </value>
+                <value>
+                    <fullName>no phone for quality survey</fullName>
+                    <default>false</default>
+                    <label>no phone for quality survey</label>
+                </value>
+                <value>
+                    <fullName>no SMS</fullName>
+                    <default>false</default>
+                    <label>no SMS</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>CSC_Zip_Postal_code__c</fullName>
+        <externalId>false</externalId>
+        <label>Zip/Postal code</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Chinese_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Chinese Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contact_ID_18__c</fullName>
+        <externalId>false</externalId>
+        <formula>CASESAFEID(Id)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contact 18 ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CurrencyIsoCode</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Department</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Description</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>DoNotCall</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Email</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Fax</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>HP_SFDC_ID__c</fullName>
+        <caseSensitive>true</caseSensitive>
+        <externalId>true</externalId>
+        <label>HP SFDC ID</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>HasOptedOutOfEmail</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>HasOptedOutOfFax</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>HomePhone</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>IM__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Example: LINE &amp; WhatsApp.</inlineHelpText>
+        <label>IM</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Jigsaw</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Job_Class__c</fullName>
+        <description>UL @ibreakingpoint 20151112 for mapping</description>
+        <externalId>false</externalId>
+        <formula>IF(AND( ISPICKVAL( Job_Function__c , &apos;Decision Office&apos; ) , ISPICKVAL( Job_Level__c , &apos;C Level&apos; ) ) , &apos;CEO&apos;, 
+IF(AND( ISPICKVAL(Job_Function__c, &apos;IT department&apos;) ,ISPICKVAL( Job_Level__c , &apos;C Level&apos; )) , &apos;CIO&apos;, 
+IF( AND( ISPICKVAL(Job_Function__c, &apos;Finance &amp; Procurement&apos;) ,ISPICKVAL( Job_Level__c , &apos;C Level&apos; )) , &apos;CFO&apos; , 
+IF( AND( ISPICKVAL( Job_Function__c, &apos;Line of Business&apos;) ,ISPICKVAL( Job_Level__c , &apos;C Level&apos; )) , &apos;CXO&apos;, 
+IF( AND( ISPICKVAL(Job_Function__c, &apos;Unknown&apos;) ,ISPICKVAL( Job_Level__c , &apos;C Level&apos; )) , &apos;CXO&apos; , 
+IF(AND( ISPICKVAL( Job_Function__c , &apos;Decision Office&apos; ) , ISPICKVAL( Job_Level__c , &apos;Executive&apos; ) ) , &apos;CXO&apos;, 
+IF( AND( ISPICKVAL(Job_Function__c, &apos;IT department&apos;) ,ISPICKVAL( Job_Level__c , &apos;Executive&apos;) ) , &apos;CIO&apos;, 
+IF( AND( ISPICKVAL(Job_Function__c, &apos;Finance &amp; Procurement&apos;) ,ISPICKVAL( Job_Level__c , &apos;Executive&apos;) ) , &apos;CFO&apos;, 
+IF( AND( ISPICKVAL(Job_Function__c, &apos;Line of Business&apos;) ,ISPICKVAL( Job_Level__c , &apos;Executive&apos; )) , &apos;CXO&apos;, 
+IF( AND( ISPICKVAL(Job_Function__c, &apos;Unknown&apos;) ,ISPICKVAL( Job_Level__c , &apos;Executive&apos;) ) , &apos;CXO&apos; , 
+IF(AND( ISPICKVAL( Job_Function__c , &apos;Decision Office&apos; ) , ISPICKVAL( Job_Level__c , &apos;Manager&apos; ) ) , &apos;LOB manager&apos;, 
+IF( AND( ISPICKVAL(Job_Function__c, &apos;IT department&apos;) ,ISPICKVAL( Job_Level__c , &apos;Manager&apos; )) , &apos;IT Manager&apos;, 
+IF( AND( ISPICKVAL(Job_Function__c, &apos;Finance &amp; Procurement&apos;) ,ISPICKVAL( Job_Level__c , &apos;Manager&apos; )) , &apos;Procurement Manager&apos; , 
+IF( AND( ISPICKVAL(Job_Function__c, &apos;Line of Business&apos;) ,ISPICKVAL( Job_Level__c , &apos;Manager&apos; )) , &apos;LOB manager&apos; , 
+IF( AND( ISPICKVAL(Job_Function__c, &apos;Unknown&apos;) ,ISPICKVAL( Job_Level__c , &apos;Manager&apos; )) , &apos;Unknown&apos; , 
+IF(AND( ISPICKVAL( Job_Function__c , &apos;Decision Office&apos; ) , ISPICKVAL( Job_Level__c , &apos;Professional&apos; ) ) , &apos;LOB professional&apos;, 
+IF( AND( ISPICKVAL(Job_Function__c, &apos;IT department&apos;) ,ISPICKVAL( Job_Level__c , &apos;Professional&apos;) ) , &apos;IT Professional&apos;, 
+IF( AND( ISPICKVAL(Job_Function__c, &apos;Finance &amp; Procurement&apos;) ,ISPICKVAL( Job_Level__c , &apos;Professional&apos; ) ), &apos;Procurement Professional&apos; , 
+IF( AND( ISPICKVAL(Job_Function__c, &apos;Line of Business&apos;) ,ISPICKVAL( Job_Level__c , &apos;Professional&apos; )) , &apos;LOB professional&apos; , 
+IF( AND( ISPICKVAL(Job_Function__c, &apos;Unknown&apos;) ,ISPICKVAL( Job_Level__c , &apos;Professional&apos;)), &apos;Unknown&apos;,&apos;Unknown&apos;))))))))))))))))))))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Job Class</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Job_Function__c</fullName>
+        <description>UL @ibreakingpoint 20151112</description>
+        <externalId>false</externalId>
+        <label>Job Function</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Decision Office</fullName>
+                    <default>false</default>
+                    <label>Decision Office</label>
+                </value>
+                <value>
+                    <fullName>Finance &amp; Procurement</fullName>
+                    <default>false</default>
+                    <label>Finance &amp; Procurement</label>
+                </value>
+                <value>
+                    <fullName>IT department</fullName>
+                    <default>false</default>
+                    <label>IT department</label>
+                </value>
+                <value>
+                    <fullName>Line of Business</fullName>
+                    <default>false</default>
+                    <label>Line of Business</label>
+                </value>
+                <value>
+                    <fullName>Unknown</fullName>
+                    <default>false</default>
+                    <label>Unknown</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Job_Level__c</fullName>
+        <description>UL @ibreakingpoint 20151112</description>
+        <externalId>false</externalId>
+        <label>Job Level</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>C Level</fullName>
+                    <default>false</default>
+                    <label>C Level</label>
+                </value>
+                <value>
+                    <fullName>Executive</fullName>
+                    <default>false</default>
+                    <label>Executive</label>
+                </value>
+                <value>
+                    <fullName>Manager</fullName>
+                    <default>false</default>
+                    <label>Manager</label>
+                </value>
+                <value>
+                    <fullName>Professional</fullName>
+                    <default>false</default>
+                    <label>Professional</label>
+                </value>
+                <value>
+                    <fullName>Unknown</fullName>
+                    <default>false</default>
+                    <label>Unknown</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>LastCURequestDate</fullName>
+    </fields>
+    <fields>
+        <fullName>LastCUUpdateDate</fullName>
+    </fields>
+    <fields>
+        <fullName>LeadSource</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Left_Company__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Left Company</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>MailingAddress</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>MobilePhone</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Most_Valued_Customer__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Most Valued Customer</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Name</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>OtherAddress</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>OtherPhone</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>OwnerId</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Phone</fullName>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+    </fields>
+    <fields>
+        <fullName>Remarks__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Example: meet in Partner Launch.</inlineHelpText>
+        <label>Remarks</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>ReportsToId</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Send_Survey_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Send Survey Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>SubmitSurveyDay__c</fullName>
+        <externalId>false</externalId>
+        <label>SubmitSurveyDay</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Title</fullName>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+    </fields>
+    <fields>
+        <fullName>WeChat__c</fullName>
+        <externalId>false</externalId>
+        <label>WeChat</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Wechat_Openid__c</fullName>
+        <externalId>false</externalId>
+        <label>Wechat Openid</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Work_Phone_Extension__c</fullName>
+        <externalId>false</externalId>
+        <label>Work Phone Extension</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>isce__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>联系人是否CE</description>
+        <externalId>false</externalId>
+        <label>isce</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <listViews>
+        <fullName>AllContacts</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>CONTACT.TITLE</columns>
+        <columns>CONTACT.PHONE1</columns>
+        <columns>CONTACT.EMAIL</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <label>All Contacts</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>IPMS_Contact</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>CONTACT.TITLE</columns>
+        <columns>CONTACT.PHONE1</columns>
+        <columns>CONTACT.PHONE3</columns>
+        <columns>CONTACT.EMAIL</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CONTACT.RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>Contact.IPMS_Contact</value>
+        </filters>
+        <label>IPMS Contact</label>
+    </listViews>
+    <listViews>
+        <fullName>MyContacts</fullName>
+        <columns>FULL_NAME</columns>
+        <columns>ACCOUNT.NAME</columns>
+        <columns>CONTACT.TITLE</columns>
+        <columns>CONTACT.PHONE1</columns>
+        <columns>CONTACT.EMAIL</columns>
+        <columns>CORE.USERS.ALIAS</columns>
+        <filterScope>Mine</filterScope>
+        <label>My Contacts</label>
+    </listViews>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>CSC_FST_Service_Contact</fullName>
+        <active>true</active>
+        <label>CSC &amp; FST Service Contact</label>
+        <picklistValues>
+            <picklist>CSC_Country_Code__c</picklist>
+            <values>
+                <fullName>86</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>CSC_Privacy__c</picklist>
+            <values>
+                <fullName>no SMS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>no automatic email</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>no email for quality survey</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>no phone for quality survey</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Job_Function__c</picklist>
+            <values>
+                <fullName>Decision Office</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Finance %26 Procurement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>IT department</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Line of Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unknown</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Job_Level__c</picklist>
+            <values>
+                <fullName>C Level</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Executive</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Manager</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Professional</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unknown</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>3rd party pay by leads%28Telemarketing-OB%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>DM registration</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Digital media coop</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Edm registration</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Employee Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Event registration</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>External Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Physical Event</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Public Relations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SEM-paid search</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Seminar - Internal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Seminar - Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sms</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sponsorship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Telemarketing-inbound</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trade Show</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vendor-Data purchase</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vendor-MI%2FSurvey</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Virtual event</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WeChat%2FQQ%2FWeibo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web site %28organic%2C SEO%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Word of mouth</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>IPMS_Contact</fullName>
+        <active>true</active>
+        <label>IPMS Contact</label>
+        <picklistValues>
+            <picklist>CSC_Country_Code__c</picklist>
+            <values>
+                <fullName>86</fullName>
+                <default>true</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>CSC_Privacy__c</picklist>
+            <values>
+                <fullName>no SMS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>no automatic email</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>no email for quality survey</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>no phone for quality survey</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Job_Function__c</picklist>
+            <values>
+                <fullName>Decision Office</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Finance %26 Procurement</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>IT department</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Line of Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unknown</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Job_Level__c</picklist>
+            <values>
+                <fullName>C Level</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Executive</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Manager</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Professional</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unknown</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LeadSource</picklist>
+            <values>
+                <fullName>3rd party pay by leads%28Telemarketing-OB%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>DM registration</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Digital media coop</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Edm registration</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Employee Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Event registration</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>External Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Physical Event</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Public Relations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SEM-paid search</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sales</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Seminar - Internal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Seminar - Partner</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sms</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sponsorship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Telemarketing-inbound</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trade Show</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vendor-Data purchase</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vendor-MI%2FSurvey</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Virtual event</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WeChat%2FQQ%2FWeibo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Web site %28organic%2C SEO%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Word of mouth</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Name</picklist>
+            <values>
+                <fullName>Dr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mr%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mrs%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ms%2E</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prof%2E</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <customTabListAdditionalFields>FULL_NAME</customTabListAdditionalFields>
+        <customTabListAdditionalFields>ACCOUNT.NAME</customTabListAdditionalFields>
+        <customTabListAdditionalFields>CONTACT.PHONE1</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>FULL_NAME</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>ACCOUNT.NAME</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Account_adress__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Account_Pincode__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>CONTACT.PHONE1</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>CSC_Phone_Extension__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>CONTACT.EMAIL</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>CORE.USERS.ALIAS</lookupDialogsAdditionalFields>
+        <lookupFilterFields>CONTACT.LAST_NAME</lookupFilterFields>
+        <lookupFilterFields>CONTACT.PHONE1</lookupFilterFields>
+        <lookupPhoneDialogsAdditionalFields>FULL_NAME</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>ACCOUNT.NAME</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>ACCOUNT.SITE</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CONTACT.PHONE1</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CONTACT.PHONE3</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CONTACT.PHONE4</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CONTACT.PHONE5</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CONTACT.PHONE6</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>CONTACT.LAST_NAME</searchFilterFields>
+        <searchFilterFields>CONTACT.PHONE1</searchFilterFields>
+        <searchFilterFields>ACCOUNT.NAME</searchFilterFields>
+        <searchFilterFields>isce__c</searchFilterFields>
+        <searchResultsAdditionalFields>FULL_NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>ACCOUNT.NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>ACCOUNT.SITE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CONTACT.PHONE1</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CONTACT.PHONE3</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CONTACT.EMAIL</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>isce__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CREATEDBY_USER.ALIAS</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CONTACT.CREATED_DATE</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>Private</sharingModel>
+    <validationRules>
+        <fullName>IPMS_Contact_Title</fullName>
+        <active>false</active>
+        <errorConditionFormula>AND(RecordType.DeveloperName = &apos;IPMS_Contact&apos;,  OR(Title=&apos;&apos;, Email = &apos;&apos;)  )</errorConditionFormula>
+        <errorMessage>Duty/Title or Email can&apos;t empty on contact.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Phone_Mobile_is_Required</fullName>
+        <active>true</active>
+        <description>When create new contact, User must fill in phone/Mobile phone.</description>
+        <errorConditionFormula>AND(
+ISBLANK(Phone),
+ISBLANK( MobilePhone ),
+ RecordType.Name != &apos;IPMS Contact&apos;
+
+)</errorConditionFormula>
+        <errorDisplayField>Phone</errorDisplayField>
+        <errorMessage>Please fill in Phone or Mobile.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>GoogleMaps</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Google Maps</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>http://maps.google.com/maps?f=q&amp;hl=en&amp;q={!Contact_MailingStreet}+{!Contact_MailingCity}+{!Contact_MailingState}&amp;om=1</url>
+    </webLinks>
+    <webLinks>
+        <fullName>GoogleSearch</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Google Search</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>http://www.google.com/search?q={!Contact_FirstName} {!Contact_LastName}</url>
+    </webLinks>
+</CustomObject>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>Sharing_with_All</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Sharing with All</label>
+        <sharedTo>
+            <roleAndSubordinates>UNIS_Service</roleAndSubordinates>
+        </sharedTo>
+        <criteriaItems>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Assign,Accept</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Sharing_with_CE_User</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Sharing with CE User</label>
+        <sharedTo>
+            <portalRole>CustomerUser38</portalRole>
+        </sharedTo>
+        <criteriaItems>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Assign,Accept</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+</SharingRules>

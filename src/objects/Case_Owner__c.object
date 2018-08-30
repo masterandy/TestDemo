@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>true</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>CA_Handled__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(AND( Case__r.CreatedBy.Profile.Name &lt;&gt; &quot;CSC&amp;FST CA&quot;, 
+Last_Owner__r.Profile.Name &lt;&gt; &quot;CSC&amp;FST CA&quot; ),
+ 1, 0)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>CA Handled</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CA_Handled_for_Rollup__c</fullName>
+        <defaultValue>0</defaultValue>
+        <externalId>false</externalId>
+        <label>CA Handled for Rollup</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CSC_IsQueue__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Is Queue Old</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>CSC_Report_New_CaseOwner_Role__c</fullName>
+        <externalId>false</externalId>
+        <label>New CaseOwner Role</label>
+        <length>100</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CSC_Report_Old_CaseOwner_Role__c</fullName>
+        <externalId>false</externalId>
+        <label>Old CaseOwner Role</label>
+        <length>100</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CSC_Report_Owner__c</fullName>
+        <externalId>false</externalId>
+        <label>Owner</label>
+        <length>100</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CSC_Report_Role__c</fullName>
+        <externalId>false</externalId>
+        <label>Old Owner Role_del</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>CA</fullName>
+                    <default>false</default>
+                    <label>CA</label>
+                </value>
+                <value>
+                    <fullName>RCEL1</fullName>
+                    <default>false</default>
+                    <label>RCEL1</label>
+                </value>
+                <value>
+                    <fullName>RCEL2</fullName>
+                    <default>false</default>
+                    <label>RCEL2</label>
+                </value>
+                <value>
+                    <fullName>DP</fullName>
+                    <default>false</default>
+                    <label>DP</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>CSC_Report_Weight__c</fullName>
+        <externalId>false</externalId>
+        <label>Weight</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CaseOwner__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Old Case Owner</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Case_Owner</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Case__c</fullName>
+        <externalId>false</externalId>
+        <label>Case</label>
+        <referenceTo>Case</referenceTo>
+        <relationshipName>Case_Owner</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Create_Datetime__c</fullName>
+        <externalId>false</externalId>
+        <formula>CreatedDate</formula>
+        <label>Create Datetime</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Dp_Assign_Case_Time_Type__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( OR(MOD( DATEVALUE( CreatedDate ) - DATE( 1900, 1, 7 ), 7 )= 1, 
+MOD( DATEVALUE(CreatedDate) - DATE( 1900, 1, 7 ), 7 )= 2, 
+MOD( DATEVALUE(CreatedDate) - DATE( 1900, 1, 7 ), 7 )= 3, 
+MOD( DATEVALUE(CreatedDate) - DATE( 1900, 1, 7 ), 7 )= 4, 
+MOD( DATEVALUE(CreatedDate) - DATE( 1900, 1, 7 ), 7 )= 5), 
+IF( 
+AND( VALUE(TEXT(value(MID(TEXT(CreatedDate),12,2))+8)+ 
+IF(value(MID(TEXT(CreatedDate),15,2))&lt;10, 
+&quot;0&quot; + TEXT(value(MID(TEXT(CreatedDate),15,2))), 
+TEXT(value(MID(TEXT(CreatedDate),15,2)))) )&gt;830, 
+VALUE(TEXT(value(MID(TEXT(CreatedDate),12,2))+8)+ 
+IF(value(MID(TEXT(CreatedDate),15,2))&lt;10, 
+&quot;0&quot; + TEXT(value(MID(TEXT(CreatedDate),15,2))), 
+TEXT(value(MID(TEXT(CreatedDate),15,2)))) )&lt;1800), 
+&quot;Office Hour&quot;, 
+&quot;Night Shift&quot;), 
+&quot;Weekend&quot;)</formula>
+        <label>Dp Assign Case Time Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Is_Queue_Last__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Is Queue New</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Last_CaseOwner_Role__c</fullName>
+        <externalId>false</externalId>
+        <label>New CaseOwner Role_del</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>CA</fullName>
+                    <default>false</default>
+                    <label>CA</label>
+                </value>
+                <value>
+                    <fullName>RCEL1</fullName>
+                    <default>false</default>
+                    <label>RCEL1</label>
+                </value>
+                <value>
+                    <fullName>RCEL2</fullName>
+                    <default>false</default>
+                    <label>RCEL2</label>
+                </value>
+                <value>
+                    <fullName>DP</fullName>
+                    <default>false</default>
+                    <label>DP</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Last_Owner__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>New Case Owner</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Case_Owner1</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Last_QueueName__c</fullName>
+        <externalId>false</externalId>
+        <label>New QueueName</label>
+        <length>100</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>New_CaseOwner_Employeeid__c</fullName>
+        <externalId>false</externalId>
+        <formula>Last_Owner__r.Employee_ID__c</formula>
+        <label>New CaseOwner Employeeid</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>New_CaseOwner_Loginname__c</fullName>
+        <externalId>false</externalId>
+        <formula>Last_Owner__r.Username</formula>
+        <label>New CaseOwner Loginname</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>New_CaseOwner_Workgroup__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT( Last_Owner__r.Workgroup__c )</formula>
+        <label>New CaseOwner Workgroup</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Old_CaseOwner_Employeeid__c</fullName>
+        <externalId>false</externalId>
+        <formula>CaseOwner__r.Employee_ID__c</formula>
+        <label>Old CaseOwner Employeeid</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Old_CaseOwner_Loginname__c</fullName>
+        <externalId>false</externalId>
+        <formula>CaseOwner__r.Username</formula>
+        <label>Old CaseOwner Loginname</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Old_CaseOwner_Workgroup__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT( CaseOwner__r.Workgroup__c )</formula>
+        <label>Old CaseOwner Workgroup</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>QueueName__c</fullName>
+        <externalId>false</externalId>
+        <label>Old QueueName</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Case Owner History</label>
+    <nameField>
+        <displayFormat>CO-{000000}</displayFormat>
+        <label>Case_Owner Name</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>
