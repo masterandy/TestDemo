@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Role xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseAccessLevel>None</caseAccessLevel>
+    <contactAccessLevel>None</contactAccessLevel>
+    <description>H3C ASC (System used, don&apos;t update) 合作伙伴 用户</description>
+    <mayForecastManagerShare>false</mayForecastManagerShare>
+    <name>H3C ASC (System used, don&apos;t update) 合作伙伴 用户</name>
+    <opportunityAccessLevel>None</opportunityAccessLevel>
+    <parentRole>UNIS_Service</parentRole>
+</Role>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Role xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseAccessLevel>None</caseAccessLevel>
+    <contactAccessLevel>None</contactAccessLevel>
+    <description>UNIS PRESALES UTILITY AND GPCOMM AND MEDIA SUPPORT REP</description>
+    <mayForecastManagerShare>false</mayForecastManagerShare>
+    <name>UNIS PRESALES UTILITY AND GPCOMM AND MEDIA SUPPORT REP</name>
+    <opportunityAccessLevel>Edit</opportunityAccessLevel>
+    <parentRole>UNIS_PRESALES_UTILITY_AND_GPCOMM_AND_MEDIA_SUPPORT_MANAGER</parentRole>
+</Role>

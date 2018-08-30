@@ -1,0 +1,1973 @@
+<apex:page sidebar="false" showHeader="true" standardStylesheets="true" standardController="Case" tabStyle="Account" extensions="CSC_CaseEditController" id="page">
+<script src="/support/api/34.0/interaction.js"></script>
+<script src="/support/console/34.0/integration.js"></script>
+<apex:includeScript value="{!$Resource.jQuery}"/>
+<html>
+    <head>
+        <style>
+            .wrap{  
+                min-width: 800px; 
+                width: auto;
+                height:auto;
+                background-color: #fff;
+                margin:0 auto;  
+            }  
+
+            .container{  
+                position:relative;  
+                width:auto;
+                height:auto;  
+            }  
+            a.no-hover:hover{
+                color: inherit;
+            }
+            
+            .left_side{  
+                position:absolute;  
+                top:0px;  
+                left:0px;  
+                width:360px;  
+                height:100%;  
+                overflow-y:auto;
+                overflow-x:hidden;
+                background-color:#f8f8f8;
+            } 
+
+            .left_side_content{  
+                position:relative;  
+                top:0px;  
+                left:0px;  
+                width:360px;  
+                height:auto;  
+            } 
+
+            .content{  
+                margin:0px 360px 0px 360px;  
+                height:auto;  
+                overflow:auto;
+                background-color:#f8f8f8;
+            } 
+            
+            .right_side{  
+                position:absolute;  
+                top:0px;  
+                right:0px;  
+                width:360px;  
+                height:100%; 
+                overflow-x:hidden;
+                overflow-y:hidden;
+                background-color:#f8f8f8;           
+            }  
+
+            .right_side_content{  
+                position:relative;  
+                top:0px;  
+                right:0px;  
+                width:360px;  
+                height:auto;            
+            }
+            
+            .selectResult{  
+                height:200px; 
+                width: auto;
+                background-color:#f8f8f8;
+                overflow:auto;
+            }
+
+            input.btn {
+                padding: 4px 3px;
+            }
+
+            .progressBar{
+                background-color: #f8f8f8;
+                border:1px solid #DDDDDD;
+                height: 19px;
+                width: 300px;
+            }
+
+            .progress{
+                background-color: #F7B64B;
+                border:1px solid #E78F08;
+                height: 100%;
+                margin: -1px;
+                text-align: center;
+                line-height: 18px;
+            }
+
+            .errorCount{
+                color:red;
+            }
+
+            .requiredInput {
+                position: relative;
+                height: 100%;
+            }
+
+            .requiredBlock {
+                background-color: #c00;
+                position: absolute;
+                left: -4px;
+                width: 3px;
+                top: 1px;
+                bottom: 1px;
+            }
+
+            .requiredBlock_One {
+                background-color: #FF7F00;
+                position: absolute;
+                left: -4px;
+                width: 3px;
+                top: 1px;
+                bottom: 1px;
+            }
+
+            .requiredBlock_Two {
+                background-color: #c00;
+                position: absolute;
+                left: -8px;
+                width: 3px;
+                top: 1px;
+                bottom: 1px;
+            }
+
+            .refreshList {
+                background-image: url(/img/alohaSkin/sync.png);
+                background-repeat:no-repeat;
+                background-position: top left;
+                width: 22px;
+                height: 20px;
+                vertical-align: bottom;
+            }
+
+            .loadingImage { vertical-align:bottom; }
+
+            .loadingDescription { padding:0 1.5em 0 0.5em; }
+
+            .loadingHolder {
+              font-size: 1.2em;
+              font-weight: bold;
+              padding: 0.5em;
+              position: relative;
+              top: 45%;
+              white-space: nowrap;
+            }
+
+            .loadingDiv {
+              opacity: .75;
+              filter: alpha(opacity=75); 
+              text-align: center;
+              position: fixed;
+              z-index: 300;
+              top: 10px;
+              left: 85%;
+            }
+            
+            .SavingHolder {
+              background-color: #FFFFCC;
+              border: 1px solid #333333;
+              font-size: 1.2em;
+              font-weight: bold;
+              padding: 0.5em;
+              position: relative;
+              top: 45%;
+              white-space: nowrap;
+             }
+            
+            .SavingDiv {
+              background-color: #D0D0D0;
+              opacity: .75;
+              filter: alpha(opacity=75); 
+              text-align: center;
+              width: 100%;
+              height: 100%;
+              position: fixed;
+              z-index: 300;
+              top: 0;
+              left: 0;
+             } 
+
+             .searchHolder {
+              font-size: 1.2em;
+              font-weight: bold;
+              padding: 0.5em;
+              position: relative;
+              top: 45%;
+              white-space: nowrap;
+            }
+
+            .searchDiv {
+              opacity: .75;
+              filter: alpha(opacity=75); 
+              text-align: center;
+              position: fixed;
+              z-index: 300;
+              top: 12px;
+              left: 7%;
+            }
+
+            .inputReadOnly
+            {
+                background-color: #cccccc;
+            }
+            .mainTitle:nth-child(3)
+            {
+            position: absolute !important;
+            line-height: 0px !important;
+
+            }
+        </style>
+        
+    </head>
+    <body>
+        <!--added by Maccus-->
+        <apex:pageMessages id="msg" escape="false"/>
+        <!--added end-->
+        <div class="wrap">
+            <apex:form id="form" onkeydown="if(event.keyCode==13&&event.srcElement.type!='textarea'){return false;}"> 
+            <div class="container">  
+                <div class="left_side">
+                    <div class="left_side_content">
+                        <apex:pageBlock title="Customer" id="customerBlock">
+                            <apex:actionStatus id="searchingStatusSpinner">
+                              <apex:facet name="start">
+                                   <div id="searchDiv" class="searchDiv" >
+                                        <span id="searchHolder" class="searchHolder">
+                                             <img  title="searching..." alt="searching..." src="/img/loading.gif"/>
+                                             <span class="loadingDescription">searching...</span>
+                                        </span>
+                                   </div>
+                              </apex:facet>
+                            </apex:actionStatus>
+                            <apex:pageBlockButtons location="top" style="padding-left:200px;">
+                                <input type="button" value="clear" onClick="clearCustomer();" class="btn" />
+                            </apex:pageBlockButtons>
+                            <apex:pageBlockSection columns="1" id="customerBlockSection">
+                                <apex:pageBlockSectionItem id="contactBlockSectionItem">
+                                    <apex:outputLabel for="CSC_Contact_Name" style="width:100px;">Name</apex:outputLabel>
+                                    <apex:panelGroup >
+                                        <div class="requiredInput">
+                                            <div class="requiredBlock"></div>
+                                            <apex:inputField id="contactId" value="{!objCase.ContactId}" onChange="getContactInfoById();"/>
+                                            
+                                            <apex:actionFunction action="{!getContactInfoById}" name="getContactInfoById"  rerender="customerBlock,accountBlock,realAccountBlock,callerBlock" oncomplete="setAccountAndContactStatus();">
+                                            </apex:actionFunction>
+                                        </div>
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+                                     
+                                <apex:pageBlockSectionItem id="phoneBlockSectionItem">
+                                    <apex:outputLabel for="Phone">{!$ObjectType.Contact.fields.Phone.label}</apex:outputLabel>
+                                    <apex:panelGroup >
+                                        <div class="requiredInput">
+                                            <div class="requiredBlock"></div>
+                                            <apex:inputText id="countryCode" value="{!strCountryCode}" style="width:30px;"/>
+                                            &nbsp;
+                                            <apex:inputField id="phone" value="{!objContact.Phone}" style="width:120px;" onchange="resetAntiFraudStatus();"/>
+                                            &nbsp;
+                                            <apex:inputField id="phoneExtension" value="{!objContact.CSC_Phone_Extension__c}" style="width:40px;"/>
+                                            <apex:commandLink action="{!getListCaseInfoByContactTel}" reRender="msg,hiddenShowSearchSuccessMsg,caseHistoryList" status="searchingStatusSpinner" oncomplete="showSearchResultMessage();"><img src="/s.gif" class="refreshList"/>
+                                            </apex:commandLink>
+                                        </div>
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem id="otherPhoneBlockSectionItem">
+                                    <apex:outputLabel for="OtherPhone">{!$ObjectType.Contact.fields.OtherPhone.label}</apex:outputLabel>
+                                    <apex:panelGroup >
+                                        <apex:inputField id="OtherPhone" value="{!objContact.OtherPhone}"  onchange="resetAntiFraudStatus();"/>
+                                        <apex:commandLink action="{!getListCaseInfoByContactOtherTel}"  reRender="msg,hiddenShowSearchSuccessMsg,caseHistoryList" status="searchingStatusSpinner" oncomplete="showSearchResultMessage();"><img src="/s.gif" class="refreshList"/>
+                                        </apex:commandLink>
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem id="emailBlockSectionItem">
+                                    <apex:outputLabel for="Email">{!$ObjectType.Contact.fields.Email.label}</apex:outputLabel>
+                                    <apex:panelGroup >
+                                        <apex:inputField id="Email" value="{!objContact.Email}" />
+                                        <apex:commandLink action="{!getListCaseInfoByContactEmail}" reRender="msg,hiddenShowSearchSuccessMsg,caseHistoryList" status="searchingStatusSpinner" oncomplete="showSearchResultMessage();"><img src="/s.gif" class="refreshList"/>
+                                        </apex:commandLink>
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem id="ContactPrivacy">
+                                    <apex:outputLabel for="Privacy">{!$ObjectType.Contact.fields.CSC_Privacy__c.label}</apex:outputLabel>
+                                    <apex:outputText id="Privacy" value="{!objContact.CSC_Privacy__c}"/> 
+                                    <!-- <apex:inputField id="Privacy" value="{!objContact.CSC_Privacy__c}" styleClass="inputReadOnly"/> --> 
+                                </apex:pageBlockSectionItem>                               
+                            </apex:pageBlockSection>
+                            
+                        </apex:pageBlock>
+                    </div>
+                    <div class="left_side_content">
+                        <apex:pageBlock title="Caller" id="callerBlock">
+                            <apex:pageBlockButtons location="top" style="padding-left:200px;">
+                                <!-- <input type="button" value="clear" onclick="clearAccount();" class="btn" /> -->
+                                <input type="button" value="clear"  onclick="clearCallerBlock();" align="right" class="btn" />
+                            </apex:pageBlockButtons>
+                            <apex:pageBlockSection columns="1" id="callerBlockSection">
+                                <apex:pageBlockSectionItem id="additionalContactNameSectionItem">
+                                    <apex:outputLabel >Name</apex:outputLabel>
+                                    <apex:panelGroup >
+                                        <div class="requiredInput">
+                                            <div class="requiredBlock"></div>
+                                            <apex:inputField id="additionalContactId" value="{!objCase.CSC_Additional_Contact__c}" onchange="getAdditionalContactInfoById();"/>
+                                            <apex:actionFunction action="{!getAdditionalContactInfoById}" name="getAdditionalContactInfoById"  rerender="customerBlock,accountBlock,realAccountBlock,callerBlock" oncomplete="setAccountAndContactStatus();">
+                                            </apex:actionFunction>
+                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        </div>
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem id="additionalContactPhone">
+                                    <apex:outputLabel for="Contact_Tel">{!$ObjectType.Contact.fields.Phone.label}</apex:outputLabel>
+                                    <apex:panelGroup >
+                                        <div class="requiredInput">
+                                            <div class="requiredBlock"></div>
+                                            <apex:inputText id="additionalContactPhoneCountryCode" value="{!strAdditionalCountryCode}" style="width:30px;" />
+                                            &nbsp;
+                                            <apex:inputField id="additionalContactPhoneNumber" value="{!objAdditionalContact.Phone}" style="width:120px;"  onchange="resetAntiFraudStatus();"/>
+                                            &nbsp;
+                                            <apex:inputField id="additionalContactPhoneExtension" value="{!objAdditionalContact.CSC_Phone_Extension__c}" style="width:40px;"  />
+                                            <apex:commandLink action="{!getListCaseInfoByAdditionalContactTel}"  reRender="msg,hiddenShowSearchSuccessMsg,caseHistoryList" status="searchingStatusSpinner" oncomplete="showSearchResultMessage();"><img src="/s.gif" class="refreshList"/>
+                                            </apex:commandLink>
+                                        </div>
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem id="additionalContactOtherPhone">
+                                    <apex:outputLabel >{!$ObjectType.Contact.fields.OtherPhone.label}</apex:outputLabel>
+                                    <apex:panelGroup >
+                                        <apex:inputField id="additionalContactOtherPhoneNumber" value="{!objAdditionalContact.OtherPhone}" onchange="resetAntiFraudStatus();" />
+                                        <apex:commandLink action="{!getListCaseInfoByAdditionalContactOtherTel}"  reRender="msg,hiddenShowSearchSuccessMsg,caseHistoryList" status="searchingStatusSpinner" oncomplete="showSearchResultMessage();"><img src="/s.gif" class="refreshList"/>
+                                        </apex:commandLink>
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem id="additionalContactOtherEmail">
+                                    <apex:outputLabel for="otherEmail">{!$ObjectType.Contact.fields.Email.label}</apex:outputLabel>
+                                    <apex:panelGroup >
+                                        <apex:inputField id="otherEmail" value="{!objAdditionalContact.Email}"  />
+                                        <apex:commandLink action="{!getListCaseInfoByAdditionalContactEmail}" reRender="msg,hiddenShowSearchSuccessMsg,caseHistoryList" status="searchingStatusSpinner" oncomplete="showSearchResultMessage();"><img src="/s.gif" class="refreshList"/></apex:commandLink>
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem id="additionalContactPrivacy">
+                                    <apex:outputLabel for="otherPrivacy">{!$ObjectType.Contact.fields.CSC_Privacy__c.label}</apex:outputLabel>
+                                    <apex:outputText id="otherPrivacy" value="{!objAdditionalContact.CSC_Privacy__c}"/> 
+                                    <!-- <apex:inputField id="otherPrivacy" value="{!objAdditionalContact.CSC_Privacy__c}" styleClass="inputReadOnly"/> -->
+                                </apex:pageBlockSectionItem>
+                            </apex:pageBlockSection>
+                        </apex:pageBlock>
+                    </div>
+                    
+                    <div class="left_side_content" >
+                        
+                        <apex:pageBlock title="Account" id="accountBlock">
+                            <apex:pageBlockButtons location="top" style="padding-left:200px;">
+                                <input type="button" value="clear" onClick="clearAddress();clearAccount();" class="btn" />
+                            </apex:pageBlockButtons>
+                            <apex:pageBlockSection columns="1" id="accountBlockSection">
+                                <apex:pageBlockSectionItem id="accountNameSectionItem">
+                                        <apex:outputLabel for="Company">{!$ObjectType.Account.fields.Name.label}</apex:outputLabel>
+                                        <apex:panelGroup >
+                                            <div class="requiredInput">
+                                                <div class="requiredBlock"></div>
+                                                <apex:inputField id="accountId" value="{!objCase.AccountId}" onchange="getAccountInfoById();" style="width:196px;"/>
+                                                <apex:actionFunction action="{!getAccountInfoById}" name="getAccountInfoById"  rerender="accountBlock,callerBlock,rplBlock,AntiFraudBlock,Case_Issue,realAccountBlock" oncomplete="setAccountInfoCompleted();">
+                                                </apex:actionFunction>
+                                                <apex:actionFunction action="{!getAccountInfoByESId}" name="getAccountInfoByESId"  rerender="accountBlock,callerBlock,realAccountBlock" oncomplete="setAccountInfoCompleted();">
+                                                    <apex:param name="firstParam" assignTo="{!strESAccountId}" value="" />
+                                                </apex:actionFunction>
+                                                <apex:commandLink action="{!getListCaseInfoByAccountName}" reRender="caseHistoryList,msg,hiddenShowSearchSuccessMsg" status="searchingStatusSpinner" oncomplete="showSearchResultMessage();" ><img src="/s.gif" class="refreshList"/>
+                                                </apex:commandLink>
+                                            </div>
+                                        </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+                                
+                                <apex:pageBlockSectionItem id="countrySectionItem">
+                                    <apex:outputLabel for="country">{!$ObjectType.Case.fields.CSC_Country__c.label}</apex:outputLabel>
+                                    <apex:panelGroup >
+                                        <div class="requiredInput">
+                                            <div class="requiredBlock"></div>
+                                            <apex:inputField id="country" value="{!objCase.CSC_Country__c}" style="width:200px"/>
+                                        </div>
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem id="provinceSectionItem">
+                                    <apex:outputLabel for="province">{!$ObjectType.Case.fields.Province__c.label}</apex:outputLabel>
+                                    <apex:panelGroup >
+                                        <div class="requiredInput">
+                                            <div class="requiredBlock"></div>
+                                            <apex:inputField id="province" value="{!objCase.Province__c}" style="width:200px"/>
+                                        </div>
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem id="citySectionItem">
+                                    <apex:outputLabel for="city">{!$ObjectType.Case.fields.City__c.label}</apex:outputLabel>
+                                    <apex:panelGroup >
+                                        <div class="requiredInput">
+                                            <div class="requiredBlock"></div>
+                                            <apex:inputField id="city" value="{!objCase.City__c}" style="width:200px"/>
+                                            &nbsp;&nbsp;<apex:commandLink value="verify" action="{!verifyCity}" reRender="zip,msg" />
+                                        </div>
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem id="zipSectionItem">
+                                    <apex:outputLabel for="zip">{!$Label.CSC_Zip_Postal_Code}</apex:outputLabel>
+                                    <apex:panelGroup >
+                                        <div class="requiredInput">
+                                            <div class="requiredBlock"></div>
+                                            <apex:inputField id="zip" value="{!objCase.Billing_Zip_Postal_Code__c}"  style="width:196px"/>
+                                            &nbsp;&nbsp;<apex:commandLink value="verify" action="{!verifyZip}" reRender="province,city,msg" />
+                                        </div>
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem id="lineSectionItem">
+                                    <apex:outputLabel for="line">{!$Label.CSC_Billing_Street}</apex:outputLabel>
+                                    <apex:panelGroup >
+                                        <div class="requiredInput">
+                                            <div class="requiredBlock"></div>
+                                            <apex:inputField id="line" value="{!objCase.Billing_Street__c}" style="width:196px" />
+                                        </div>
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+
+                                <apex:pageBlockSectionItem id="accountHiddenSectionItem">
+                                    <apex:panelGroup id="accountHiddenGroup">
+                                        <apex:inputHidden id="hiddenAccountRecordTypeId" value="{!objAccount.RecordTypeId}"></apex:inputHidden>
+                                        <apex:inputHidden id="hiddenAccountId"  value="{!objAccount.Id}"></apex:inputHidden>
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+                            </apex:pageBlockSection>
+                        </apex:pageBlock>
+
+                        <apex:pageBlock title="CaseAccount" id="realAccountBlock" >
+                            <!-- <apex:pageBlockButtons location="top" style="padding-left:200px;">
+                                <input type="button" value="clear" onClick="clearAddress();clearAccount();" class="btn" />
+                            </apex:pageBlockButtons> -->
+                            <apex:inputHidden value="{!the_street_in_case_diff_account}" id="the_street_in_case_diff_account"/>
+                            <apex:pageBlockSection columns="1" id="realaccountBlockSection">
+                                
+                                <apex:pageBlockSectionItem id="realcountrySectionItem">
+                                    <apex:outputLabel for="realcountry">{!$ObjectType.Case.fields.CSC_Country__c.label}</apex:outputLabel>
+                                    <apex:outputField id="realcountry" value="{!objCaseAccountInfo.CSC_Country__c}" style="width:200px"  />
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem id="realprovinceSectionItem">
+                                    <apex:outputLabel for="realprovince">{!$ObjectType.Case.fields.Province__c.label}</apex:outputLabel>
+                                    <apex:outputField id="realprovince" value="{!objCaseAccountInfo.Province__c}" style="width:200px"/>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem id="realcitySectionItem">
+                                    <apex:outputLabel for="realcity">{!$ObjectType.Case.fields.City__c.label}</apex:outputLabel>
+                                    <apex:outputField id="realcity" value="{!objCaseAccountInfo.City__c}" style="width:200px"/>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem id="realzipSectionItem">
+                                    <apex:outputLabel for="realzip">{!$Label.CSC_Zip_Postal_Code}</apex:outputLabel>
+                                    <apex:outputField id="realzip" value="{!objCaseAccountInfo.BillingPostalCode}"  style="width:196px"/>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem id="reallineSectionItem">
+                                    <apex:outputLabel for="realline">{!$Label.CSC_Billing_Street}</apex:outputLabel>
+                                    <apex:outputField id="realline" value="{!objCaseAccountInfo.BillingStreet}" style="width:196px;height:15px;"/>
+                                </apex:pageBlockSectionItem>
+                            </apex:pageBlockSection>
+                        </apex:pageBlock>
+                    </div>
+                    <div class="left_side_content">
+                        <apex:pageBlock id="rplBlock" >
+                        <h2 style='font-size:13.5px;height:25px;font-weight: bold;display: block;position: relative;margin: 5px 0 10px;position: relative;'>RPL&#38;AntiFraud Check</h2>
+                        <div style='width:90%;height: 1px; background:#e6dada;position: absolute;margin-left: -2%;top:18%;'></div>
+                            <apex:pageBlockSection columns="1" id="rplBlockSection">
+                                <apex:pageBlockSectionItem id="rplStatusSectionItem">
+                                    <apex:outputLabel for="RPL_Status">RPL</apex:outputLabel>
+                                    <apex:panelGroup >
+                                        <div class="requiredInput">
+                                            <div class="requiredBlock"></div>
+                                            <apex:inputField id="RPL_Status" value="{!objCase.CSC_RPL_Status__c}" style="width:196px;"/>
+                                            
+                                        </div>
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+
+                                <apex:pageBlockSectionItem id="AntiFraudStatusSectionItem">
+                                    <apex:outputLabel for="AntiFraud_Status">AntiFraud</apex:outputLabel>
+                                    <apex:panelGroup >
+                                        <div class="requiredInput">
+                                            <div class="requiredBlock"></div>
+                                            <apex:inputField id="AntiFraud_Status" value="{!objCase.AntiFraud_Status__c}" style="width:196px;"/>
+                                            
+                                        </div>
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+
+                                <apex:pageBlockSectionItem id="CheckButton">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <apex:panelGroup >
+                                        <div class="requiredInput">
+                                            <apex:commandButton action="{!checkAccountInfo}" value="check" oncomplete="checkRPLAntiFraud();" reRender="hiddenCheckResult,msg,hiddenIsPassedAntiFraudCheck,hiddenAntiFraudNeed,hiddenStrAntiFraudResult1,hiddenStrAntiFraudResult2,hiddenStrAntiFraudResult3,hiddenStrAntiFraudResult4,hiddenStrAntiFraudResult5,hiddenStrAntiFraudResult6" style="align:center;" />
+                                            
+                                        </div>
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+
+                            </apex:pageBlockSection>
+
+                          
+
+                        </apex:pageBlock>
+                    </div>
+                    
+                </div> 
+                
+                
+                
+                <div class="content">
+                    <apex:pageBlock title="Case Edit" id="caseEditBlock" >
+                        <apex:actionStatus id="SavingStatusSpinner">
+                          <apex:facet name="start">
+                               <div id="SavingDiv" class="SavingDiv" >
+                                    <span id="SavingHolder" class="SavingHolder">
+                                         <img  title="Saving..." alt="Saving..." src="/img/loading.gif"/>
+                                         <span class="loadingDescription">Saving...</span>
+                                    </span>
+                               </div>
+                          </apex:facet>
+                        </apex:actionStatus>
+                        <apex:pageBlockButtons location="top">
+                            <apex:commandButton action="{!saveCase}" value="Save Case" oncomplete="gotoViewCasePage();" reRender="hiddenStrCaseId,hiddenIsGotoViewPage,msg" onclick="setSaveCaseTypeAsNormalCase();" status="SavingStatusSpinner"/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <apex:commandButton value="cancel" reRender="msg" onclick="goBack();"/>
+                        </apex:pageBlockButtons>
+                        <apex:pageBlockSection columns="1" title="Basic Info" id="caseEditBlockSection">
+                            <apex:pageBlockSectionItem id="contractIdSectionItem">
+                                 <apex:outputLabel for="contractId">{!$ObjectType.Case.fields.CSC_Contract__c.label}</apex:outputLabel>
+                                 <apex:panelGroup >
+                                    <apex:inputField id="contractId" value="{!objCase.CSC_Contract__c}" style="width: 250px;" onchange="clearEnttilementInfoByContractId();"/>
+                                    <apex:commandLink action="{!getCaseListAndEntitlementInfoBySNFromEBS}" reRender="caseHistoryList, hiddenStrGetEntitlementInfo,EntitlementBlock, msg, Case_Others, Case_Issue,caseEditBlockSection" oncomplete="showSNSearchResult();" status="LoadingStatusSpinner"><img src="/s.gif" class="lookupIcon" alt="search case history by Email" onblur="this.className = 'lookupIcon';" onfocus="this.className = 'lookupIconOn';" onMouseOut="this.className = 'lookupIcon';" onMouseOver="this.className = 'lookupIconOn';" title=""/>
+                                    </apex:commandLink>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <apex:outputField id="SAR" value="{!objCase.CSC_SAR__c}"/>
+                                 </apex:panelGroup>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem id="caseSNSectionItem">
+                                 <apex:outputLabel for="Case_SN">{!$ObjectType.Case.fields.CSC_SN__c.label}</apex:outputLabel>
+                                 <apex:panelGroup >
+                                    <apex:inputField id="Case_SN" value="{!objCase.CSC_SN__c}" style="width: 250px;" onchange="clearEnttilementInfoBySN();"/>
+                                    <apex:commandLink action="{!getCaseListAndEntitlementInfoBySNFromEBS}" reRender="caseHistoryList, hiddenStrGetEntitlementInfo,EntitlementBlock,dmrSectionItem, msg, Case_Others, Case_Issue,caseEditBlockSection,hpeSaidSectionItem" oncomplete="showSNSearchResult();" status="LoadingStatusSpinner"><img src="/s.gif" class="lookupIcon" alt="search case history by Email" onblur="this.className = 'lookupIcon';" onfocus="this.className = 'lookupIconOn';" onMouseOut="this.className = 'lookupIcon';" onMouseOver="this.className = 'lookupIconOn';" title="EBS"/>
+                                    </apex:commandLink><span>EBS</span>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <apex:commandLink action="{!getCaseListAndEntitlementInfoBySN}" reRender="caseHistoryList, hiddenStrGetEntitlementInfo,EntitlementBlock, msg, Case_Others, Case_Issue,caseEditBlockSection" oncomplete="showSNSearchResult();" status="LoadingStatusSpinner"><img src="/s.gif" class="lookupIcon" alt="search case history by Email" onblur="this.className = 'lookupIcon';" onfocus="this.className = 'lookupIconOn';" onMouseOut="this.className = 'lookupIcon';" onMouseOver="this.className = 'lookupIconOn';" title="HPE AB"/>
+                                    </apex:commandLink><span>HPE</span>
+                                    <apex:actionFunction action="{!setEntitlementInfo}" name="setEntitlementInfoPage" reRender="EntitlementBlock, Case_Others, Case_Issue,caseEditBlockSection" oncomplete="refreshPage();" status="LoadingStatusSpinner">
+                                        <apex:param name="firstParam" assignTo="{!strEntitlementInfo}" value="" />
+                                    </apex:actionFunction>
+                                    <apex:actionFunction action="{!getEntitlementInfoByProductList}" name="getEntitlementInfoByProductList" reRender="EntitlementBlock, Case_Others, Case_Issue, caseEditBlockSection,hiddenStrGetEntitlementInfo,EntitlementBlockHidden" oncomplete="refreshPage();" status="LoadingStatusSpinner">
+                                        <apex:param name="firstParam" assignTo="{!strProductId}" value="" />
+                                        <apex:param name="secondParam" assignTo="{!strProductLineCode}" value="" />
+                                        <apex:param name="threeParam" assignTo="{!strProductDescription}" value="" />
+                                    </apex:actionFunction>
+                                    <apex:actionFunction action="{!antiFraudPass}" name="antiFraudPass" reRender="AntiFraudBlock,rplBlock,msg" >
+                                        <apex:param name="firstParam" assignTo="{!antiFraudComments}" value="" />
+                                    </apex:actionFunction>
+                                    <apex:actionFunction action="{!antiFraudFail}" name="antiFraudFail" reRender="AntiFraudBlock,rplBlock,msg">
+                                        <apex:param name="firstParam" assignTo="{!antiFraudComments}" value="" />
+                                    </apex:actionFunction>
+                                    <apex:actionFunction action="{!clearEntitlementInfo}" name="clearEntitlementInfo" reRender="msg,Case_Issue" oncomplete="refreshPage();">
+                                    </apex:actionFunction>
+                                    <apex:actionFunction action="{!getEBSEntitlementInfoByProductList}" name="getEBSEntitlementInfoByProductList" reRender="EntitlementBlock, Case_Others, Case_Issue, caseEditBlockSection,hiddenStrGetEntitlementInfo,EntitlementBlockHidden" oncomplete="refreshPage();" status="LoadingStatusSpinner">
+                                        <apex:param name="firstParam" assignTo="{!strProductId}" value="" />
+                                        <apex:param name="secondParam" assignTo="{!strProductLineCode}" value="" />
+                                        <apex:param name="threeParam" assignTo="{!strProductDescription}" value="" />
+                                    </apex:actionFunction>
+                                    <apex:actionFunction action="{!getEBSEntitlementInfoBySnAndPnList}" name="getEBSEntitlementInfoBySnAndPnList" reRender="EntitlementBlock, Case_Others, Case_Issue, caseEditBlockSection,hiddenStrGetEntitlementInfo,EntitlementBlockHidden" oncomplete="refreshPage();" status="LoadingStatusSpinner">
+                                        <apex:param name="firstParam" assignTo="{!strProductId}" value="" />
+                                        <apex:param name="secondParam" assignTo="{!strProductLineCode}" value="" />
+                                        <apex:param name="threeParam" assignTo="{!strProductDescription}" value="" />
+                                        <apex:param name="fourParam" assignTo="{!strSerialNumber}" value="" />
+                                    </apex:actionFunction>
+                                    <apex:actionFunction action="{!getEBSEntitlementInfoByContractListPage}" name="getEBSEntitlementInfoByContractListPage" reRender="EntitlementBlock, Case_Others, Case_Issue, caseEditBlockSection,hiddenStrGetEntitlementInfo,EntitlementBlockHidden" oncomplete="refreshPage();" status="LoadingStatusSpinner">
+                                        <apex:param name="firstParam" assignTo="{!strContractId}" value="" />
+                                    </apex:actionFunction>
+                                 </apex:panelGroup>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem id="PNItem">
+                                <apex:outputLabel for="Case_PN">{!$ObjectType.Case.fields.CSC_PN__c.label}</apex:outputLabel>
+                                <apex:panelGroup >
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <apex:inputField id="Case_PN" value="{!objCase.CSC_PN__c}" style="width:250px;"/>
+                                    </div>
+                                </apex:panelGroup>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem id="PNLineItem">
+                                 <apex:outputLabel for="Case_Product_Line">{!$ObjectType.Case.fields.CSC_Product_Line__c.label}</apex:outputLabel>
+                                 <apex:panelGroup >
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <apex:inputField id="Case_Product_Line" value="{!objCase.CSC_Product_Line__c}" style="width:250px;"/>
+                                    </div>
+                                </apex:panelGroup>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem id="PNDescriptionItem">
+                                <apex:outputLabel for="Case_Product_Description">{!$ObjectType.Case.fields.CSC_Product_Description__c.label}</apex:outputLabel>
+                                <apex:inputField id="Case_Product_Description" value="{!objCase.CSC_Product_Description__c}" style="width:450px;" />
+                            </apex:pageBlockSectionItem>
+                            
+                        </apex:pageBlockSection>
+                        
+                        <apex:pageBlockSection columns="1" title="Case Info" id="Case_Issue" >
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel >{!$ObjectType.Case.fields.Subject.label}</apex:outputLabel>
+                                <apex:panelGroup >
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <apex:inputField id="CSC_Subject" value="{!objCase.Subject}" style="width:450px;"/>
+                                    </div>
+                                </apex:panelGroup>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem id="CSC_SDI_SectionItem">
+                                <apex:outputLabel for="CSC_SDI" >{!$ObjectType.Case.fields.CSC_SDI__c.label}</apex:outputLabel>
+                                <apex:inputTextarea id="CSC_SDI" value="{!objCase.CSC_SDI__c}" style="width:450px;height:150px;"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel >{!$ObjectType.Case.fields.CSC_Environment__c.label}</apex:outputLabel>
+                                <apex:inputField value="{!objCase.CSC_Environment__c}" style="width:450px;height:130px;"/>
+                            </apex:pageBlockSectionItem>
+                            <!-- <apex:pageBlockSectionItem >
+                                <apex:outputLabel >{!$ObjectType.Case.fields.CSC_Firmware_Version__c.label}</apex:outputLabel>
+                                <apex:inputField value="{!objCase.CSC_Firmware_Version__c}" style="width:450px"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel >{!$ObjectType.Case.fields.CSC_Software_Product_Version__c.label}</apex:outputLabel>
+                                <apex:inputField value="{!objCase.CSC_Software_Product_Version__c}" style="width:450px"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel >{!$ObjectType.Case.fields.CSC_Operating_System_Version__c.label}</apex:outputLabel>
+                                <apex:inputField value="{!objCase.CSC_Operating_System_Version__c}" style="width:450px"/>
+                            </apex:pageBlockSectionItem> -->
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel >{!$ObjectType.Case.fields.CSC_Issue__c.label}</apex:outputLabel>
+                                <apex:panelGroup >
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock_One"></div>
+                                        <apex:inputField value="{!objCase.CSC_Issue__c}" style="width:450px;height:170px;"/>
+                                    </div>
+                                </apex:panelGroup>
+                            </apex:pageBlockSectionItem>
+                            <!-- <apex:pageBlockSectionItem >
+                                <apex:outputLabel >{!$ObjectType.Case.fields.CSC_Error_Codes__c.label}</apex:outputLabel>
+                                <apex:inputField value="{!objCase.CSC_Error_Codes__c}" style="width:450px"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel >{!$ObjectType.Case.fields.CSC_Is_Issue_Intermittent__c.label}</apex:outputLabel>
+                                <apex:inputField value="{!objCase.CSC_Is_Issue_Intermittent__c}"/>
+                            </apex:pageBlockSectionItem> -->
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection columns="1" title="Resolution" id="Case_Resolution">
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel >{!$ObjectType.Case.fields.CSC_Cause__c.label}</apex:outputLabel>
+                                <apex:inputField id="id_cause" value="{!objCase.CSC_Cause__c}" style="width:450px"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel >{!$ObjectType.Case.fields.CSC_Resolution__c.label}</apex:outputLabel>
+                                <apex:inputField id="id_resolution" value="{!objCase.CSC_Resolution__c}" style="width:450px;height:150px;"/>
+                            </apex:pageBlockSectionItem>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection columns="2" title="Others" id="Case_Others">
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel >{!$ObjectType.Case.fields.CSC_Case_Type__c.label}</apex:outputLabel>
+                                <apex:panelGroup >
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <apex:inputField id="CSC_Case_Type" value="{!objCase.CSC_Case_Type__c}" style="width:193px;"/>
+                                    </div>
+                                </apex:panelGroup>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel >{!$ObjectType.Case.fields.Priority.label}</apex:outputLabel>
+                                <apex:panelGroup >
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <apex:inputField id="Priority" value="{!objCase.Priority}" style="width:193px;"/>
+                                    </div>
+                                </apex:panelGroup>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel >{!$ObjectType.Case.fields.CSC_Severity__c.label}</apex:outputLabel>
+                                <apex:panelGroup >
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <apex:inputField id="CSC_Severity__c" value="{!objCase.CSC_Severity__c}" style="width:193px;"/>
+                                    </div>
+                                </apex:panelGroup>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel >{!$ObjectType.Case.fields.Status.label}</apex:outputLabel>
+                                <apex:inputField id="Status" value="{!objCase.Status}" style="width:193px;"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem id="CSCOtcSectionItem">
+                                <apex:outputLabel >{!$ObjectType.Case.fields.CSC_OTC__c.label}</apex:outputLabel>
+                                <apex:panelGroup >
+                                    <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <apex:inputField id="CSC_OTC" value="{!objCase.CSC_OTC__c}" style="width:193px;"/>
+                                    </div>
+                                </apex:panelGroup>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel >{!$ObjectType.Case.fields.CSC_Cust_Track__c.label}</apex:outputLabel>
+                                <apex:inputField value="{!objCase.CSC_Cust_Track__c}" style="width:190px;"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel >{!$ObjectType.Case.fields.CSC_Case_Type2__c.label}</apex:outputLabel>
+                                <apex:inputField id="CSC_Case_Type2" value="{!objCase.CSC_Case_Type2__c}" style="width:193px;"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel for="Case_Advisory_ID">{!$ObjectType.Case.fields.CSC_Advisory_ID__c.label}</apex:outputLabel>
+                                <!--apex:inputField id="Case_Advisory_ID" value="{!objCase.CSC_Advisory_ID__c}"/--> 
+                                <apex:inputText id="Case_Advisory_ID" value="{!objCase.CSC_Advisory_Id_Text__c}" onchange="otcTypeSelectItemChange();" style="width:190px;"/>
+                            </apex:pageBlockSectionItem>
+                            <!-- <apex:pageBlockSectionItem >
+                                <apex:outputLabel >{!$ObjectType.Case.fields.Sales_Channel__c.label}</apex:outputLabel>
+                                <apex:inputField id="Sales_Channel" value="{!objCase.Sales_Channel__c}"/>
+                            </apex:pageBlockSectionItem> -->
+                        </apex:pageBlockSection>  
+                         
+                          <apex:pageBlockButtons location="bottom">
+                                <apex:commandButton action="{!saveCase}" value="Save Case" oncomplete="gotoViewCasePage();" reRender="hiddenStrCaseId,hiddenIsGotoViewPage,msg" onclick="setSaveCaseTypeAsNormalCase();" status="SavingStatusSpinner"/>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <apex:commandButton value="cancel" reRender="msg" onclick="goBack();"/>
+                            </apex:pageBlockButtons>
+                                      
+                      </apex:pageBlock>
+                   <div style='height: 60px;'></div>   
+                    <apex:pageBlock id="hiddenBlock" >
+                        <apex:inputHidden id="hiddenCheckResult" value="{!checkResult}"/>
+                        <apex:inputHidden id="hiddenSaveCaseType" value="{!strSaveCaseType}" />
+                        <apex:inputHidden id="hiddenShowSearchSuccessMsg" value="{!showSearchSuccessMsg}" />
+                        <apex:inputHidden id="hiddenStrGetEntitlementInfo" value="{!strGetEntitlementInfo}"/>
+                        <apex:inputHidden id="hiddenIsPassedAntiFraudCheck" value="{!isPassedAntiFraudCheck}"/>
+                        <apex:inputHidden id="hiddenStrAntiFraudResult1" value="{!strAntiFraudResult1}"/>
+                        <apex:inputHidden id="hiddenStrAntiFraudResult2" value="{!strAntiFraudResult2}"/>
+                        <apex:inputHidden id="hiddenStrAntiFraudResult3" value="{!strAntiFraudResult3}"/>                      
+                        <apex:inputHidden id="hiddenStrAntiFraudResult4" value="{!strAntiFraudResult4}"/>
+                        <apex:inputHidden id="hiddenStrAntiFraudResult5" value="{!strAntiFraudResult5}"/>
+                        <apex:inputHidden id="hiddenStrAntiFraudResult6" value="{!strAntiFraudResult6}"/>
+                        <apex:inputHidden id="hiddenStrAntiFraudResult7" value="{!strAntiFraudResult7}"/>
+                        <input type="hidden" id="hiddenProductList" value=""/>
+                        <apex:inputHidden id="hiddenStrCaseId" value="{!strCaseId}"/>
+                        <apex:inputHidden id="hiddenIsGotoViewPage" value="{!isGotoViewPage}"/>
+                        <apex:inputHidden id="hiddenHasCustomeSetting" value="{!hasCustomeSetting}"/>
+                        <apex:inputHidden id="hiddenOTCHasCustomeSetting" value="{!otcHasCustomeSetting}"/>
+                        <apex:inputHidden id="hiddenCheckRPLAntiFraud"/>
+                        <apex:inputHidden id="hiddenAntiFraudNeed" value="{!ispassNeed}"/>
+                    </apex:pageBlock>
+                </div>  
+                <div class="right_side">
+                    <div class="right_side_content">
+                        <apex:pageBlock title="Entitlement" id="EntitlementBlock" mode="detail">
+                            <apex:actionStatus id="LoadingStatusSpinner">
+                              <apex:facet name="start">
+                                   <div id="loadingDiv" class="loadingDiv" >
+                                        <span id="loadingHolder" class="loadingHolder">
+                                             <img  title="Loading..." alt="Loading..." src="/img/loading.gif"/>
+                                             <span class="loadingDescription">Loading...</span>
+                                        </span>
+                                   </div>
+                              </apex:facet>
+                            </apex:actionStatus>
+
+                            <apex:actionStatus id="optionsStatus1">
+                              <apex:facet name="start">
+                                   <div id="loadingDiv" class="loadingDiv" >
+                                        <span id="loadingHolder" class="loadingHolder">
+                                             <img  title="Loading..." alt="Loading..." src="/img/loading.gif"/>
+                                             <span class="loadingDescription">Loading...</span>
+                                        </span>
+                                   </div>
+                              </apex:facet>
+                            </apex:actionStatus>
+
+                            <apex:actionStatus id="optionsStatus">
+                                    <apex:facet name="start">
+                                        <span style="font-weight:bold;color:red;margin-left: 5px">Loading...</span>
+                                    </apex:facet>
+                                </apex:actionStatus>
+                            <apex:pageBlockSection columns="1" id="EntitlementBlockSection">
+
+                                <apex:pageBlockSectionItem id="statusSectionItem">
+                                    <apex:outputLabel >{!$ObjectType.Entitlement.fields.Entitlement_Status__c.label}</apex:outputLabel>
+                                    <apex:outputField id="entitlementStatus" value="{!objEntitle.Entitlement_Status__c}"/>
+                                    </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem id="packageNameSectionItem">
+                                    <apex:outputLabel >{!$ObjectType.Entitlement.fields.Package_name__c.label}</apex:outputLabel>
+                                    <apex:outputField id="entitlementPackageName" value="{!objEntitle.Package_name__c}"/>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem id="offerSectionItem">
+                                     <apex:outputLabel >{!$ObjectType.Entitlement.fields.Offer__c.label}</apex:outputLabel>
+                                     <apex:inputField id="entitlementOffer" value="{!objEntitle.Offer__c}" style="width:200px;"/>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem id="startEndDateSectionItem">
+                                     <apex:outputLabel >{!$ObjectType.Entitlement.fields.Offer_Dates__c.label}</apex:outputLabel>
+                                     <apex:panelGroup >
+                                        <apex:inputField id="startDate" value="{!objEntitle.StartDate}"/>&nbsp;/&nbsp;<apex:inputField id="endDate" value="{!objEntitle.EndDate}"/>
+                                     </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem id="coverageSectionItem">
+                                     <apex:outputLabel >{!$ObjectType.Entitlement.fields.Coverage_Response__c.label}</apex:outputLabel>
+                                     <apex:inputField id="entitlementCoverage" value="{!objEntitle.Coverage_Response__c}" style="width:200px;"/>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem rendered="{!objCase.WarnMess__c == 1 || objCase.WarnMess__c == 12}">
+                                     <apex:outputLabel >合同提醒</apex:outputLabel>
+                                     <a href="javascript:void(0);" class="no-hover" style="background-color: orange;text-decoration-line: initial;font-size: larger;cursor:default;">借贷合同</a>
+                                </apex:pageBlockSectionItem>
+                            </apex:pageBlockSection>
+
+                            <apex:pageBlockSection columns="1" rendered="{!showHPEEntitlementInfo}">
+                                <apex:pageBlockSectionItem >
+                                     <apex:outputLabel ><nobr>Address On Contract</nobr></apex:outputLabel>
+                                     <apex:panelGroup >
+                                        <a href="#" onClick="gotoAddresssOnContractDetailPage();" id="addressLink" >{!objEntitle.LocationAddress__c}</a>
+                                     </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+                                <!-- add by xt for 价值客户-->
+
+                                <apex:pageBlockSectionItem >
+                                     <apex:outputLabel ><nobr>Contact On Contract</nobr></apex:outputLabel>
+                                     <apex:panelGroup >
+                                        <a href="#" onClick="gotoContactOnContractListPage();" id="contactLink" style="width:200px;">
+                                            Contact On Contract
+                                        </a>
+                                     </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem >
+                                     <div align="right">
+                                        <a href="#" onClick="gotoEntitlementDetailPage();">
+                                            View Details
+                                        </a>
+                                     </div>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem >
+                                    <apex:outputLabel >Warning</apex:outputLabel>
+                                    <apex:outputField id="warningMessage" value="{!objEntitle.Entitlement_Warning_Message__c}"/>
+                                </apex:pageBlockSectionItem>
+                            </apex:pageBlockSection>
+                            <apex:pageBlockSection columns="1" rendered="{!showEBSEntitlementInfo}" id="cscEBSBlockSection">
+                                <apex:pageBlockSectionItem rendered="{!redBrand}">
+                                     <apex:outputLabel >
+
+                                        <nobr>Red SLA</nobr>
+                                        
+                                     </apex:outputLabel>
+                                     <apex:actionRegion >
+                                        <div class="requiredInput">
+                                        <div class="requiredBlock"></div>
+                                        <apex:selectList value="{!coverageSLA}" size="1">
+                                           <apex:selectOptions value="{!coverageOptions}"/>
+                                           <apex:actionSupport event="onchange" reRender="EntitlementBlock" status="optionsStatus" action="{!getEBSEntitlementMapping}" oncomplete="setElementsProperties();"/>
+                                        </apex:selectList>
+                                        </div>
+                                     </apex:actionRegion>
+
+
+                                </apex:pageBlockSectionItem>
+                                
+                                <apex:pageBlockSectionItem >
+                                     <apex:outputLabel ><nobr>Address On Contract</nobr></apex:outputLabel>
+                                     <apex:panelGroup >
+                                        <a href="#" onClick="gotoEBSAddresssOnContractDetailPage();" id="EBSaddressLink" >{!objEntitle.LocationAddress__c}</a>
+                                     </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+                                <!-- add by xt for 价值客户-->
+                                <apex:pageBlockSectionItem id="valuableCustomerSectionItem">
+                                    <apex:outputLabel ><nobr>价值客户</nobr></apex:outputLabel>
+                                    <apex:panelGroup >
+                                    <a href="javascript:void(0);" class="no-hover" id="valuableCustomerName"  style="background-color: yellow;text-decoration-line: initial;font-size: larger;cursor:default;text-decoration:none; ">{!objEntitle.Valuable_Customer_Name__c}</a>
+                                    <apex:inputHidden id="valuableCustomerName_input" value="{!objEntitle.Valuable_Customer_Name__c}"  />
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+
+                                <apex:pageBlockSectionItem id="valuableCustomerTypeSectionItem">
+                                    <apex:outputLabel ><nobr>价值客户类型</nobr></apex:outputLabel>
+                                    <apex:panelGroup >
+                                    <a href="javascript:void(0);" class="no-hover" id="valuableCustomerName2"  style="background-color: yellow;text-decoration-line: initial;font-size: larger;cursor:default;">{!objEntitle.Valuable_Customer_Type__c}</a>
+                                    <apex:inputHidden id="valuableCustomerName2_input" value="{!objEntitle.Valuable_Customer_Type__c}"  />
+                                    <apex:inputHidden id="valuableCustomerName3_input" value="{!objCase.Valuable_Customer_Type__c}"  />
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+
+                                <apex:pageBlockSectionItem id="dmrSectionItem">
+                                    <apex:outputLabel ><nobr>DMR</nobr></apex:outputLabel>
+                                    <apex:panelGroup >
+                                        <apex:inputCheckbox id="dmr_input" value="{!objCase.DMR__c}" disabled="{!isDMRDisabled}" ></apex:inputCheckbox>
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+
+                                <apex:pageBlockSectionItem >
+                                     <apex:outputLabel ><nobr>Contact On Contract</nobr></apex:outputLabel>
+                                     <apex:panelGroup >
+                                        <a href="#" onClick="gotoEBSContactOnContractListPage();" id="EBScontactLink">
+                                            Contact On Contract
+                                        </a>
+                                     </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+
+                                <apex:pageBlockSectionItem id="hpeSaidSectionItem"  rendered="{!objEntitle.HPE_SAID__c != null && objEntitle.HPE_SAID__c != ''}">
+                                    <apex:outputLabel ><nobr>HPE SAID</nobr></apex:outputLabel>
+                                    <apex:panelGroup >
+                                    <div  class="no-hover" id="hpeSaid"  style="background-color: yellow;word-break:break-all;word-wrap:break-word;font-size: larger;cursor:default;">{!objEntitle.HPE_SAID__c}</div>
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+
+                                <apex:pageBlockSectionItem >
+                                     <div align="right">
+                                        <a href="#" onClick="gotoEBSEntitlementDetailPage();">
+                                            View Details
+                                        </a>
+                                     </div>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem >
+                                    <apex:outputLabel >Warning</apex:outputLabel>
+                                    <apex:outputField id="EBSwarningMessage" value="{!objEntitle.Entitlement_Warning_Message__c}"/>
+                                </apex:pageBlockSectionItem>
+                            </apex:pageBlockSection>
+                            <div id="EntitlementBlockHidden">
+                                <input type="hidden" id="hiddenStrSN" value="{!objEntitle.SN__c}" />
+                                <input type="hidden" id="hiddenStrPN" value="{!objEntitle.PN__c}" />
+                                <input type="hidden" id="hiddenStrSearchDate" value="{!strEntitlementSearchDate}" />
+                                <input type="hidden" id="hiddenLocationId" value="{!objEntitle.LocationId__c}" />
+                                <input type="hidden" id="hiddenSourceCustomerID" value="{!objEntitle.SourceCustomerID__c}" />
+                                <input type="hidden" id="hiddenStrContractId" value="{!objEntitle.ContractId__c}" />
+                                <input type="hidden" id="hiddenStrOfferId" value="{!objEntitle.OfferId__c}"/>
+                                <input type="hidden" id="hiddenStrOfferStatus" value="{!objEntitle.WarrantyOfferId__c}"/>
+                                <input type="hidden" id="hiddenStrDeliverId" value="{!objEntitle.DeliverId__c}"/>
+                                <input type="hidden" id="hiddenStrSlatype" value="{!objEntitle.SLA_Type__c}"/>
+                                <input type="hidden" id="hiddenPackageName" value="{!objEntitle.Package_name__c}"/>
+
+                                <input type="hidden" id="hiddenWarnMess" value="{!objCase.WarnMess__c}"/>
+
+                                <input type="hidden" id="hiddenRedBrand" value="{!redBrand}"/>
+                                
+                            </div>
+                        </apex:pageBlock>
+                    </div>
+                 
+
+                    <div class="right_side_content">
+                        <apex:pageBlock id="relatedBlock" >
+                            <h2 style='font-size:13.5px;font-weight: bold;display: block;position: relative;margin: 15px 0 10px;position: relative;'>Case Related</h2>
+                            <div style='width:90%;height: 1px; background:#e6dada;position: absolute;margin-left: -2%;top:31%;'></div>
+                            <!-- <apex:pageBlockButtons location="top" style="padding-left:200px;">
+                                <input type="button" value="clear" onclick="clearRelated();" class="btn" />
+                            </apex:pageBlockButtons> -->
+                            <apex:pageBlockSection columns="1" id="relatedBlockSection">
+                                <apex:pageBlockSectionItem id="pinCodeSectionItem">
+                                    <apex:outputLabel for="pinCode">VIP ID</apex:outputLabel>
+                                    <apex:inputField id="pinCode" value="{!objCase.Case_Pin_Code__c}" style="width:193px;"/>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem id="sendMessageItem">
+                                    <apex:panelGroup id="sendMessageGroup">
+                                    <apex:outputLabel for="check_message"><b>{!$ObjectType.Case.fields.Send_Message__c.label}</b></apex:outputLabel>
+                                    <apex:inputField id="check_message" value="{!objCase.Send_Message__c}"></apex:inputField>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <apex:outputLabel for="check_email"><b>{!$ObjectType.Case.fields.Send_Email__c.label}</b></apex:outputLabel>
+                                    <apex:inputField id="check_email"  value="{!objCase.Send_Email__c}"></apex:inputField>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <apex:outputLabel for="check_servey"><b>{!$ObjectType.Case.fields.Send_Survey__c.label}</b></apex:outputLabel>
+                                    <apex:inputField id="check_servey" onchange="change_servey_value();"  value="{!objCase.Send_Survey__c}" ></apex:inputField>
+
+                                    <apex:actionFunction action="{!change_servey_value}" name="change_servey_value" rerender="relatedBlock" ></apex:actionFunction>
+
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem id="NoSurveyItem" rendered="{!NOT(objCase.Send_Survey__c)}">
+                                    <apex:outputLabel for="NoSurveyReason">{!$ObjectType.Case.fields.No_Survey_Reason__c.label}</apex:outputLabel>
+                                    <apex:panelGroup >
+                                        <div class="requiredInput">
+                                            <div class="requiredBlock"></div>
+                                            <apex:inputField id="NoSurveyReason" value="{!objCase.No_Survey_Reason__c}"  style="width:193px;"/>
+                                        </div>
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem> 
+                            </apex:pageBlockSection>
+                        </apex:pageBlock>
+                    </div>
+
+                   <div class="right_side_content">
+                        <apex:pageBlock id="quickLogBlock" title="Quick Log">
+                            <apex:pageBlockSection columns="1" id="quickLogBlockSection">
+                                <apex:pageBlockSectionItem >
+                                    <apex:outputLabel for="CSC_Reason">{!$ObjectType.Case.fields.CSC_Reason__c.label}</apex:outputLabel>
+                                    <apex:panelGroup >                                    
+                                        <div class="requiredInput">
+                                            <div class="requiredBlock_One"></div>
+                                            <apex:inputField id="CSC_Reason" value="{!objCase.CSC_Reason__c}"/>
+                                        </div>
+                                    </apex:panelGroup>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem >
+                                    <apex:commandButton action="{!saveCase}" value="Save Quick Log"  onclick="setSaveCaseTypeAsQuickLog();" style="align:center;" />
+                                </apex:pageBlockSectionItem>
+                            </apex:pageBlockSection>
+                        </apex:pageBlock>
+                    </div>
+
+                </div>  
+            </div>
+            <div class="selectResult">
+                <apex:pageBlock title="{!strCaeHistoryTitle}" id="caseHistoryList" >
+                    <apex:pageBlockTable value="{!caseResultList}" var="item" width="auto;">
+                        <apex:column style="width:50px;">
+                            <apex:facet name="header">Action</apex:facet>
+                            <apex:panelGroup >
+                                <apex:commandLink action="{!getCaseInfoById}" reRender="customerBlock,accountBlock,callerBlock,msg,realAccountBlock" oncomplete="setAccountAndContactStatus2();">
+                                    U
+                                    <apex:param id="caseId" name="caseId" value="{!item.id}"/>
+                                </apex:commandLink>
+                                <apex:outputLabel >|</apex:outputLabel> 
+                                <apex:commandLink action="{!cloneCaseInfoById}" reRender="Case_Resolution,customerBlock,accountBlock,callerBlock,msg,Case_Others,Case_Issue,realAccountBlock" oncomplete="cloneShowCause();">
+                                    C
+                                    <apex:param id="reCaseId" name="reCaseId" value="{!item.id}"/>
+                                </apex:commandLink>
+                            </apex:panelGroup>
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">{!$ObjectType.Case.fields.CaseNumber.label}</apex:facet>
+                            <apex:outputLink styleClass="newLink" id="CaseDetailBlock"
+                                onblur="LookupHoverDetail.getHover('{!$Component.CaseDetailBlock}').hide();"
+                                onfocus="LookupHoverDetail.getHover('{!$Component.CaseDetailBlock}', '/{!item.id}/m?retURL={!URLENCODE($CurrentPage.Url)}&isAjaxRequest=1').show();"
+                                onmouseout="LookupHoverDetail.getHover('{!$Component.CaseDetailBlock}').hide();" onmouseover="LookupHoverDetail.getHover('{!$Component.CaseDetailBlock}', '/{!item.id}/m?retURL={!URLENCODE($CurrentPage.Url)}&isAjaxRequest=1').show();" value="{!URLFOR('/' + item.id)}">
+                                {!item.CaseNumber}
+                            </apex:outputLink>
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">Category</apex:facet>
+                            <apex:outputField value="{!item.CSC_CaseOrQuickLog__c}"  />
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">{!$ObjectType.Case.fields.CSC_SN__c.label}</apex:facet>
+                            <apex:outputField value="{!item.CSC_SN__c}"  />
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">{!$ObjectType.Case.fields.CSC_Product_Description__c.label}</apex:facet>
+                            <apex:outputField value="{!item.CSC_Product_Description__c}"  />
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">{!$ObjectType.Case.fields.Subject.label}</apex:facet>
+                            <apex:outputField value="{!item.Subject}"  />
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">Contact</apex:facet>
+                            <apex:outputField value="{!item.Contact.Name}"  />
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">Phone</apex:facet>
+                            <apex:outputField value="{!item.Contact.Phone}"  />
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">EXT</apex:facet>
+                            <apex:outputField value="{!item.Contact.CSC_Phone_Extension__c}"  />
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">{!$ObjectType.Contact.fields.Email.label}</apex:facet>
+                            <apex:outputField value="{!item.Contact.Email}"  />
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">{!$ObjectType.Account.fields.Name.label}</apex:facet>
+                            <apex:outputField value="{!item.Account.Name}"  />
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">Address</apex:facet>
+                            <apex:outputField value="{!item.Billing_Street__c}"  />
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">{!$ObjectType.Case.fields.CSC_Case_Type__c.label}</apex:facet>
+                            <apex:outputField value="{!item.CSC_Case_Type__c}"  />
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">{!$ObjectType.Case.fields.Status.label}</apex:facet>
+                            <apex:outputField value="{!item.Status}"/>
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">{!$ObjectType.Case.fields.CreatedDate.label}</apex:facet>
+                            <apex:outputField value="{!item.CreatedDate}"/>
+                        </apex:column>
+                    </apex:pageBlockTable>
+                </apex:pageBlock>
+            </div>
+            </apex:form>
+        </div> 
+    </body>
+    <script type="text/javascript">
+        var __sfdcSessionId = '{!GETSESSIONID()}';
+    </script>
+    <script type="text/javascript">
+        var j$ = jQuery.noConflict();
+
+        j$(document).ready(function() {
+
+            if(sforce.console.isInConsole()){
+                sforce.console.setTabTitle('New Case');
+                sforce.console.getFocusedPrimaryTabId(hiddenSidebarTabId);
+            }
+
+            //twistSection(document.getElementById("page:form:callerBlock:callerBlockSection").childNodes[0].childNodes[0]);
+            //twistSection(document.getElementById("page:form:caseEditBlock:Case_Resolution").childNodes[0].childNodes[0]);
+            //twistSection(document.getElementById("page:form:caseEditBlock:Case_Quote").childNodes[0].childNodes[0]);
+            document.getElementById("page:form:caseEditBlock:Case_Resolution").style.display="none";
+            j$(".dateFormat").hide();
+            document.getElementById("page:form:caseEditBlock:Case_Issue:CSC_SDI_SectionItem:CSC_SDI").parentNode.parentNode.style.display="none";
+            document.getElementById("page:form:hiddenBlock").style.display="none";
+
+            j$("[id$=CSC_OTC] option[value='02G-Sevice Note']").remove();
+            //2018-06-05
+            document.getElementById("page:form:realAccountBlock").style.display="none";
+            /*document.getElementById("page:form:realAccountBlock:realaccountBlockSection:realcountrySectionItem:realcountry").disabled="true";
+            document.getElementById("page:form:realAccountBlock:realaccountBlockSection:realprovinceSectionItem:realprovince").disabled="true";
+            document.getElementById("page:form:realAccountBlock:realaccountBlockSection:realcitySectionItem:realcity").disabled="true";
+            document.getElementById("page:form:realAccountBlock:realaccountBlockSection:reallineSectionItem:realline").disabled="true";
+            document.getElementById("page:form:realAccountBlock:realaccountBlockSection:realcountrySectionItem:realcountry").style.backgroundColor = "#cccccc";
+            document.getElementById("page:form:realAccountBlock:realaccountBlockSection:realprovinceSectionItem:realprovince").style.backgroundColor = "#cccccc";
+            document.getElementById("page:form:realAccountBlock:realaccountBlockSection:realcitySectionItem:realcity").style.backgroundColor = 
+            "#cccccc";
+            document.getElementById("page:form:realAccountBlock:realaccountBlockSection:reallineSectionItem:realline").style.backgroundColor = 
+            "#cccccc";*/
+
+            setAccountAndContactStatus();
+            
+            var msg = document.getElementById("page:msg:j_id3:j_id4:0:j_id5:j_id6:j_id9");
+            if (msg != null && msg != undefined) {
+                var msgValue = document.getElementById("page:msg:j_id3:j_id4:0:j_id5:j_id6:j_id9").outerText;
+                if (j$.trim(msgValue)=="Warning:" || j$.trim(msgValue)=="警告：" ) {
+                    setTimeout(function(){document.getElementById("page:msg").style.display = "none"},2000);
+                }
+             }
+        });
+
+        var hiddenSidebarTabId = function hiddenSidebarTabId(result) {
+            if (result.id != 'null') {
+                sforce.console.setSidebarVisible(false,result.id,sforce.console.Region.LEFT);
+                sforce.console.setSidebarVisible(false,result.id,sforce.console.Region.RIGHT);
+                sforce.console.setSidebarVisible(false,result.id,sforce.console.Region.BOTTOM);
+            } 
+        };
+
+        function otcTypeSelectItemChange(){
+
+            j$("[id$=CSC_OTC] option[value='02G-Sevice Note']").remove();
+            var Case_Advisory_ID = j$("[id$=Case_Advisory_ID]").val();
+            if (Case_Advisory_ID!= undefined && j$.trim(Case_Advisory_ID) !="") {
+                j$("[id$=CSC_OTC]").append("<option value='02G-Sevice Note'>02G-Sevice Note</option>");
+            } 
+        }
+
+        function clearEnttilementInfoByContractId(){
+            j$("[id$=Case_SN]").val('');
+            clearEnttilementInfo();
+        }
+
+        function clearEnttilementInfoBySN(){
+            j$("[id$=contractId]").val('');
+            clearEnttilementInfo();
+        }
+
+        function clearEnttilementInfo(){
+            j$("[id$=SAR]").text('');
+            j$("[id$=Case_PN]").val('');
+            j$("[id$=Case_Product_Line]").val('');
+            j$("[id$=Case_Product_Description]").val('');
+            j$("[id$=entitlementStatus]").text('');
+            j$("[id$=entitlementStatus]").removeAttr("style");
+            j$("[id$=entitlementPackageName]").text('');
+            j$("[id$=entitlementOffer]").val('');
+            j$("[id$=startDate]").val('');
+            j$("[id$=endDate]").val('');
+            j$("[id$=entitlementCoverage]").val('');
+            j$("[id$=Latested_DT]").text('');
+            j$("[id$=Guaranteed_DT]").text('');
+            j$("[id$=Requested_DT]").text('');
+            j$("[id$=addressLink]").text('');
+            j$("[id$=warningMessage]").text('');
+            j$("[id$=hiddenStrSN]").val('');
+            j$("[id$=hiddenStrPN]").val('');
+            j$("[id$=hiddenStrSearchDate]").val('');
+            j$("[id$=hiddenLocationId]").val('');
+            j$("[id$=hiddenSourceCustomerID]").val('');
+            j$("[id$=hiddenStrContractId]").val('');
+            j$("[id$=hiddenStrOfferId]").val('');
+            j$("[id$=hiddenStrOfferStatus]").val('');
+            j$("[id$=hiddenStrDeliverId]").val('');
+            j$("[id$=hiddenStrSlatype]").val('');
+            j$("[id$=hiddenStrGetEntitlementInfo]").val('');
+            //
+            j$("[id$=hiddenWarnMess]").val(0);
+            //
+            
+            j$("[id$=hpeSaid]").text('');
+
+            j$("[id$=hiddenPackageName]").val('');
+            j$("[id$=entitlementCoverage]").css("background-color","");
+
+            if (j$("[id$=hiddenHasCustomeSetting]").val() != 'true') {
+                j$("[id$=CSC_Case_Type]").val('');
+            }
+
+            if (j$("[id$=hiddenOTCHasCustomeSetting]").val() != 'true') {
+                j$("[id$=CSC_OTC]").val('');
+            }
+
+            j$("[id$=CSC_SDI]").val('');
+            j$("[id$=CSC_Subject]").val('');
+            document.getElementById("page:form:caseEditBlock:Case_Issue:CSC_SDI_SectionItem:CSC_SDI").parentNode.parentNode.style.display="none";
+
+            document.getElementById("page:form:rplBlock:rplBlockSection:AntiFraudStatusSectionItem:AntiFraud_Status").value = '';
+            //add by xutao 1107 for value customer
+            j$("[id$=valuableCustomerName]").text('');
+            j$("[id$=valuableCustomerName_input]").val('');
+            j$("[id$=valuableCustomerName2]").text('');
+            j$("[id$=valuableCustomerName2_input]").val('');
+            j$("[id$=valuableCustomerName3_input]").val('');
+            j$("[id$=dmr_input]").attr('checked',false);
+            clearEntitlementInfo();
+
+            showSDI();
+        }
+
+        function goBack(){
+            if(sforce.console.isInConsole()){
+                sforce.console.getFocusedPrimaryTabId(closeTabId);
+            } else{
+                window.close();
+            }
+        }
+
+        var closeTabId = function closeTabId(result) {
+            if (result.id == 'null') {
+                sforce.console.refreshNavigationTab();
+                sforce.console.setSelectedNavigationTab(null,'nav-tab-0');
+            } else {
+                sforce.console.closeTab(result.id);
+            }
+        };
+
+        function showSearchResultMessage(){
+            
+            var hiddenShowSearchSuccessMsg = document.getElementById("page:form:hiddenBlock:hiddenShowSearchSuccessMsg").value;
+
+            if (hiddenShowSearchSuccessMsg == 'true') {
+                alert("Search case history success!");
+            } else if (hiddenShowSearchSuccessMsg == 'false') {
+                alert("No case history been found!");
+            } else {
+                return;
+            }
+        }
+
+        function openLookup(baseURL, width, modified, searchParam){
+            var originalbaseURL = baseURL;
+            var originalwidth = width;
+            var originalmodified = modified;
+            var originalsearchParam = searchParam;
+            //alert(1);
+            //console.log(baseURL);
+            //console.log(baseURL.substr(baseURL.length-3, 3));
+            //console.log(modified);
+            //console.log(searchParam);
+
+            var lookupType = baseURL.substr(baseURL.length-3, 3);
+            if (modified == '1') {
+                baseURL = baseURL + searchParam;
+            }
+
+            var isCustomLookup = false;
+
+            if (lookupType != "001" && lookupType != "003" ) {
+                openPopup(originalbaseURL, "lookup", 350, 480, "width="+originalwidth+",height=480,toolbar=no,status=no,directories=no,menubar=no,resizable=yes,scrollable=no", true);
+            } else {
+                var urlArr = baseURL.split("&");
+                var txtId = '';
+                if(urlArr.length > 2) {
+                    urlArr = urlArr[1].split('=');
+                    txtId = urlArr[1];
+                }
+
+                if (lookupType == "001") {
+                    baseURL = "/apex/CSC_CustomAccountLookup?txt=" + txtId;
+                    baseURL = baseURL + "&frm=" + escapeUTF("{!$Component.myForm}");
+
+                    if (modified == '1') {
+                        baseURL = baseURL + "&lksearch=" + searchParam;
+                    }
+
+                    if(txtId.indexOf('accountId') > -1 ){
+                        isCustomLookup = true;
+                    }
+                    
+                } else if (lookupType == "003"){
+
+                    baseURL = "/apex/CSC_CustomContactLookup?txt=" + txtId;
+                    baseURL = baseURL + "&frm=" + escapeUTF("{!$Component.form}");
+
+                    if (modified == '1') {
+                        //modify by xutao 2018-01-25 param
+                        if(baseURL.indexOf('customerBlock') > -1){
+                            baseURL = baseURL + "&lksearch=" + document.getElementById("page:form:customerBlock:customerBlockSection:phoneBlockSectionItem:phone").value;//searchParam;
+                        }else if(baseURL.indexOf('callerBlock') > -1){
+                            baseURL = baseURL + "&lksearch=" + document.getElementById("page:form:callerBlock:callerBlockSection:additionalContactPhone:additionalContactPhoneNumber").value;
+                        }
+                        
+                    }
+
+                    if(txtId.indexOf('contactId') > -1 || txtId.indexOf('additionalContactId') > -1){
+                        isCustomLookup = true;
+                    }
+                }
+
+                if(isCustomLookup == true){
+                    openPopup(baseURL, "lookup", 350, 480, "width="+width+",height=480,toolbar=no,status=no,directories=no,menubar=no,resizable=yes,scrollable=yes", true);
+                } else {
+                    if (modified == '1') {
+                        originalbaseURL = originalbaseURL + originalsearchParam;
+                    }
+                    openPopup(originalbaseURL, "lookup", 350, 480, "width="+originalwidth+",height=480,toolbar=no,status=no,directories=no,menubar=no,resizable=yes,scrollable=yes", true);
+                }
+            }
+        }
+
+        function clearCustomer(){
+            document.getElementById("page:form:customerBlock:customerBlockSection:contactBlockSectionItem:contactId").value ='';
+            document.getElementById("page:form:customerBlock:customerBlockSection:phoneBlockSectionItem:phone").value ='';
+            document.getElementById("page:form:customerBlock:customerBlockSection:phoneBlockSectionItem:phoneExtension").value ='';
+            document.getElementById("page:form:customerBlock:customerBlockSection:otherPhoneBlockSectionItem:OtherPhone").value ='';
+            document.getElementById("page:form:customerBlock:customerBlockSection:emailBlockSectionItem:Email").value ='';
+            document.getElementById("page:form:customerBlock:customerBlockSection:ContactPrivacy:Privacy").innerText ='';
+            document.getElementById("page:form:rplBlock:rplBlockSection:AntiFraudStatusSectionItem:AntiFraud_Status").value = '';
+        }
+
+        function clearCallerBlock(){
+            document.getElementById("page:form:callerBlock:callerBlockSection:additionalContactNameSectionItem:additionalContactId").value ='';
+            document.getElementById("page:form:callerBlock:callerBlockSection:additionalContactPhone:additionalContactPhoneExtension").value ='';
+            document.getElementById("page:form:callerBlock:callerBlockSection:additionalContactPhone:additionalContactPhoneNumber").value ='';
+            document.getElementById("page:form:callerBlock:callerBlockSection:additionalContactOtherPhone:additionalContactOtherPhoneNumber").value ='';
+            document.getElementById("page:form:callerBlock:callerBlockSection:additionalContactOtherEmail:otherEmail").value ='';
+            document.getElementById("page:form:callerBlock:callerBlockSection:additionalContactPrivacy:otherPrivacy").innerText ='';
+            document.getElementById("page:form:rplBlock:rplBlockSection:AntiFraudStatusSectionItem:AntiFraud_Status").value = '';
+        }
+
+        function clearRelated(){
+            document.getElementById("page:form:relatedBlock:relatedBlockSection:pinCodeSectionItem:pinCode").value ='';
+            document.getElementById("page:form:relatedBlock:relatedBlockSection:sendMessageItem:check_message").checked ='checked';
+            document.getElementById("page:form:relatedBlock:relatedBlockSection:sendMessageItem:check_email").checked ='checked';
+            document.getElementById("page:form:relatedBlock:relatedBlockSection:sendMessageItem:check_servey").checked ='checked';
+            document.getElementById("page:form:relatedBlock:relatedBlockSection:NoSurveyItem:NoSurveyReason").value ='';
+        }
+
+        function clearAccount() {
+            document.getElementById("page:form:accountBlock:accountBlockSection:accountNameSectionItem:accountId").value ='';
+            //document.getElementById("page:form:accountBlock:accountNameSection:pinCodeSectionItem:pinCode").value ='';
+            document.getElementById("page:form:rplBlock:rplBlockSection:AntiFraudStatusSectionItem:AntiFraud_Status").value = '';
+            document.getElementById("page:form:rplBlock:rplBlockSection:rplStatusSectionItem:RPL_Status").value = '';
+            /*document.getElementById("page:form:accountBlock:accountBlockSection:countrySectionItem:country").value = country;
+            document.getElementById("page:form:accountBlock:accountBlockSection:provinceSectionItem:province").value = state;
+            document.getElementById("page:form:accountBlock:accountBlockSection:provinceSectionItem:province").onchange();
+            document.getElementById("page:form:accountBlock:accountBlockSection:citySectionItem:city").value = city;
+            document.getElementById("page:form:accountBlock:accountBlockSection:zipSectionItem:zip").value = zip;
+            document.getElementById("page:form:accountBlock:accountBlockSection:lineSectionItem:line").value = streetAddr;*/
+            getAccountInfoById();
+        }
+
+        function clearAddress(){
+            j$("[id$=province]").val('');
+            j$("[id$=city]").val('');
+            j$("[id$=zip]").val('');
+            j$("[id$=line]").val('');
+        }
+
+        //创建Case的场合，将Case Type设定为Normal Case
+        function setSaveCaseTypeAsNormalCase(){
+            var offerName= j$.trim(j$("[id$=entitlementOffer]").val());
+
+            if (offerName == '' || offerName == null || offerName == undefined){
+                if(confirm("Warning:Entitlement\'s offer name is blank!")){
+                    document.getElementById("page:form:hiddenBlock:hiddenSaveCaseType").value = 'Normal Case';
+                } else {
+                    return false;
+                }
+            } else {
+                document.getElementById("page:form:hiddenBlock:hiddenSaveCaseType").value = 'Normal Case';
+            }
+        }
+
+        //创建quick log的场合，将Case Type设定为Quick log
+        function setSaveCaseTypeAsQuickLog(){
+            document.getElementById("page:form:hiddenBlock:hiddenSaveCaseType").value = 'Quick Log';
+        }
+
+        function checkRPL(){
+            var hiddenCheckResult = document.getElementById("page:form:hiddenBlock:hiddenCheckResult").value;
+
+            if (hiddenCheckResult != undefined && j$.trim(hiddenCheckResult) !="") {
+                var jsonHiddenCheckResult = jQuery.parseJSON(hiddenCheckResult);
+                var status = jsonHiddenCheckResult.isPassed;
+                if (status == true) {
+                    document.getElementById("page:form:rplBlock:rplBlockSection:rplStatusSectionItem:RPL_Status").value = 'RPL Pass';
+                    return false;
+                } else{
+                    var iWidth=670; 
+                    var iHeight=480;
+                    var iTop = (window.screen.availHeight-30-iHeight)/2;
+                    var iLeft = (window.screen.availWidth-10-iWidth)/2;
+                    var url = "CSC_AlertMessage";
+                    //var url = "CSC_RPL_AntiFraud_Check";
+                    window.open(url,"newwindow","height=" + iHeight + " ,width= " + iWidth + " ,top=" + iTop + ",left=" + iLeft + ",toolbar=no,menubar=no, scrollbars=yes, resizable=no, location=no,status=no");
+                }
+            } else {
+                return;
+            }
+        }
+
+        function checkRPLAntiFraud(){
+
+            var rplCheck = false;
+            var antiFraud = false;
+
+            var hiddenCheckResult = document.getElementById("page:form:hiddenBlock:hiddenCheckResult").value;
+
+            if (hiddenCheckResult != undefined && j$.trim(hiddenCheckResult) !="") {
+                var jsonHiddenCheckResult = jQuery.parseJSON(hiddenCheckResult);
+                var status = jsonHiddenCheckResult.isPassed;
+                if (status == true) {
+                    document.getElementById("page:form:rplBlock:rplBlockSection:rplStatusSectionItem:RPL_Status").value = 'RPL Pass';
+                    rplCheck = false;
+                } else{
+                    rplCheck = true;
+                }
+            } else {
+                return;
+            }
+
+            // AntiFraud
+            var isPassed = document.getElementById("page:form:hiddenBlock:hiddenIsPassedAntiFraudCheck").value;
+
+            var isPassNeed = document.getElementById("page:form:hiddenBlock:hiddenAntiFraudNeed").value;
+
+            if (isPassed != undefined && j$.trim(isPassed) !="" &&　isPassed == 'false') {
+
+                var result1 = document.getElementById("page:form:hiddenBlock:hiddenStrAntiFraudResult1").value;
+                var result2 = document.getElementById("page:form:hiddenBlock:hiddenStrAntiFraudResult2").value;
+                var result3 = document.getElementById("page:form:hiddenBlock:hiddenStrAntiFraudResult3").value;
+                var result4 = document.getElementById("page:form:hiddenBlock:hiddenStrAntiFraudResult4").value;
+                var result5 = document.getElementById("page:form:hiddenBlock:hiddenStrAntiFraudResult5").value;
+                var result6 = document.getElementById("page:form:hiddenBlock:hiddenStrAntiFraudResult6").value;
+
+                if ((result1 != undefined && j$.trim(result1) !="")
+                    || (result2 != undefined && j$.trim(result2) !="") 
+                    || (result3 != undefined && j$.trim(result3) !="") 
+                    || (result4 != undefined && j$.trim(result4) !="") 
+                    || (result5 != undefined && j$.trim(result5) !="") 
+                    || (result6 != undefined && j$.trim(result6) !="") ) {
+
+                    antiFraud = true;
+                }
+            } else {
+
+                if (isPassNeed=='true'){
+                    antiFraud = false;
+                    document.getElementById("page:form:rplBlock:rplBlockSection:AntiFraudStatusSectionItem:AntiFraud_Status").value = 'AntiFraud Pass';
+                }
+                
+            }
+
+            //所有必填项check都通过
+            if (isPassNeed=='true'){
+
+                // RPL和antiFraud都check失败
+                if (rplCheck && antiFraud){
+                    var iWidth=670; 
+                    var iHeight=480;
+                    var iTop = (window.screen.availHeight-30-iHeight)/2;
+                    var iLeft = (window.screen.availWidth-10-iWidth)/2;
+                    var url = "CSC_AlertMessage";
+                    j$("[id$=hiddenCheckRPLAntiFraud]").val('1');
+                    //var url = "CSC_RPL_AntiFraud_Check";
+                    window.open(url,"newwindow","height=" + iHeight + " ,width= " + iWidth + " ,top=" + iTop + ",left=" + iLeft + ",toolbar=no,menubar=no, scrollbars=yes, resizable=no, location=no,status=no");
+
+                }else if (rplCheck && !antiFraud){
+                    var iWidth=670; 
+                    var iHeight=480;
+                    var iTop = (window.screen.availHeight-30-iHeight)/2;
+                    var iLeft = (window.screen.availWidth-10-iWidth)/2;
+                    var url = "CSC_AlertMessage";
+                    j$("[id$=hiddenCheckRPLAntiFraud]").val('2');
+                    //var url = "CSC_RPL_AntiFraud_Check";
+                    window.open(url,"newwindow","height=" + iHeight + " ,width= " + iWidth + " ,top=" + iTop + ",left=" + iLeft + ",toolbar=no,menubar=no, scrollbars=yes, resizable=no, location=no,status=no");
+                }else if (!rplCheck && antiFraud){
+                    var iWidth=670; 
+                    var iHeight=480;
+                    var iTop = (window.screen.availHeight-30-iHeight)/2;
+                    var iLeft = (window.screen.availWidth-10-iWidth)/2;
+                    var url = "CSC_AlertMessage";
+                    j$("[id$=hiddenCheckRPLAntiFraud]").val('3');
+                    //var url = "CSC_RPL_AntiFraud_Check";
+                    window.open(url,"newwindow","height=" + iHeight + " ,width= " + iWidth + " ,top=" + iTop + ",left=" + iLeft + ",toolbar=no,menubar=no, scrollbars=yes, resizable=no, location=no,status=no");
+                }
+            }            
+        }
+
+        function showAntiFraudResultPage(){
+            var isPassed = document.getElementById("page:form:hiddenBlock:hiddenIsPassedAntiFraudCheck").value;
+
+            if (isPassed != undefined && j$.trim(isPassed) !="" &&　isPassed == 'false') {
+
+                var result1 = document.getElementById("page:form:hiddenBlock:hiddenStrAntiFraudResult1").value;
+                var result2 = document.getElementById("page:form:hiddenBlock:hiddenStrAntiFraudResult2").value;
+                var result3 = document.getElementById("page:form:hiddenBlock:hiddenStrAntiFraudResult3").value;
+                var result4 = document.getElementById("page:form:hiddenBlock:hiddenStrAntiFraudResult4").value;
+                var result5 = document.getElementById("page:form:hiddenBlock:hiddenStrAntiFraudResult5").value;
+                var result6 = document.getElementById("page:form:hiddenBlock:hiddenStrAntiFraudResult6").value;
+
+                if ((result1 != undefined && j$.trim(result1) !="")
+                    || (result2 != undefined && j$.trim(result2) !="") 
+                    || (result3 != undefined && j$.trim(result3) !="") 
+                    || (result4 != undefined && j$.trim(result4) !="") 
+                    || (result5 != undefined && j$.trim(result5) !="") 
+                    || (result6 != undefined && j$.trim(result6) !="") ) {
+
+                    var iWidth=670; 
+                    var iHeight=480;
+                    var iTop = (window.screen.availHeight-30-iHeight)/2;
+                    var iLeft = (window.screen.availWidth-10-iWidth)/2;
+                    var url = "CSC_AntiFraud";
+                    window.open(url,"newwindow","height=" + iHeight + " ,width= " + iWidth + " ,top=" + iTop + ",left=" + iLeft + ",toolbar=no,menubar=no, scrollbars=yes, resizable=no, location=no,status=no");
+                }
+            } else {
+                document.getElementById("page:form:rplBlock:rplBlockSection:AntiFraudStatusSectionItem:AntiFraud_Status").value = 'AntiFraud Pass';
+            }
+        }
+
+        function showSNSearchResult(){
+            setElementsProperties();
+            showSDI();
+            cloneHideCause();
+            showProductListPage();
+        }
+
+        function refreshPage(){
+            setElementsProperties();
+            showSDI();
+            cloneHideCause();
+            showProductListPage();
+        }
+
+        function cloneHideCause(){
+            
+            j$("[id$=id_cause]").val('');
+            j$("[id$=id_resolution]").val('');
+            document.getElementById("page:form:caseEditBlock:Case_Resolution").style.display="none";
+        }
+
+        function cloneShowCause(){
+            if(j$("[id$=the_street_in_case_diff_account]").val()==true||j$("[id$=the_street_in_case_diff_account]").val()=='true'){
+                document.getElementById("page:form:realAccountBlock").style.display="";
+            }else{
+                document.getElementById("page:form:realAccountBlock").style.display="none";
+            }
+            document.getElementById("page:form:caseEditBlock:Case_Resolution").style.display="";
+        }
+
+        function showSDI(){
+            var SDI = j$("[id$=CSC_SDI]").val();
+
+            if (SDI != undefined && j$.trim(SDI) !="") {
+                document.getElementById("page:form:caseEditBlock:Case_Issue:CSC_SDI_SectionItem:CSC_SDI").parentNode.parentNode.style.display="";
+                document.getElementById("page:form:caseEditBlock:Case_Issue:CSC_SDI_SectionItem:CSC_SDI").readOnly="readonly";
+                document.getElementById("page:form:caseEditBlock:Case_Issue:CSC_SDI_SectionItem:CSC_SDI").style.backgroundColor = "#fff";
+            } else {
+                document.getElementById("page:form:caseEditBlock:Case_Issue:CSC_SDI_SectionItem:CSC_SDI").parentNode.parentNode.style.display="none";
+            }
+            if(j$("[id$=the_street_in_case_diff_account]").val()==true||j$("[id$=the_street_in_case_diff_account]").val()=='true'){
+                document.getElementById("page:form:realAccountBlock").style.display="";
+            }else{
+                document.getElementById("page:form:realAccountBlock").style.display="none";
+            }
+        }
+
+        function showProductListPage(){
+
+            var StrGetEntitlementInfo = document.getElementById("page:form:hiddenBlock:hiddenStrGetEntitlementInfo").value;
+
+            if (StrGetEntitlementInfo != undefined && j$.trim(StrGetEntitlementInfo) !="") {
+                var result = j$.parseJSON(StrGetEntitlementInfo);
+                var resutCode = result.resultCode;
+                var entitlementInfo = result.entitlementInfo;
+
+                if (resutCode == '4' || resutCode == '04' || resutCode == '06' || resutCode == '7') {
+                    var iWidth=670;
+                    var iHeight=480; 
+                    var iTop = (window.screen.availHeight-30-iHeight)/2;
+                    var iLeft = (window.screen.availWidth-10-iWidth)/2; 
+                    var url; 
+
+                    if (resutCode == '4') {
+                        url = "CSC_ProductList"; 
+                    }
+
+                    if (resutCode == '04') {
+                        url = "CSC_ProductListOfContract"; 
+                    }
+
+                    if (resutCode == '06') {
+                        url = "CSC_ContractListOfSAR";
+                    }
+
+                    if (resutCode == '7') {
+                        url = "CSC_SnAndPnList"; 
+                    }
+
+                    window.open(url,"newwindow","height=" + iHeight + " ,width= " + iWidth + " ,top=" + iTop + ",left=" + iLeft + ",toolbar=no,menubar=no, scrollbars=yes, resizable=no, location=no,status=no");
+                }
+            }
+        }
+
+        // Phase II add by xu xiangguo
+        function setElementsProperties(){
+
+            j$(".dateFormat").hide();
+            j$("[id$=CSC_OTC] option[value='02G-Sevice Note']").remove();
+            var entitlementStatus = j$.trim(j$("[id$=entitlementStatus]").text());
+            var hiddenWarnMess = j$.trim(j$("[id$=hiddenWarnMess]").val())+'';
+
+            if (entitlementStatus == "Inactive Contract" || entitlementStatus== "Inactive Warranty"
+                || entitlementStatus== "Cancel Contract" || entitlementStatus== "Entitlement information not found!"
+                || entitlementStatus== "Search Entitlement failure!") {
+                j$("[id$=entitlementStatus]").css("background-color","#FF5151");
+            } else if(entitlementStatus== "Active Contract[No offer Selected. Go to View Details to Select One.]") {
+                j$("[id$=entitlementStatus]").css("background-color","yellow");
+            } else if(entitlementStatus== "Active Warranty[No offer Selected. Go to View Details to Select One.]") {
+                j$("[id$=entitlementStatus]").css("background-color","yellow");
+            } else if(entitlementStatus== "Active Contract" || entitlementStatus== "Active Warranty"
+                || entitlementStatus== "Evergreen Contract") {
+                if(hiddenWarnMess.indexOf('2')>-1){
+                    j$("[id$=entitlementStatus]").css("background-color","orange");
+                }else{
+                   j$("[id$=entitlementStatus]").css("background-color","#8CEA00"); 
+                }
+                
+            } else if (entitlementStatus== "Future Contract" || entitlementStatus== "Block Contract"
+                || entitlementStatus== "Informal Contract") {
+                j$("[id$=entitlementStatus]").css("background-color","orange");
+            } else if (entitlementStatus== "Future Warranty") {
+                j$("[id$=entitlementStatus]").css("background-color","orange");
+            }
+
+            var entitlementStatus = j$.trim(j$("[id$=EBSwarningMessage]").text());
+
+            if (entitlementStatus.indexOf("[WARING_MSG_MARK]") != -1) {
+                var replaceValue = entitlementStatus.replace(/\[WARING_MSG_MARK\]/g,"");
+                j$("[id$=EBSwarningMessage]").html(replaceValue);
+                j$("[id$=EBSwarningMessage]").css("color","red");
+            }
+
+            var slatype = j$.trim(j$("[id$=hiddenStrSlatype]").val());
+            if (slatype=='CTR') {
+                j$("[id$=entitlementCoverage]").css("background-color","orange");
+            }
+        }
+        // Phase II add by xu xiangguo
+
+        function gotoAddresssOnContractDetailPage(){
+            var SN = j$("#hiddenStrSN").val();
+            var PN = j$("#hiddenStrPN").val();
+            var strDate = j$("#hiddenStrSearchDate").val();
+            var sourceCustomerID = j$("#hiddenSourceCustomerID").val();
+            var locationId = j$("#hiddenLocationId").val();
+            var iWidth=670;
+            var iHeight=480; 
+            var iTop = (window.screen.availHeight-30-iHeight)/2;
+            var iLeft = (window.screen.availWidth-10-iWidth)/2; 
+            var url = "CSC_AddressOnContract?SN=" + SN + "&PN=" + PN + "&Date=" + strDate + "&locationId=" + locationId + "&sourceCustomerID=" + sourceCustomerID; 
+            window.open(url,"newwindow","height=" + iHeight + " ,width= " + iWidth + " ,top=" + iTop + ",left=" + iLeft + ",toolbar=no,menubar=no, scrollbars=yes, resizable=no, location=no,status=no");
+        }
+
+        function gotoContactOnContractListPage(){
+            var SN = j$("#hiddenStrSN").val();
+            var PN = j$("#hiddenStrPN").val();
+            var strDate = j$("#hiddenStrSearchDate").val();
+
+            var iWidth=670;
+            var iHeight=480; 
+            var iTop = (window.screen.availHeight-30-iHeight)/2;
+            var iLeft = (window.screen.availWidth-10-iWidth)/2; 
+            var url = "CSC_ContactOnContractList?SN=" + SN + "&PN=" + PN + "&Date=" + strDate;
+            window.open(url,"newwindow","height=" + iHeight + " ,width= " + iWidth + " ,top=" + iTop + ",left=" + iLeft + ",toolbar=no,menubar=no, scrollbars=yes, resizable=no, location=no,status=no");
+        }
+
+        function gotoEntitlementDetailPage(){
+            var SN = j$("#hiddenStrSN").val();
+            var PN = j$("#hiddenStrPN").val();
+            var strDate = j$("#hiddenStrSearchDate").val();
+            var contractId = j$("#hiddenStrContractId").val();
+            var offerId = j$("#hiddenStrOfferId").val();
+            var deliverId = j$("#hiddenStrDeliverId").val();
+            var packageName = j$("#hiddenPackageName").val();
+
+            var iWidth=1200;
+            var iHeight=600; 
+            var iTop = (window.screen.availHeight-30-iHeight)/2;
+            var iLeft = (window.screen.availWidth-10-iWidth)/2; 
+            var url = "CSC_EntitlementDetail?SN=" + SN + "&PN=" + PN + "&Date=" + strDate + "&contractId=" + contractId + "&offerId=" + offerId + "&deliverId=" + deliverId + "&packageName=" + packageName;
+            window.open(url,"newwindow","height=" + iHeight + " ,width= " + iWidth + " ,top=" + iTop + ",left=" + iLeft + ",toolbar=no,menubar=no, scrollbars=yes, resizable=no, location=no,status=no");
+        }
+
+        function setEntitlementInfoByDetailPage(strResult, openwindow){
+            openwindow.close();
+            setEntitlementInfoPage(strResult);
+        }
+
+        function setEntitlementInfoByProductListPage(strProductId,strProductLineCode,strProductDescription,openwindow){
+            openwindow.close();
+            j$("[id$=Case_PN]").val(strProductId);
+            getEntitlementInfoByProductList(strProductId,strProductLineCode,strProductDescription);
+        }
+
+        // Phase II add by xu xiangguo
+        function gotoEBSAddresssOnContractDetailPage(){
+            var SN = j$("#hiddenStrSN").val();
+            var PN = j$("#hiddenStrPN").val();
+            var strDate = j$("#hiddenStrSearchDate").val();
+            var sourceCustomerID = j$("#hiddenSourceCustomerID").val();
+            var locationId = j$("#hiddenLocationId").val();
+            var contractId = j$("#hiddenStrContractId").val();
+
+            var iWidth=960;
+            var iHeight=540; 
+            var iTop = (window.screen.availHeight-30-iHeight)/2;
+            var iLeft = (window.screen.availWidth-10-iWidth)/2; 
+            var url = "CSC_EBSAddressOnContract?SN=" + SN + "&PN=" + PN + "&Date=" + strDate + "&locationId=" + locationId + "&sourceCustomerID=" + sourceCustomerID + "&contractId=" + contractId;
+            window.open(url,"newwindow","height=" + iHeight + " ,width= " + iWidth + " ,top=" + iTop + ",left=" + iLeft + ",toolbar=no,menubar=no, scrollbars=yes, resizable=no, location=no,status=no");
+        }
+
+        function gotoEBSContactOnContractListPage(){
+            var SN = j$("#hiddenStrSN").val();
+            var PN = j$("#hiddenStrPN").val();
+            var strDate = j$("#hiddenStrSearchDate").val();
+            var contractId = j$("#hiddenStrContractId").val();
+            var redBrand = j$("#hiddenRedBrand").val();
+
+            var iWidth=670;
+            var iHeight=480; 
+            var iTop = (window.screen.availHeight-30-iHeight)/2;
+            var iLeft = (window.screen.availWidth-10-iWidth)/2; 
+            var url = "CSC_EBSContactOnContractList?SN=" + SN + "&PN=" + PN + "&Date=" + strDate + "&contractId=" + contractId + "&redBrand=" + redBrand;
+            window.open(url,"newwindow","height=" + iHeight + " ,width= " + iWidth + " ,top=" + iTop + ",left=" + iLeft + ",toolbar=no,menubar=no, scrollbars=yes, resizable=no, location=no,status=no");
+        }
+
+        function gotoEBSEntitlementDetailPage(){
+            var SN = j$("#hiddenStrSN").val();
+            var PN = j$("#hiddenStrPN").val();
+            var strDate = j$("#hiddenStrSearchDate").val();
+            var contractId = j$("#hiddenStrContractId").val();
+            var offerId = j$("#hiddenStrOfferId").val();
+
+
+            var warrantyOfferStatus = j$("#hiddenStrOfferStatus").val();
+            var deliverId = j$("#hiddenStrDeliverId").val();
+
+            var packageName = j$("#hiddenPackageName").val();
+
+            var productLine = j$("[id$=Case_Product_Line]").val();
+
+            var iWidth=1200;
+            var iHeight=600; 
+            var iTop = (window.screen.availHeight-30-iHeight)/2;
+            var iLeft = (window.screen.availWidth-10-iWidth)/2; 
+            var url = "CSC_EBSEntitlementDetail?SN=" + SN + "&PN=" + PN + "&Date=" + strDate + "&contractId=" + contractId + "&offerId=" + offerId + "&deliverId=" + deliverId + "&packageName=" + packageName + 
+                "&productLine=" + productLine + "&warrantyOfferStatus=" + warrantyOfferStatus; 
+            window.open(url,"newwindow","height=" + iHeight + " ,width= " + iWidth + " ,top=" + iTop + ",left=" + iLeft + ",toolbar=no,menubar=no, scrollbars=yes, resizable=no, location=no,status=no");
+        }
+
+        function setEBSEntitlementInfoByProductListPage(strProductId,strProductLineCode,strProductDescription,openwindow){
+            openwindow.close();
+            j$("[id$=Case_PN]").val(strProductId);
+
+            getEBSEntitlementInfoByProductList(strProductId,strProductLineCode,strProductDescription);
+        }
+
+        function setEBSEntitlementInfoBySnAndPnListPage(strProductId,strProductLineCode,strProductDescription,strstrSerialNumber,openwindow){
+            openwindow.close();
+
+            if (strstrSerialNumber == '' || strstrSerialNumber == undefined) {
+                j$("[id$=Case_SN]").val('NA');
+            } else {
+                j$("[id$=Case_SN]").val(strstrSerialNumber);
+            }
+            
+            j$("[id$=Case_PN]").val(strProductId);
+
+            j$("[id$=Case_Product_Line]").val(strProductLineCode);
+
+            j$("[id$=Case_Product_Description]").val(strProductDescription);
+
+            getEBSEntitlementInfoBySnAndPnList(strProductId,strProductLineCode,strProductDescription,strstrSerialNumber);
+        }
+
+        function setEBSEntitlementInfoByContractListPage(strContractId,openwindow){
+            openwindow.close();
+            getEBSEntitlementInfoByContractListPage(strContractId);
+        }
+        // Phase II add by xu xiangguo
+
+        function doAntiFraudPass(strResult, openwindow){
+            openwindow.close();
+            antiFraudPass(strResult);
+        }
+
+        function doAntiFraudFail(strResult, openwindow){
+            openwindow.close();
+            antiFraudFail(strResult);
+        }
+
+        function gotoViewCasePage(){
+            try{
+                var isGotoViewPage = j$("[id$=hiddenIsGotoViewPage]").val();
+                var case_id = j$("[id$=hiddenStrCaseId]").val();
+                if ( isGotoViewPage == 'true' && case_id.length > 0) {                   
+                    if(document.getElementById("page:form:hiddenBlock:hiddenStrAntiFraudResult7").value ==1){
+                        location.href = '/apex/CSC_View_Case?isdtp=vw&isWsVw=true&isWsVw=true&sfdc.override=1&id='+case_id;
+                    }else{
+                        sforce.console.getFocusedPrimaryTabId(showTabId);
+                    }
+
+                } else {
+                    return ;
+                }
+            }catch(e){
+                alert(e);
+            }
+        }
+
+        var showTabId = function showTabId(result) {
+            var caseId = j$("[id$=hiddenStrCaseId]").val();
+            var viewCasePageUrl = '/'+caseId;
+            if (result.id == 'null') {
+                sforce.console.refreshNavigationTab();
+                sforce.console.openPrimaryTab(null,viewCasePageUrl, true);
+            } else {
+                sforce.console.openPrimaryTab(result.id,viewCasePageUrl, true);
+            }
+        };
+
+        function setContactInfo(hiddenStrESContactId,fullName,countryCode,phoneNumber,emailAddress,openwindow){
+            openwindow.close();
+            document.getElementById("page:form:customerBlock:customerBlockSection:contactBlockSectionItem:contactId").value = fullName;
+            document.getElementById("page:form:customerBlock:customerBlockSection:phoneBlockSectionItem:countryCode").value = countryCode;
+            document.getElementById("page:form:customerBlock:customerBlockSection:phoneBlockSectionItem:phone").value = phoneNumber;
+            document.getElementById("page:form:customerBlock:customerBlockSection:emailBlockSectionItem:Email").value = emailAddress;
+        }
+
+        function setAccountInfo(hiddenStrESAccountId,company,country,state,city,zip,streetAddr,openwindow){
+            openwindow.close();
+            document.getElementById("page:form:accountBlock:accountBlockSection:countrySectionItem:country").value = country;
+            document.getElementById("page:form:accountBlock:accountBlockSection:provinceSectionItem:province").value = state;
+            document.getElementById("page:form:accountBlock:accountBlockSection:provinceSectionItem:province").onchange();
+            document.getElementById("page:form:accountBlock:accountBlockSection:citySectionItem:city").value = city;
+            document.getElementById("page:form:accountBlock:accountBlockSection:zipSectionItem:zip").value = zip;
+            document.getElementById("page:form:accountBlock:accountBlockSection:lineSectionItem:line").value = streetAddr;
+            document.getElementById("page:form:rplBlock:rplBlockSection:rplStatusSectionItem:RPL_Status").value = 'RPL Pass';
+            getAccountInfoByESId(hiddenStrESAccountId);
+        }
+
+        function setAccountInfo2(hiddenStrESAccountId,company,country,state,city,zip,streetAddr,vc_bool,vc,vct,vclocationId,openwindow){
+            openwindow.close();
+            //add by xutao 1107 for value customer
+            document.getElementById("valuableCustomerName").innerHTML = vc;
+            document.getElementById("page:form:EntitlementBlock:cscEBSBlockSection:valuableCustomerSectionItem:valuableCustomerName_input").value = vc;
+            document.getElementById("valuableCustomerName2").innerHTML = vct;
+            document.getElementById("page:form:EntitlementBlock:cscEBSBlockSection:valuableCustomerTypeSectionItem:valuableCustomerName2_input").value = vct;
+            document.getElementById("page:form:EntitlementBlock:cscEBSBlockSection:valuableCustomerTypeSectionItem:valuableCustomerName3_input").value = vct;
+            j$("#hiddenLocationId").val(vclocationId);
+            j$("#hiddenSourceCustomerID").val(vclocationId);
+            
+            document.getElementById("page:form:accountBlock:accountBlockSection:countrySectionItem:country").value = country;
+            document.getElementById("page:form:accountBlock:accountBlockSection:provinceSectionItem:province").value = state;
+            document.getElementById("page:form:accountBlock:accountBlockSection:provinceSectionItem:province").onchange();
+            document.getElementById("page:form:accountBlock:accountBlockSection:citySectionItem:city").value = city;
+            document.getElementById("page:form:accountBlock:accountBlockSection:zipSectionItem:zip").value = zip;
+            document.getElementById("page:form:accountBlock:accountBlockSection:lineSectionItem:line").value = streetAddr;
+            document.getElementById("page:form:rplBlock:rplBlockSection:rplStatusSectionItem:RPL_Status").value = 'RPL Pass';
+            getAccountInfoByESId(hiddenStrESAccountId);
+        }
+        //add by xutao 1107 for value customer
+        function setAccountInfo3(vc_bool,vc,vct,vclocationId,openwindow){
+            openwindow.close();
+            document.getElementById("valuableCustomerName").innerHTML = vc;
+            document.getElementById("page:form:EntitlementBlock:cscEBSBlockSection:valuableCustomerSectionItem:valuableCustomerName_input").value = vc;
+            document.getElementById("valuableCustomerName2").innerHTML = vct;
+            document.getElementById("page:form:EntitlementBlock:cscEBSBlockSection:valuableCustomerTypeSectionItem:valuableCustomerName2_input").value = vct;
+            document.getElementById("page:form:EntitlementBlock:cscEBSBlockSection:valuableCustomerTypeSectionItem:valuableCustomerName3_input").value = vct;
+            j$("#hiddenLocationId").val(vclocationId);
+            j$("#hiddenSourceCustomerID").val(vclocationId);
+        }
+        
+        function setAccountInfoCompleted(){
+            document.getElementById("page:form:accountBlock:accountBlockSection:accountNameSectionItem:accountId").readOnly="readonly";
+            document.getElementById("page:form:accountBlock:accountBlockSection:accountNameSectionItem:accountId").style.backgroundColor = "#cccccc";
+            showSDI();
+        }
+
+        function setContactStatus(){
+            document.getElementById("page:form:customerBlock:customerBlockSection:contactBlockSectionItem:contactId").readOnly="readonly";
+            document.getElementById("page:form:customerBlock:customerBlockSection:contactBlockSectionItem:contactId").style.backgroundColor = "#cccccc";
+            //document.getElementById("page:form:customerBlock:customerBlockSection:contactBlockSectionItem:contactId").readOnly="readonly";
+            document.getElementById("page:form:customerBlock:customerBlockSection:ContactPrivacy:Privacy").disabled="true";
+        }
+
+        function setAdditionalContactStatus(){
+            document.getElementById("page:form:callerBlock:callerBlockSection:additionalContactNameSectionItem:additionalContactId").readOnly="readonly";
+            document.getElementById("page:form:callerBlock:callerBlockSection:additionalContactNameSectionItem:additionalContactId").style.backgroundColor = "#cccccc";
+            //document.getElementById("page:form:callerBlock:callerBlockSection:additionalContactPhone:additionalContactPhoneCountryCode").readOnly="readonly";
+            //document.getElementById("page:form:callerBlock:callerBlockSection:additionalContactPhone:additionalContactPhoneNumber").readOnly="readonly";
+            //document.getElementById("page:form:callerBlock:callerBlockSection:additionalContactOtherPhone:additionalContactOtherPhoneNumber").readOnly="readonly";
+            //document.getElementById("page:form:callerBlock:callerBlockSection:additionalContactOtherEmail:otherEmail").readOnly="readonly";
+            document.getElementById("page:form:callerBlock:callerBlockSection:additionalContactPrivacy:otherPrivacy").disabled="true";
+        }
+
+        function setAccountAndContactStatus(){
+            setAccountInfoCompleted();
+            setContactStatus();
+            setAdditionalContactStatus();
+            document.getElementById("page:form:realAccountBlock").style.display="none";
+            j$("[id$=the_street_in_case_diff_account]").val(false);
+        }
+
+        function setAccountAndContactStatus2(){
+            setAccountInfoCompleted();
+            setContactStatus();
+            setAdditionalContactStatus();
+            if(j$("[id$=the_street_in_case_diff_account]").val()==true||j$("[id$=the_street_in_case_diff_account]").val()=='true'){
+                document.getElementById("page:form:realAccountBlock").style.display="";
+            }else{
+                document.getElementById("page:form:realAccountBlock").style.display="none";
+            }
+        }
+
+        
+
+        function resetAntiFraudStatus(){
+            document.getElementById("page:form:rplBlock:rplBlockSection:AntiFraudStatusSectionItem:AntiFraud_Status").value = '';
+        }
+
+        function ReloadTable(){
+            j$(document).ready(function() {
+                 j$('.rstTable').dataTable({     
+                    "bPaginate": true,     //翻页功能
+                    "bLengthChange": false, //改变每页显示数据数量
+                    "bFilter": true,      //过滤功能
+                    "bSort": false,        //排序功能
+                    "bInfo": false,        //页脚信息
+                    "bAutoWidth": true,    //自动宽度
+                    "oLanguage": {
+                        "oPaginate": {
+                            "sFirst": "<<",
+                            "sPrevious": "<",
+                            "sNext": ">",
+                            "sLast": ">>"
+                        }
+                    }
+                });
+            });
+        }
+    </script>
+</html>
+</apex:page>

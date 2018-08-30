@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>South East Asia</fullName>
+        <default>true</default>
+        <label>South East Asia</label>
+    </customValue>
+    <customValue>
+        <fullName>Northeast Asia</fullName>
+        <default>false</default>
+        <label>Northeast Asia</label>
+    </customValue>
+    <customValue>
+        <fullName>Middle Asia</fullName>
+        <default>false</default>
+        <label>Middle Asia</label>
+    </customValue>
+    <customValue>
+        <fullName>Middle East</fullName>
+        <default>false</default>
+        <label>Middle East</label>
+    </customValue>
+    <customValue>
+        <fullName>South Asia</fullName>
+        <default>false</default>
+        <label>South Asia</label>
+    </customValue>
+    <customValue>
+        <fullName>West EU</fullName>
+        <default>false</default>
+        <label>West EU</label>
+    </customValue>
+    <customValue>
+        <fullName>East EU</fullName>
+        <default>false</default>
+        <label>East EU</label>
+    </customValue>
+    <customValue>
+        <fullName>Oceania</fullName>
+        <default>false</default>
+        <label>Oceania</label>
+    </customValue>
+    <customValue>
+        <fullName>NA</fullName>
+        <default>false</default>
+        <label>NA</label>
+    </customValue>
+    <customValue>
+        <fullName>LA</fullName>
+        <default>false</default>
+        <label>LA</label>
+    </customValue>
+    <customValue>
+        <fullName>Africa</fullName>
+        <default>false</default>
+        <label>Africa</label>
+    </customValue>
+    <masterLabel>Regions</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

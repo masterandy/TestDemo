@@ -1,0 +1,44 @@
+<apex:page standardController="Case" extensions="CSC_ViewAllOpenActivitiesController_Case" id="page" tabStyle="Case" showHeader="false" sidebar="false">
+<script src="/support/api/34.0/interaction.js"></script>
+<script src="/support/console/34.0/integration.js"></script>
+<apex:includeScript value="{!$Resource.jQuery}"/>
+
+<html>
+<style type="text/css">
+        p{margin:0 auto;width:60%;}
+    </style>
+<apex:form id="form">
+<apex:pageBlock title="View Open Activities">
+    <apex:repeat value="{!taskList}" var="item">
+        <apex:pageBlockSection columns="1">
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel >Subject</apex:outputLabel>
+                <apex:outputField value="{!item.Subject}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel >Action Type</apex:outputLabel>
+                <apex:outputField value="{!item.Action_Type__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel >Note type</apex:outputLabel>
+                <apex:outputField value="{!item.Note_type__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel >CreateTime</apex:outputLabel>
+                <apex:outputField value="{!item.CreateTime__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel >Created By Alias</apex:outputLabel>
+                <apex:outputField value="{!item.CreatedBy.Alias}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel >Comments</apex:outputLabel>
+                <apex:outputField value="{!item.Description}"/>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <hr width="100%" color="#CD9B1D" size="3"/>
+    </apex:repeat>
+</apex:pageBlock>
+</apex:form>
+</html>
+</apex:page>

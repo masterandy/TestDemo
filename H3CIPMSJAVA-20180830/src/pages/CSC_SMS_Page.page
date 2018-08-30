@@ -1,0 +1,78 @@
+<apex:page controller="CSC_SMS_Controller" id="page" showHeader="false">
+<apex:form id="form">
+<apex:pagemessages id="Messages"/>
+<!-- Main Body Starts Here -->
+<div class="lookupSearch"><div class="individualPalette"><div class="list0">
+<!-- Begin RelatedListElement -->
+<div class="bRelatedList" id="User"><a name="User_target"></a>
+<div class="listRelatedObject userBlock">
+<div class="bPageBlock brandSecondaryBrd secondaryPalette">
+<div class="pbHeader">
+    <table  border="0" cellpadding="0" cellspacing="0" summary="Employee">
+        <tr>
+            <td class="pbTitle">
+                <img src="/s.gif" alt="Send SMS"  class="relatedListIcon" title="Send SMS"/>
+                <h3><span class="searchFirstCell">Send SMS</span></h3>
+            </td>
+        </tr>
+    </table>  
+    
+    <div class="searchFilterFieldsHolder searchFilterFieldsHolderFirst" id="field_name_User">
+    <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td style="text-align:center;" ><label>SMS Content&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <apex:inputTextarea id="contect" cols="50" rows="5" value="{!s.Content__c}" required="true"/></td>
+        </tr>
+        <tr><td>&nbsp;</td></tr>
+        <tr>
+            <td style="text-align:center;" ><apex:commandButton value="Send" action="{!Send}" /> 
+            <apex:commandButton value="Close" onclick="window.close();" /></td>   
+        </tr>
+    </table>
+    </div>
+      
+<div class="pbBody" id="User_body">
+<div style="">
+    <table class="list" border="0" cellspacing="0" cellpadding="0">
+        <tr class="headerRow">
+            <td scope="col" class=" zen-deemphasize" width="15%"></td>
+            <td style="{!case_style}" scope="col" class=" zen-deemphasize" width="15%">Case</td>
+            <td style="{!wo_style}" scope="col" class=" zen-deemphasize" width="15%">WorkOrder</td>
+            <td scope="col" class=" zen-deemphasize" width="40%">Name</td>
+            <td scope="col" class=" zen-deemphasize" >Phone</td>
+        </tr>
+        <apex:repeat value="{!smsList}" var="sms" id="repeat"> 
+        <tr class=" dataRow even first" onblur="if (window.hiOff){hiOff(this);}" onfocus="if (window.hiOn){hiOn(this);}" onmouseout="if (window.hiOff){hiOff(this);}" onmouseover="if (window.hiOn){hiOn(this);}">
+            <td ><apex:inputField value="{!sms.Is_Check__c}"/></td>
+            <td style="{!case_style}" ><apex:outputField id="case" value="{!sms.Case__c}" /></td>
+            <td style="{!wo_style}" ><apex:outputField id="wo" value="{!sms.WorkOrder__c}" /></td>
+            <td ><apex:outputField id="name" value="{!sms.Name__c}" /></td>
+            <td ><apex:inputField id="phone" value="{!sms.Phone__c}" /></td>
+        </tr>
+        </apex:repeat> 
+    </table>
+</div>
+</div>
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</apex:form>
+
+<script type="text/javascript"> 
+window.onload=Close();
+function Close()
+{
+    var result='{!result}';
+    if(result=='true')
+    {
+        window.close();
+    }
+}
+</script>
+</apex:page>

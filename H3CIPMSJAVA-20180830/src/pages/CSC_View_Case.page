@@ -1,0 +1,10 @@
+<apex:page standardController="Case">
+    <apex:detail subject="{!Case.Id}" relatedListHover="true" inlineEdit="true" relatedList="true" title="true" showChatter="true" />
+    <apex:includeScript value="/support/console/22.0/integration.js"/>
+    <script type="text/javascript">
+        if(sforce.console.isInConsole()) {
+            sforce.console.setTabTitle("{!Case.caseNumber}");
+        }
+    </script>
+    
+</apex:page>

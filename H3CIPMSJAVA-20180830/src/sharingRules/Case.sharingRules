@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>CSC_FST_Share_to_Internal</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>CSC&amp;FST Share to Internal</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>UNIS_Service</roleAndSubordinatesInternal>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>05-CSC &amp; FST Service Request</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Case_Share_to_ROPS</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Case Share to ROPS</label>
+        <sharedTo>
+            <portalRole>ROPSGuiYangTeam2</portalRole>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>05-CSC &amp; FST Service Request</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>MDM_Team_Sharing</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>MDM Team Sharing</label>
+        <sharedTo>
+            <group>MDM_ADMIN</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>01-Account Request</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>SCO_Team_Sharing</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>SCO Team Sharing</label>
+        <sharedTo>
+            <group>SCO_Team</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>03-Support Request</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+</SharingRules>

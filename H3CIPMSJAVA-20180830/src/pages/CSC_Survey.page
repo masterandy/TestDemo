@@ -1,0 +1,546 @@
+<apex:page action="{!SurveyTypeSelected}" cache="false" controller="CSC_SurveyQuestionsController" id="page" showchat="false" showheader="false" sidebar="false" title="新华三集团客户满意度调查">
+    <style>
+        div.contentDiv {
+            width: 100%;
+            min-height: 700px;
+            text-align:center;
+            padding-top: 25px;
+        }
+        div.headDiv {
+            width: 1000px;
+            border: 0px;
+            display: block;
+            height: 200px;
+            margin: 0 auto;
+        }
+        div.headDiv h1 {
+            font-size: 28px;
+            position: relative;
+            padding: 20px;
+            top: 50px;
+            left: 10px;
+        }
+        
+        div.headRight {
+            min-height: 0px;
+            float: right;
+            position: relative;
+            right: 50px;
+            top: 40px;
+        }
+        div.headRight img{
+            width: 120px;
+        }
+        div.contentSection{
+            width: 1000px;
+            text-align:left;
+            margin: 10px auto;
+        }
+        div.contentSection strong{
+            color: #21A081;
+        }
+        
+        div.contentSection .dCase{
+                color: #21A081;
+        }
+        body .bDetailBlock.bPageBlock .pbBody .data2Col,body .bPageBlock .detailList tr td, body .bPageBlock .detailList tr th, body .hoverDetail .bPageBlock .detailList tr td, body .hoverDetail .bPageBlock .detailList tr th{
+            border: none;
+            padding-top: 0px;
+            padding-bottom: 0px;
+        }
+        #finishDiv{
+            text-align:left;
+            margin: 10px auto;
+            width: 1000px;
+            font-size: 18px;
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+            font-weight: 500;
+            line-height: 1.1;
+        }
+        .showIt{
+        display:block;
+        }
+        .hidIt{
+        display:none;
+        }
+        .questionLabel{
+            float:left;
+            width:30%;
+            padding: 5px 2px;
+        }
+        .questionOptions{
+            float:left;
+            width:68%;
+            white-space:nowrap;
+            padding:5px;
+        }
+        .dependSeq{
+            border-bottom: 1px solid #e3deb8;
+            margin: 5px;
+            min-height:10px;
+            float:left;
+            width:100%;
+        }
+        .missRequire{
+             background-color: #fae5e3;
+        }
+        .requiredAlert{
+            position: relative;
+            left: 90%;
+            top: -20px;
+        }
+        #errorMessageDIV{
+            font-weight: bold;
+            color: #c00;
+            text-align: center;
+        }
+    </style>
+    
+<apex:includeScript value="{!$Resource.jQuery}"/>
+    <div class="contentDiv">
+        <div class="headDiv">
+            <h1 style="{!IF(language == 'CN','','display:none')}">
+                新华三集团客户满意度调查
+            </h1>
+            <h1 style="{!IF(language != 'CN','','display:none')}">
+                New H3C Group Customer Satisfaction Survey
+            </h1>
+            <div class="headRight">
+                <apex:image url="{!URLFOR($Resource.H3C_LOGO)}">
+                </apex:image>
+                <apex:image url="{!URLFOR($Resource.ECP_Logo)}">
+                </apex:image>
+            </div>
+        </div>
+        <div class="contentSection">
+            <div style="{!IF(language == 'CN','','display:none')}">
+                <p>尊敬的<strong>新华三集团</strong>客户您好，</p>
+                <p>工程师为您提供服务的案例：<strong>{!Caserecord.CaseNumber}</strong>已经关闭，希望您能够通过以下简短问卷告诉我们您对本次服务的感受。</p>
+                <p>您的反馈将帮助我们持续改善和提高服务质量，如需了解更多关于本案例的情况，请
+                    <span onclick="showCaseInfo(1)" class="dCase" style="cursor:pointer">
+                        点击这里
+                    </span>。
+                    <div class="hidIt" id="CaseInfo" >
+                        <p><b>以下是为您提供支持服务的案例信息：</b></p>
+                        <ul style="margin-left: 25px;">
+                            <li><b>案例编号：</b><span class="dCase">{!Caserecord.CaseNumber}</span></li>
+                            <li><b>问题描述：</b><span class="dCase">{!Caserecord.Subject}</span></li>
+                            <li><b>产品描述：</b><span class="dCase">{!Caserecord.CSC_Product_Description__c}</span></li>
+                            <li><b>产品序号：</b><span class="dCase">{!Caserecord.CSC_SN__c}</span></li>
+                            <li><b>服务开始日期：</b><span class="dCase"><apex:outputtext value="{0,date,yyyy'年'MM'月'dd'日 ' E } " style="dCase">
+                                            <apex:param value="{!Caserecord.CreatedDate}"></apex:param>
+                                        </apex:outputtext> </span></li>
+                            <li><b>服务结束日期：</b><span class="dCase"><apex:outputtext value="{0,date,yyyy'年'MM'月'dd'日'  E} " style="dCase">
+                                            <apex:param value="{!Caserecord.ClosedDate}"></apex:param>
+                                        </apex:outputtext></span></li>
+                        </ul>
+                    </div>
+                </p>
+            </div>
+            <div style="{!IF(language != 'CN','','display:none')}">
+                <p>Dear Customer,</p>
+                <p>Your case: <strong>{!Caserecord.CaseNumber}</strong> has been closed.</p>
+                <p>Thanks for your long time supporting and concerning! In order to offer you better service and make our quality of </p>
+                <p>service best match your needs, please fill in the blank with any of your comments or suggestions.Your Suggestions </p>
+                <p>are precious to us, loyal to thank your participation! For more case related, 
+                    <span onclick="showCaseInfo(2)" class="dCase" style="cursor:pointer">
+                        click here
+                    </span>.
+                    <div class="hidIt" id="CaseInfo2" >
+                        <p></p><!-- <b>以下是为您提供支持服务的案例信息：</b> -->
+                        <ul style="margin-left: 25px;">
+                            <li><b>Case ID：</b><span class="dCase">{!Caserecord.CaseNumber}</span></li>
+                            <li><b>Problem Description：</b><span class="dCase">{!Caserecord.Subject}</span></li>
+                            <li><b>Product：</b><span class="dCase">{!Caserecord.CSC_Product_Description__c}</span></li>
+                            <li><b>Serial Number：</b><span class="dCase">{!Caserecord.CSC_SN__c}</span></li>
+                            <li><b>Service Start Time：</b><span class="dCase"><apex:outputtext value="{0,date,yyyy'年'MM'月'dd'日 ' E } " style="dCase">
+                                            <apex:param value="{!Caserecord.CreatedDate}"></apex:param>
+                                        </apex:outputtext> </span></li>
+                            <li><b>Service End Time：</b><span class="dCase"><apex:outputtext value="{0,date,yyyy'年'MM'月'dd'日'  E} " style="dCase">
+                                            <apex:param value="{!Caserecord.ClosedDate}"></apex:param>
+                                        </apex:outputtext></span></li>
+                        </ul>
+                    </div>
+                </p>
+            </div>
+            <div id="errorMessageDIV"></div>
+            <apex:pageblock mode="maindetail" rendered="{!IfExpire}">
+            <h1 style="{!IF(language == 'CN','','display:none')}">您已完成问券，或者链接已经过期，谢谢您的参与'</h1>
+            <h1 style="{!IF(language != 'CN','','display:none')}">You have completed the survey or the link has expired. Thank you for your participation. </h1>
+            </apex:pageblock>
+            <apex:form id="form" rendered="{!Not(IfExpire)}">
+                <apex:pagemessages id="message">
+                </apex:pagemessages>
+                <apex:pageblock id="queryMain" mode="maindetail">
+                    <apex:pageblocksection collapsible="false" columns="1" id="SurveyQuestionsList">
+                        <apex:repeat id="QuestionList" value="{!SurveyQuestionsList}" var="SurveyQuestion">
+                            <apex:outputpanel >
+                                <div class="SQ{!SurveyQuestion.question.Sequence__c} dependSeq hidIt" depend="{!SurveyQuestion.question.Depend__c}" 
+                                     is_optional="{!(SurveyQuestion.question.Is_optional__c)}" 
+                                     questionid="{!SurveyQuestion.question.id}" 
+                                     answertype="{!SurveyQuestion.question.Answer_Type__c }" >
+                                    <div class="answerHidden SA{!SurveyQuestion.question.Sequence__c}" sfdcId = "{!SurveyQuestion.answer.id}" answer=" ">
+                                    </div>
+                                    <div class="questionLabel">
+                                        <apex:outputlabel >{!SurveyQuestion.questionStr}</apex:outputlabel>
+                                    </div>
+                                    <div class="questionOptions">
+                                        <apex:pageblocksectionitem datastyle="padding-top:14px;vertical-align: middle;" 
+                                            labelstyle="word-wrap: break-word;text-align: left;white-space: pre-line;" 
+                                            rendered="{!SurveyQuestion.question.Answer_Type__c == 'List' }">
+                                            <apex:selectlist label=" {!SurveyQuestion.questionStr}" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)" 
+                                                size="1" style="requireClass">
+                                                <apex:selectoptions value="{!SurveyQuestion.questionOptions }">
+                                                </apex:selectoptions>
+                                            </apex:selectlist>
+                                        </apex:pageblocksectionitem>
+                                        <apex:pageblocksectionitem datastyle="padding-top:14px;vertical-align: middle;" 
+                                            labelstyle="word-wrap: break-word;text-align: left;white-space: pre-line;" 
+                                            rendered="{!SurveyQuestion.question.Answer_Type__c == 'Radio'}">
+                                            <apex:selectradio id="radio" label=" {!SurveyQuestion.questionStr}" layout="pageDirection" 
+                                                onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)">
+                                                <apex:selectoptions value="{!SurveyQuestion.questionOptions }">
+                                                </apex:selectoptions>
+                                            </apex:selectradio>
+                                        </apex:pageblocksectionitem>
+                                        <apex:pageblocksectionitem rendered="{!SurveyQuestion.question.Answer_Type__c == 'MarkRadio'   }">
+                                            <apex:outputpanel >
+                                                <table style="width:400px;padding:2px;margin:1px;">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="width:9%;">
+                                                                <input name="page:form:queryMain:SurveyQuestionsList:{!SurveyQuestion.question.Sequence__c}" type="radio" value="10" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)"/>
+                                                            </td>
+                                                            <td style="width:9%;">
+                                                                <input name="page:form:queryMain:SurveyQuestionsList:{!SurveyQuestion.question.Sequence__c}" type="radio" value="9" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)"/>
+                                                            </td>
+                                                            <td style="width:9%;">
+                                                                <input name="page:form:queryMain:SurveyQuestionsList:{!SurveyQuestion.question.Sequence__c}" type="radio" value="8" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)"/>
+                                                            </td>
+                                                            <td style="width:9%;">
+                                                                <input name="page:form:queryMain:SurveyQuestionsList:{!SurveyQuestion.question.Sequence__c}" type="radio" value="7" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)"/>
+                                                            </td>
+                                                            <td style="width:9%;">
+                                                                <input name="page:form:queryMain:SurveyQuestionsList:{!SurveyQuestion.question.Sequence__c}" type="radio" value="6" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)"/>
+                                                            </td>
+                                                            <td style="width:9%;">
+                                                                <input name="page:form:queryMain:SurveyQuestionsList:{!SurveyQuestion.question.Sequence__c}" type="radio" value="5" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)"/>
+                                                            </td>
+                                                            <td style="width:9%;">
+                                                                <input name="page:form:queryMain:SurveyQuestionsList:{!SurveyQuestion.question.Sequence__c}" type="radio" value="4" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)"/>
+                                                            </td>
+                                                            <td style="width:9%;">
+                                                                <input name="page:form:queryMain:SurveyQuestionsList:{!SurveyQuestion.question.Sequence__c}" type="radio" value="3" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)"/>
+                                                            </td>
+                                                            <td style="width:9%;">
+                                                                <input name="page:form:queryMain:SurveyQuestionsList:{!SurveyQuestion.question.Sequence__c}" type="radio" value="2" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)"/>
+                                                            </td>
+                                                            <td style="width:9%;">
+                                                                <input name="page:form:queryMain:SurveyQuestionsList:{!SurveyQuestion.question.Sequence__c}" type="radio" value="1" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)"/>
+                                                            </td>
+                                                            <td style="width:9%;">
+                                                                <input name="page:form:queryMain:SurveyQuestionsList:{!SurveyQuestion.question.Sequence__c}" type="radio" value="0" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)"/>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </apex:outputpanel>
+                                        </apex:pageblocksectionitem>
+                                        <apex:pageblocksectionitem rendered="{!SurveyQuestion.question.Answer_Type__c == 'MarkRadioNaN'   }">
+                                            <apex:outputpanel >
+                                                <table style="width:455px;padding:0px;margin:0px;">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="width:8%;">
+                                                                <input name="page:form:queryMain:SurveyQuestionsList:{!SurveyQuestion.question.Sequence__c}" type="radio" value="10" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)"/>
+                                                            </td>
+                                                            <td style="width:8%;">
+                                                                <input name="page:form:queryMain:SurveyQuestionsList:{!SurveyQuestion.question.Sequence__c}" type="radio" value="9" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)"/>
+                                                            </td>
+                                                            <td style="width:8%;">
+                                                                <input name="page:form:queryMain:SurveyQuestionsList:{!SurveyQuestion.question.Sequence__c}" type="radio" value="8" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)"/>
+                                                            </td>
+                                                            <td style="width:8%;">
+                                                                <input name="page:form:queryMain:SurveyQuestionsList:{!SurveyQuestion.question.Sequence__c}" type="radio" value="7" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)"/>
+                                                            </td>
+                                                            <td style="width:8%;">
+                                                                <input name="page:form:queryMain:SurveyQuestionsList:{!SurveyQuestion.question.Sequence__c}" type="radio" value="6" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)"/>
+                                                            </td>
+                                                            <td style="width:8%;">
+                                                                <input name="page:form:queryMain:SurveyQuestionsList:{!SurveyQuestion.question.Sequence__c}" type="radio" value="5" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)"/>
+                                                            </td>
+                                                            <td style="width:8%;">
+                                                                <input name="page:form:queryMain:SurveyQuestionsList:{!SurveyQuestion.question.Sequence__c}" type="radio" value="4" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)"/>
+                                                            </td>
+                                                            <td style="width:8%;">
+                                                                <input name="page:form:queryMain:SurveyQuestionsList:{!SurveyQuestion.question.Sequence__c}" type="radio" value="3" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)"/>
+                                                            </td>
+                                                            <td style="width:8%;">
+                                                                <input name="page:form:queryMain:SurveyQuestionsList:{!SurveyQuestion.question.Sequence__c}" type="radio" value="2" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)"/>
+                                                            </td>
+                                                            <td style="width:8%;">
+                                                                <input name="page:form:queryMain:SurveyQuestionsList:{!SurveyQuestion.question.Sequence__c}" type="radio" value="1" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)"/>
+                                                            </td>
+                                                            <td style="width:8%;">
+                                                                <input name="page:form:queryMain:SurveyQuestionsList:{!SurveyQuestion.question.Sequence__c}" type="radio" value="0" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)"/>
+                                                            </td>
+                                                            <td style="text-align: right;">
+                                                                <input name="page:form:queryMain:SurveyQuestionsList:{!SurveyQuestion.question.Sequence__c}" type="radio" value="不适用" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)"/>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </apex:outputpanel>
+                                        </apex:pageblocksectionitem>
+                                        <apex:pageblocksectionitem datastyle="padding-top:14px;vertical-align: middle;" 
+                                            labelstyle="word-wrap: break-word;text-align: left;white-space: pre-line;" rendered="{!SurveyQuestion.question.Answer_Type__c == 'Multiselect'}">
+                                            <apex:selectcheckboxes label=" {!SurveyQuestion.questionStr}" layout="pageDirection" 
+                                                onchange="changeMulti('SA{!SurveyQuestion.question.Sequence__c}',this)" value="{!SurveyQuestion.answerStrs}" legendText="可多选">
+                                                <apex:selectoptions value="{!SurveyQuestion.questionOptions }">
+                                                </apex:selectoptions>
+                                            </apex:selectcheckboxes>
+                                        </apex:pageblocksectionitem>
+                                        <apex:pageblocksectionitem datastyle="padding-top:14px;vertical-align: middle;" labelstyle="word-wrap: break-word;text-align: left;white-space: pre-line;" rendered="{! SurveyQuestion.question.Answer_Type__c == 'Checkboxes'}">
+                                            <apex:selectcheckboxes label=" {!SurveyQuestion.questionStr}" layout="pageDirection" 
+                                                onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)">
+                                                <apex:selectoptions value="{!SurveyQuestion.questionOptions }">
+                                                </apex:selectoptions>
+                                                <br/>
+                                            </apex:selectcheckboxes>
+                                        </apex:pageblocksectionitem>
+                                        <apex:pageblocksectionitem datastyle="padding-top:14px;vertical-align: middle;" labelstyle="word-wrap: break-word;text-align: left;white-space: pre-line;" rendered="{!SurveyQuestion.question.Answer_Type__c == 'TextArea'}">
+                                            <apex:inputtextarea label=" {!SurveyQuestion.questionStr}" 
+                                                onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)" rows="5" style="width:300px;">
+                                            </apex:inputtextarea>
+                                        </apex:pageblocksectionitem>
+                                        <apex:pageblocksectionitem datastyle="padding-top:14px;vertical-align: middle;" 
+                                            labelstyle="word-wrap: break-word;text-align: left;white-space: pre-line;" rendered="{!SurveyQuestion.question.Answer_Type__c == 'Text'}">
+                                            <apex:inputText label=" {!SurveyQuestion.questionStr}" onchange="changeValue('SA{!SurveyQuestion.question.Sequence__c}',this)">
+                                            </apex:inputText>
+                                        </apex:pageblocksectionitem>
+                                        <apex:pageblocksectionitem datastyle="padding-top:14px;vertical-align: middle;" 
+                                            labelstyle="word-wrap: break-word;text-align: left;white-space: pre-line;" rendered="{!SurveyQuestion.question.Answer_Type__c == 'Label'}">
+                                            <apex:outputpanel >
+                                                <script type="text/javascript">
+                                                    document.write("{!SurveyQuestion.question.AnswerSelections__c}");
+                                                </script>
+                                            </apex:outputpanel>
+                                        </apex:pageblocksectionitem>
+                                    </div>
+                                </div>
+                            </apex:outputpanel>
+                        </apex:repeat>
+                    </apex:pageblocksection>
+                </apex:pageblock>
+                <apex:commandbutton value="{!IF(language != 'CN','Submit','提交')}" onclick="sumbitMyAnswer()" reRender="{!language=='CN'}"></apex:commandbutton>                
+            </apex:form>
+        </div>
+        <div id="finishDiv" class="hidIt">
+        感谢您参与新华三集团客户满意度调查！
+        </div>
+        <div>
+                <p>© 2015 新华三集团</p>
+                </div>
+    </div>
+<Script type="text/javascript">
+    //重写系统标准的focus函数
+    function setFocus(){ }
+    
+    $(document).ready(function(){
+        showDepend();
+    })
+    
+    
+    window.onload = function(){
+        //实际这段代码不生效，这里只是为了阻止原来标准的onload时间
+        if( "{!$CurrentPage.parameters.isRecord}" == "true"){
+           $(".lookupInput>img,.lookupIcon,.closeIcon").remove();
+        }
+    };
+    function showCaseInfo(str){
+        str==1?showCaseInfo1():showCaseInfo2();
+
+    }
+
+    
+    function showCaseInfo1(){
+        if( $("#CaseInfo").hasClass("hidIt") ){
+            $("#CaseInfo").removeClass("hidIt");
+            $("#CaseInfo").addClass("showIt");
+        }
+        else{
+            $("#CaseInfo").removeClass("showIt");
+            $("#CaseInfo").addClass("hidIt");
+        }
+    }
+    function showCaseInfo2(){
+        if( $("#CaseInfo2").hasClass("hidIt") ){
+            $("#CaseInfo2").removeClass("hidIt");
+            $("#CaseInfo2").addClass("showIt");
+        }
+        else{
+            $("#CaseInfo2").removeClass("showIt");
+            $("#CaseInfo2").addClass("hidIt");
+        }
+    }
+    function showDepend(){
+        //Save Answers
+        $(".dependSeq").each(function(){
+            if($(this).attr("depend") == "" || $(this).attr("depend")== "undefined"){
+                $(this).removeClass("hidIt");
+                $(this).addClass("showIt");
+            }
+            else{
+                var depends = $(this).attr("depend").split(";");
+                var ifRerender = false;
+                for (var i=0;i<depends.length;i++){
+                     var d = depends[i];
+                     var equalMark = d.indexOf("=");
+                     var notEqualMark = d.indexOf("<>");
+                     if (equalMark> 0) {
+                        var compare1 = d.slice(0,equalMark).replace(" ","");
+                        var compare2 = d.slice(equalMark + "=".length, d.length ).replace(" ","");
+                        var com2 =  $(".SA"+compare1).attr("answer");
+                        ifRerender = ( com2 == compare2 ) ;
+                        ifRerender = ifRerender && $(".SQ"+compare1).hasClass("showIt");                        
+                    }
+                     if (notEqualMark> 0) {
+                        var compare1 = d.slice(0,notEqualMark).replace(" ","");
+                        var compare2 = d.slice(notEqualMark+ "<>".length, d.length ).replace(" ","");
+                        var com2 =  $(".SA"+compare1).attr("answer");
+                        ifRerender = ( com2 != compare2 ) ;
+                        ifRerender = ifRerender && $(".SQ"+compare1).hasClass("showIt");                        
+                    }
+                    if(ifRerender ==false){
+                        break;
+                    }
+                }  
+                if(ifRerender ==false){
+                $(this).removeClass("showIt");
+                $(this).addClass("hidIt");
+                }
+                else{
+                $(this).removeClass("hidIt");
+                $(this).addClass("showIt");
+                }
+            }
+        })
+    }
+    
+    function setNewValue(className,valText ){
+        debugger
+        var t = $("."+className).parent(".missRequire:first");
+        t.removeClass("missRequire");
+        t.children(".requiredAlert:first").remove();
+        $("."+className).each(function(){
+            $(this).attr("answer",valText )
+            });
+        showDepend();
+    }
+    
+    function changeValue(className,element){  
+        //debugger
+        var valText = element.value;
+        setNewValue(className,valText);
+    }
+    
+    function changeMulti(className,element){
+        var multCheck = "";
+        var elementName = element.name;
+        $("input[name='"+elementName+"']:checkbox:checked").each(function(){
+                    if(multCheck.length > 0){multCheck +=",";}
+            multCheck += $(this).val();
+            });
+            setNewValue(className,multCheck );
+    }
+    
+    function sumbitMyAnswer(){
+        $(".missRequire").removeClass("missRequire");
+        $(".requiredAlert").remove();
+        //{!IF(language == 'CN','该数据必填','The Data is required')}"
+        var missRequireAlert = "<div class='requiredAlert' style='color:#C00;width:10%;'>{!IF(language == 'CN','该数据必填','The data is required')}</div>";
+        $(".showIt").each(function(){
+            if($(this).attr("is_optional") == "false" ){
+            var showData =  $(this);
+            $(this).children("div.answerHidden").each(function(){
+        //debugger
+                if($(this).attr("answer") == "undefined"||$(this).attr("answer").replace(/ /g, "") == ""){
+                showData.addClass("missRequire");
+                showData.append(missRequireAlert);
+                }
+        });
+            }
+            
+        });
+        
+        if($(".missRequire").length > 0) {
+            $(".missRequire:first").focus();
+            //
+            var msg = "{!IF(language == 'CN','请检查必填的信息是否已经填写完成','Please check whether the required information has been completed.')}";
+            $("#errorMessageDIV").text(msg);
+            return ;
+        }
+        else{
+        $(".btn").attr("disabled","disabled");
+        $(".btn").attr("readonly","readonly");
+        
+        //Get Datas
+        var dataList = new Array();
+        $(".dependSeq").not(".missRequire").each(function(){
+            var upsertData = new Object;
+            
+                var data = $(this).children(".answerHidden");
+                upsertData.Answer__c = data.attr("answer");
+                //debugger
+                if(data.attr("sfdcId") != ""){
+                    upsertData.ID= data.attr("sfdcId");
+                }
+                
+                upsertData.If_rerender__c = $(this).hasClass("showIt") ;//&& data.attr("answer") != " ";
+                upsertData.Survey_Distribute__c = "{!record.Id}";
+                upsertData.Survey_Questions__c = $(this).attr("questionid");
+                if($(this).attr("answertype") != 'Label'){
+                    dataList.push(upsertData);
+                }
+        });
+        
+        //remoteAction
+        Visualforce.remoting.Manager.invokeAction(
+            "{!$RemoteAction.CSC_SurveyQuestionsController.submitData}",
+            "{!record.Id}",dataList,
+            saveCallBackfunc,
+            {escape: true}
+        );
+        }
+    }
+    
+    //保存数据
+    function saveCallBackfunc(result, event){
+        if(event.status){
+        //debugger
+            $(".contentSection").removeClass("showIt");
+            $(".contentSection").addClass("hidIt");
+            $("#finishDiv").addClass("showIt");
+            $("#finishDiv").removeClass("hidIt");
+        }else if(/timeout/.test(event.message.toLowerCase())){
+            $("#errorMessageDIV").text("服务器连接超时，请检查网络连接情况。");
+            $(".btndisabled").removeAttr("disabled");
+            $(".btndisabled").removeClass("btndisabled");
+                $("[id$='\\:form']").find(":input").each(function(){
+                    $(this).removeAttr("disabled","disabled");
+                    $(this).removeAttr("readonly","readonly");
+                })
+            
+                checkViewList();
+        }else if(/session/.test(event.message.toLowerCase())){
+            $("#errorMessageDIV").text("登录会话已过期，请重新打开链接。");
+        }else{
+            alert(event.message);
+            $("#errorMessageDIV").text("出现错误："+event.message);
+        
+            $(".btndisabled").removeAttr("disabled");
+            $(".btndisabled").removeClass("btndisabled");            
+        }
+    }
+</Script>
+</apex:page>

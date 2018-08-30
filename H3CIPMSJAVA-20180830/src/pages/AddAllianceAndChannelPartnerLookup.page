@@ -1,0 +1,60 @@
+<apex:page standardController="Account" extensions="PartnerLocationLookupController"  tabStyle="Account" id="page">
+    <head>
+     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    </head>
+    <script>
+    function showMsg(str)
+    {
+        if (str != 'Normal' ){
+            alert('您所选的Partner在Partner C900 Blacklist中！');
+        }
+    }
+    </script>
+    <apex:form id="frm" >
+        <apex:sectionHeader title="{!$Label.Partner_Lookup}"/>
+        <apex:pagemessages id="errormessageid"/>
+        <!-- Page block for adding channel partner -->
+            <apex:pageBlock title="{!$Label.Partner_Lookup}" id="pageBlock">
+            <apex:outputText value="{!$Label.Partner}" style="font-weight: bold;" /> &nbsp;
+            <apex:inputText value="{!partnerName}"/> &nbsp;&nbsp;
+            <apex:outputText value="{!$Label.Partner_ID}" style="font-weight: bold;" /> &nbsp;
+            <apex:inputText value="{!partnerID}"/> &nbsp;&nbsp;
+            <apex:outputText value="{!$Label.Business_Relationship}" style="font-weight: bold;" /> &nbsp;
+            <apex:inputText value="{!businessRelationship}"/> &nbsp;&nbsp;
+            <apex:outputText value="{!$Label.State_Province}" style="font-weight: bold;" /> &nbsp;
+            <apex:inputText value="{!stateProvince}"/> &nbsp;&nbsp;
+            <apex:outputText value="{!$Label.City}" style="font-weight: bold;" /> &nbsp;
+            <apex:inputText value="{!city}"/> &nbsp;&nbsp;
+            <apex:commandButton action="{!search}" value="{!$Label.Go_button}" reRender="dataTable,errormessageid" status="resetT" />      
+            <apex:actionStatus id="resetT" startText="(Please Wait...)"/>         
+            <br/> <br/>
+            
+            <apex:pageblockTable value="{!locationList}" var="l" id="dataTable" >
+                <apex:column headerValue="{!$Label.Partner}" width="10%">
+                    <apex:outputLink id="partnerName" onclick="showMsg('{!l.act.C900_Blacklist__c}');" value="/apex/AddAllianceAndChannelPartner?oppId={!l.oppId}&ptype={!l.partnerType}&logicNum={!l.logicNum}&local={!l.act.Name}&actId={!l.act.id}&br={!l.act.Business_Relationship__c}&pl={!l.partnerList}&actIdStr={!l.actIdStr}">{!l.act.Name}</apex:outputLink>
+                </apex:column>
+                <apex:column headerValue="{!$Label.Partner_ID}" width="10%">
+                    <apex:outputLabel id="Partner_ID" value="{!l.act.PRM_Partner_ID__c}" />
+                </apex:column>
+                <apex:column headerValue="{!$Label.Business_Relationship}" width="10%">
+                    <apex:outputField id="businessRelationship" value="{!l.act.Business_Relationship__c}" />
+                </apex:column>
+                <apex:column headerValue="{!$Label.Street}" width="10%">
+                    <apex:outputField id="street" value="{!l.act.BillingStreet}" />
+                </apex:column>
+                <apex:column headerValue="{!$Label.City}" width="10%">
+                    <apex:outputField id="city" value="{!l.act.BillingCity}" />
+                </apex:column>
+                <apex:column headerValue="{!$Label.State_Province}" width="10%">
+                    <apex:outputField id="stateProvince" value="{!l.act.BillingState}" />
+                </apex:column>
+                <apex:column headerValue="{!$Label.Membership}" width="10%">
+                    <apex:outputField id="Membership" value="{!l.act.Membership__c}" />
+                </apex:column>
+                <apex:column headerValue="{!$Label.C900_Blacklist}" width="10%">
+                    <apex:outputField id="C900Blacklist" value="{!l.act.C900_Blacklist__c}" />
+                </apex:column> 
+           </apex:pageblockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

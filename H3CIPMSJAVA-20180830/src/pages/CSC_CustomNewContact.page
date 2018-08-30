@@ -1,0 +1,77 @@
+<apex:page showHeader="false" controller="CSC_CustomNewContactController" sideBar="false" tabStyle="Account">
+<script src="/support/api/34.0/interaction.js"></script>
+<script src="/support/console/34.0/integration.js"></script>
+<apex:includeScript value="{!$Resource.jQuery}"/>
+<script type="text/javascript">
+  var j$ = jQuery.noConflict();
+  function closeWindow(){
+    var isSaveSuccess = j$("[id$=hiddenIsSaveSuccess]").val();
+    if (isSaveSuccess == 'true') {
+      window.close();
+    } else {
+      return;
+    }
+  }
+</script>
+<apex:form >
+    <apex:pageBlock id="newContact" title="New Contact" >
+        <apex:pageBlockButtons >
+            <apex:commandButton action="{!saveContact}" value="Save" reRender="msg,hiddenIsSaveSuccess" oncomplete="closeWindow();" />
+        </apex:pageBlockButtons>
+        <apex:pageMessages id="msg"/>
+        	<apex:pageBlockSection columns="1" id="contactBlockSection">
+            	<apex:pageBlockSectionItem >
+              		<apex:outputLabel for="name">Contact Name</apex:outputLabel>
+              		<apex:inputField id="name" value="{!contact.LastName}"/>
+            	</apex:pageBlockSectionItem>
+            	<apex:pageBlockSectionItem >
+                  	<apex:outputLabel for="name">Account</apex:outputLabel>
+                  	<apex:inputField id="name" value="{!contact.AccountId}" required="true" />
+	              </apex:pageBlockSectionItem>
+              	<apex:pageBlockSectionItem >
+                  	<apex:outputLabel for="name">Phone</apex:outputLabel>
+                  	<apex:panelGroup >
+                      	<apex:inputText value="{!strCountryCode}" style="width:70px;"/>
+                      	<apex:inputField id="phone" value="{!contact.Phone}" style="width:140px;" required="true"/>
+                      	<apex:inputField id="phoneExtension" value="{!contact.CSC_Phone_Extension__c}" style="width:50px;"/>
+                  	</apex:panelGroup>
+              	</apex:pageBlockSectionItem>
+              	<apex:pageBlockSectionItem >
+                  	<apex:outputLabel for="name">otherPhone</apex:outputLabel>
+                  	<apex:inputField id="name" value="{!contact.otherPhone}"/>
+	              </apex:pageBlockSectionItem>
+	              <apex:pageBlockSectionItem >
+	                  <apex:outputLabel for="name">Email</apex:outputLabel>
+	                  <apex:inputField id="name" value="{!contact.Email}"/>
+	              </apex:pageBlockSectionItem>
+	              <apex:pageBlockSectionItem >
+	                  <apex:outputLabel for="name">Privacy</apex:outputLabel>
+	                  <apex:inputField id="name" value="{!contact.CSC_Privacy__c}"/>
+	              </apex:pageBlockSectionItem>
+	              <apex:pageBlockSectionItem >
+	                <apex:outputLabel for="name">Mailing Country</apex:outputLabel>
+	                <apex:inputField id="name" value="{!contact.MailingCountry}"/>
+	              </apex:pageBlockSectionItem>
+	              <apex:pageBlockSectionItem >
+	                <apex:outputLabel for="name">Mailing State/Province</apex:outputLabel>
+	                <apex:inputField id="name" value="{!contact.MailingState}"/>
+	              </apex:pageBlockSectionItem>
+	              <apex:pageBlockSectionItem >
+	                <apex:outputLabel for="name">Mailing City</apex:outputLabel>
+	                <apex:inputField id="name" value="{!contact.MailingCity}"/>
+	              </apex:pageBlockSectionItem>
+	              <apex:pageBlockSectionItem >
+	                <apex:outputLabel for="name">Mailing Zip/Postal Code</apex:outputLabel>
+	                <apex:inputField id="name" value="{!contact.MailingPostalCode}"/>
+	              </apex:pageBlockSectionItem>
+	              <apex:pageBlockSectionItem >
+	                <apex:outputLabel for="name">Mailing Street</apex:outputLabel>
+	                <apex:inputField id="name" value="{!contact.MailingStreet}" style="width:250px;height:100px;"/>
+	              </apex:pageBlockSectionItem>
+	          	</apex:pageBlockSection> 
+	        </apex:pageBlock>
+
+        <apex:inputHidden id="hiddenIsSaveSuccess" value="{!isSaveSuccess}" />
+
+    </apex:form>
+</apex:page>

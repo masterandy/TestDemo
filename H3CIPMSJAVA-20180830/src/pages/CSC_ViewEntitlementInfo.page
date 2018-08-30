@@ -1,0 +1,603 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="true" standardController="case" extensions="CSC_ViewEntitlementInfoController" id="page">
+<script src="/support/api/34.0/interaction.js"></script>
+<script src="/support/console/34.0/integration.js"></script>
+<apex:includeScript value="{!$Resource.jQuery}"/>
+<script type="text/javascript">
+    var j$ = jQuery.noConflict();
+
+    j$(document).ready(function() {
+        document.getElementById("page:form:hiddenBlock").style.display="none";
+        setElementsProperties();
+    });
+
+    function showEntitlementInfo(){
+
+        document.getElementById("page:form:hiddenBlock").style.display="none";
+        
+        var StrGetEntitlementInfo = document.getElementById("page:form:hiddenBlock:hiddenStrGetEntitlementInfo").value;
+
+        if (StrGetEntitlementInfo != undefined && j$.trim(StrGetEntitlementInfo) !="") {
+            var result = j$.parseJSON(StrGetEntitlementInfo);
+            var resutCode = result.resultCode;
+            var entitlementInfo = result.entitlementInfo;
+
+            if (resutCode == '4' || resutCode == '04' || resutCode == '7') {
+                var iWidth=670;
+                var iHeight=480; 
+                var iTop = (window.screen.availHeight-30-iHeight)/2;
+                var iLeft = (window.screen.availWidth-10-iWidth)/2; 
+                var url; 
+
+                if (resutCode == '4') {
+                    url = "CSC_ProductList"; 
+                }
+
+                if (resutCode == '04') {
+                    url = "CSC_ProductListOfContract"; 
+                }
+
+                if (resutCode == '7') {
+                    url = "CSC_SnAndPnList"; 
+                }
+
+                window.open(url,"newwindow","height=" + iHeight + " ,width= " + iWidth + " ,top=" + iTop + ",left=" + iLeft + ",toolbar=no,menubar=no, scrollbars=yes, resizable=no, location=no,status=no");
+            } else {
+                setElementsProperties();
+            }
+        }
+    }
+
+    function setElementsProperties(){
+
+        var entitlementStatus = j$.trim(j$("[id$=entitlementStatus]").text());
+        var hiddenWarnMess = j$.trim(j$("[id$=hiddenWarnMess]").val())+'';
+
+        if (entitlementStatus == "Inactive Contract" || entitlementStatus== "Inactive Warranty"
+            || entitlementStatus== "Cancel Contract" || entitlementStatus== "Entitlement information not found!"
+            || entitlementStatus== "Search Entitlement failure!") {
+            j$("[id$=entitlementStatus]").css("background-color","#FF5151");
+        } else if(entitlementStatus== "Active Contract[No offer Selected. Go to View Details to Select One.]") {
+            j$("[id$=entitlementStatus]").css("background-color","yellow");
+        } else if(entitlementStatus== "Active Contract" || entitlementStatus== "Active Warranty"
+            || entitlementStatus== "Evergreen Contract") {
+            //
+            if(hiddenWarnMess.indexOf('2')>-1){
+                j$("[id$=entitlementStatus]").css("background-color","orange");
+            }else{
+               j$("[id$=entitlementStatus]").css("background-color","#8CEA00"); 
+            }
+            
+        } else if (entitlementStatus== "Future Contract" || entitlementStatus== "Block Contract"
+            || entitlementStatus== "Informal Contract") {
+            j$("[id$=entitlementStatus]").css("background-color","orange");
+        }
+
+        var entitlementStatus = j$.trim(j$("[id$=warningMessage]").text());
+
+        if (entitlementStatus.indexOf("[WARING_MSG_MARK]") != -1) {
+            var replaceValue = entitlementStatus.replace(/\[WARING_MSG_MARK\]/g,"");
+            j$("[id$=warningMessage]").html(replaceValue);
+            j$("[id$=warningMessage]").css("color","red");
+        }
+
+        var slatype = j$.trim(j$("[id$=hiddenStrSlatype]").val());
+        if (slatype=='CTR') {
+            j$("[id$=entitlementCoverage]").css("background-color","orange");
+        }
+    }
+
+    function gotoAddresssOnContractDetailPage(){
+        var SN = j$("#hiddenStrSN").val();
+        var PN = j$("#hiddenStrPN").val();
+        var strDate = j$("#hiddenStrSearchDate").val();
+        var sourceCustomerID = j$("#hiddenSourceCustomerID").val();
+        var locationId = j$("#hiddenLocationId").val();
+        var iWidth=670;
+        var iHeight=480; 
+        var iTop = (window.screen.availHeight-30-iHeight)/2;
+        var iLeft = (window.screen.availWidth-10-iWidth)/2; 
+        var url = "CSC_AddressOnContract?SN=" + SN + "&PN=" + PN + "&Date=" + strDate + "&locationId=" + locationId + "&sourceCustomerID=" + sourceCustomerID; 
+        window.open(url,"newwindow","height=" + iHeight + " ,width= " + iWidth + " ,top=" + iTop + ",left=" + iLeft + ",toolbar=no,menubar=no, scrollbars=yes, resizable=no, location=no,status=no");
+    }
+
+    function gotoContactOnContractListPage(){
+        var SN = j$("#hiddenStrSN").val();
+        var PN = j$("#hiddenStrPN").val();
+        var strDate = j$("#hiddenStrSearchDate").val();
+
+        var iWidth=670;
+        var iHeight=480; 
+        var iTop = (window.screen.availHeight-30-iHeight)/2;
+        var iLeft = (window.screen.availWidth-10-iWidth)/2; 
+        var url = "CSC_ContactOnContractList?SN=" + SN + "&PN=" + PN + "&Date=" + strDate;
+        window.open(url,"newwindow","height=" + iHeight + " ,width= " + iWidth + " ,top=" + iTop + ",left=" + iLeft + ",toolbar=no,menubar=no, scrollbars=yes, resizable=no, location=no,status=no");
+    }
+
+    function gotoEntitlementDetailPage(){
+
+        var SN = j$("#hiddenStrSN").val();
+        var PN = j$("#hiddenStrPN").val();
+        var strDate = j$("#hiddenStrSearchDate").val();
+        var contractId = j$("#hiddenStrContractId").val();
+        var offerId = j$("#hiddenStrOfferId").val();
+        var deliverId = j$("#hiddenStrDeliverId").val();
+        //
+        var packageName = j$("#hiddenPackageName").val();
+
+        var iWidth=1200;
+        var iHeight=600; 
+        var iTop = (window.screen.availHeight-30-iHeight)/2;
+        var iLeft = (window.screen.availWidth-10-iWidth)/2; 
+        var url = "CSC_EntitlementDetail?SN=" + SN + "&PN=" + PN + "&Date=" + strDate + "&contractId=" + contractId + "&offerId=" + offerId + "&deliverId=" + deliverId+ "&packageName=" + packageName ; 
+        window.open(url,"newwindow","height=" + iHeight + " ,width= " + iWidth + " ,top=" + iTop + ",left=" + iLeft + ",toolbar=no,menubar=no, scrollbars=yes, resizable=no, location=no,status=no");
+    }
+
+    function setEntitlementInfoByDetailPage(strResult, openwindow){
+        openwindow.close();
+        setEntitlementInfoPage(strResult);
+    }
+
+    function setEntitlementInfoByProductListPage(strProductId,strProductLineCode,strProductDescription,openwindow){
+        openwindow.close();
+        getEntitlementInfoByProductList(strProductId,strProductLineCode,strProductDescription);
+    }
+
+    function refreshPrimaryTab(){
+        var hiddenIsGotoViewPage = j$("[id$=hiddenIsGotoViewPage]").val();
+        if (hiddenIsGotoViewPage == 'true') {
+            sforce.console.getFocusedPrimaryTabId(showTabId);
+        }
+    }
+
+    var showTabId = function showTabId(result) {
+        var caseId = j$("[id$=hiddenStrCaseId]").val();
+        var viewCasePageUrl = '/'+caseId;
+        sforce.console.openPrimaryTab(result.id,viewCasePageUrl, true);
+    };
+
+    function clearEnttilementInfo(){
+        j$("[id$=contractId]").text('');
+        j$("[id$=PN]").val('');
+        j$("[id$=productLine]").val('');
+        j$("[id$=productDescription]").text('');
+        j$("[id$=entitlementStatus]").text('');
+        j$("[id$=entitlementStatus]").removeAttr("style");
+        j$("[id$=entitlementPackageName]").text('');
+        j$("[id$=entitlementOffer]").text('');
+        j$("[id$=startDate]").text('');
+        j$("[id$=endDate]").text('');
+        j$("[id$=entitlementCoverage]").text('');
+        j$("[id$=Latested_DT]").text('');
+        j$("[id$=Guaranteed_DT]").text('');
+        j$("[id$=Requested_DT]").text('');
+        j$("[id$=addressLink]").text('');
+        j$("[id$=hiddenStrSN]").val('');
+        j$("[id$=hiddenStrPN]").val('');
+        j$("[id$=hiddenStrSearchDate]").val('');
+        j$("[id$=hiddenLocationId]").val('');
+        j$("[id$=hiddenSourceCustomerID]").val('');
+        j$("[id$=hiddenStrContractId]").val('');
+        j$("[id$=hiddenStrOfferId]").val('');
+        j$("[id$=hiddenStrOfferStatus]").val('');
+        j$("[id$=hiddenStrDeliverId]").val('');
+        j$("[id$=hiddenStrSlatype]").val('');
+        j$("[id$=warningMessage]").text('');
+        j$("[id$=entitlementCoverage]").css("background-color","none");
+        //add by xutao 1107 for value customer
+        j$("[id$=valuableCustomerName]").text('');
+        j$("[id$=valuableCustomerName_input]").val('');
+        j$("[id$=valuableCustomerName2]").text('');
+        j$("[id$=valuableCustomerName2_input]").val('');
+        j$("[id$=dmr_input]").attr('checked',false);
+        //2018-05-02
+        j$("[id$=hiddenWarnMess]").val(0);
+        //
+        j$("[id$=hiddenPackageName]").val('');
+    }
+
+    function setContactInfo(hiddenStrESContactId,fullName,countryCode,phoneNumber,emailAddress,openwindow){
+        openwindow.close();
+        updateContactInfo(hiddenStrESContactId);
+    }
+
+    function setAccountInfo(hiddenStrESAccountId,company,country,state,city,zip,streetAddr,openwindow){
+        openwindow.close();
+        updateAccountInfo(hiddenStrESAccountId);
+    }
+
+    function setAccountInfo2(hiddenStrESAccountId,company,country,state,city,zip,streetAddr,vc_bool,vc,vct,vclocationId,openwindow){
+            openwindow.close();
+            //add by xutao 1107 for value customer
+            j$("[id$=valuableCustomerName]").text(vc);
+            j$("[id$=valuableCustomerName_input]").val(vc);
+            j$("[id$=valuableCustomerName2]").text(vct);
+            j$("[id$=valuableCustomerName2_input]").val(vct);
+            //
+            j$("[id$=valuableCustomer_casehide]").val(vc_bool);
+            j$("[id$=valuableCustomertype_casehide]").val(vct);
+            j$("#hiddenLocationId").val(vclocationId);
+            j$("#hiddenSourceCustomerID").val(vclocationId);
+            updateAccountInfo(hiddenStrESAccountId);
+        }
+        //add by xutao 1107 for value customer
+        function setAccountInfo3(vc_bool,vc,vct,vclocationId,openwindow){
+            openwindow.close();
+            j$("[id$=valuableCustomerName]").text(vc);
+            j$("[id$=valuableCustomerName_input]").val(vc);
+            j$("[id$=valuableCustomerName2]").text(vct);
+            j$("[id$=valuableCustomerName2_input]").val(vct);
+            //
+            j$("[id$=valuableCustomer_casehide]").val(vc_bool);
+            j$("[id$=valuableCustomertype_casehide]").val(vct);
+            j$("#hiddenLocationId").val(vclocationId);
+            j$("#hiddenSourceCustomerID").val(vclocationId);
+        }
+
+    // Phase II add by xu xiangguo
+    function gotoEBSAddresssOnContractDetailPage(){
+        var SN = j$("#hiddenStrSN").val();
+        var PN = j$("#hiddenStrPN").val();
+        var strDate = j$("#hiddenStrSearchDate").val();
+        var sourceCustomerID = j$("#hiddenSourceCustomerID").val();
+        var locationId = j$("#hiddenLocationId").val();
+        var iWidth=960;
+        var iHeight=540; 
+        var iTop = (window.screen.availHeight-30-iHeight)/2;
+        var iLeft = (window.screen.availWidth-10-iWidth)/2; 
+        var url = "CSC_EBSAddressOnContract?SN=" + SN + "&PN=" + PN + "&Date=" + strDate + "&locationId=" + locationId + "&sourceCustomerID=" + sourceCustomerID; 
+        window.open(url,"newwindow","height=" + iHeight + " ,width= " + iWidth + " ,top=" + iTop + ",left=" + iLeft + ",toolbar=no,menubar=no, scrollbars=yes, resizable=no, location=no,status=no");
+    }
+
+    function gotoEBSContactOnContractListPage(){
+        var SN = j$("#hiddenStrSN").val();
+        var PN = j$("#hiddenStrPN").val();
+        var strDate = j$("#hiddenStrSearchDate").val();
+
+        var iWidth=670;
+        var iHeight=480; 
+        var iTop = (window.screen.availHeight-30-iHeight)/2;
+        var iLeft = (window.screen.availWidth-10-iWidth)/2; 
+        var url = "CSC_EBSContactOnContractList?SN=" + SN + "&PN=" + PN + "&Date=" + strDate;
+        window.open(url,"newwindow","height=" + iHeight + " ,width= " + iWidth + " ,top=" + iTop + ",left=" + iLeft + ",toolbar=no,menubar=no, scrollbars=yes, resizable=no, location=no,status=no");
+    }
+
+    function gotoEBSEntitlementDetailPage(){
+        var SN = j$("#hiddenStrSN").val();
+        var PN = j$("#hiddenStrPN").val();
+        var strDate = j$("#hiddenStrSearchDate").val();
+        var contractId = j$("#hiddenStrContractId").val();
+        var offerId = j$("#hiddenStrOfferId").val();
+
+        var warrantyOfferStatus = j$("#hiddenStrOfferStatus").val();
+        var deliverId = j$("#hiddenStrDeliverId").val();
+        //
+        var packageName = j$("#hiddenPackageName").val();
+
+        var iWidth=1200;
+        var iHeight=600; 
+        var iTop = (window.screen.availHeight-30-iHeight)/2;
+        var iLeft = (window.screen.availWidth-10-iWidth)/2; 
+        var url = "CSC_EBSEntitlementDetail?SN=" + SN + "&PN=" + PN + "&Date=" + strDate + "&contractId=" + contractId + "&offerId=" + offerId + "&deliverId=" + deliverId + "&packageName=" + packageName + "&warrantyOfferStatus=" + warrantyOfferStatus; 
+        window.open(url,"newwindow","height=" + iHeight + " ,width= " + iWidth + " ,top=" + iTop + ",left=" + iLeft + ",toolbar=no,menubar=no, scrollbars=yes, resizable=no, location=no,status=no");
+    }
+
+    function setEBSEntitlementInfoByProductListPage(strProductId,strProductLineCode,strProductDescription,openwindow){
+        openwindow.close();
+
+        getEBSEntitlementInfoByProductList(strProductId,strProductLineCode,strProductDescription);
+    }
+
+    function setEBSEntitlementInfoBySnAndPnListPage(strProductId,strProductLineCode,strProductDescription,strstrSerialNumber,openwindow){
+        openwindow.close();
+
+        getEBSEntitlementInfoBySnAndPnList(strProductId,strProductLineCode,strProductDescription,strstrSerialNumber);
+    }
+
+    function resetProperties(){
+        document.getElementById("page:form:hiddenBlock").style.display="none";
+        setElementsProperties();
+    }
+    // Phase II add by xu xiangguo
+</script>
+<style>
+    .loadingImage { vertical-align:bottom; }
+
+    .loadingDescription { padding:0 1.5em 0 0.5em; }
+
+    .loadingHolder {
+      font-size: 1.2em;
+      font-weight: bold;
+      padding: 0.5em;
+      position: relative;
+      top: 45%;
+      white-space: nowrap;
+    }
+
+    .loadingDiv {
+      opacity: .75;
+      filter: alpha(opacity=75); 
+      text-align: center;
+      position: fixed;
+      z-index: 300;
+      top: 0px;
+      left: 50%;
+    }
+
+    .right_side_content{  
+        position:relative;  
+        top:0px;  
+        right:0px;  
+        width:360px;  
+        height:auto;            
+    }
+    a.no-hover:hover{
+        color: inherit;
+    }
+</style>
+<apex:form id="form">
+    <apex:pageMessages id="msg" escape="false"/>
+    <apex:pageBlock id="EntitlementBlock" mode="maindetail">
+        <apex:actionStatus id="LoadingStatusSpinner">
+          <apex:facet name="start">
+               <div id="loadingDiv" class="loadingDiv" >
+                    <span id="loadingHolder" class="loadingHolder">
+                         <img  title="Loading..." alt="Loading..." src="/img/loading.gif"/>
+                         <span class="loadingDescription">Loading...</span>
+                    </span>
+               </div>
+          </apex:facet>
+        </apex:actionStatus>
+        <apex:pageBlockSection columns="1" id="EntitlementBlockSection">
+            <apex:pageBlockSectionItem id="contractIdSectionItem">
+                <apex:outputLabel >{!$ObjectType.Entitlement.fields.ContractId__c.label}</apex:outputLabel>
+                <apex:outputField id="contractId" value="{!objEntitle.ContractId__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem id="SNSectionItem">
+                <apex:outputLabel >{!$ObjectType.Entitlement.fields.SN__c.label}</apex:outputLabel>
+                <apex:inputField id="SN" value="{!objEntitle.SN__c}" style="width: 165px;" onchange="clearEnttilementInfo();"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem id="PNSectionItem">
+                <apex:outputLabel >{!$ObjectType.Entitlement.fields.PN__c.label}</apex:outputLabel>
+                <apex:inputField id="PN" value="{!objEntitle.PN__c}" style="width: 165px;"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem id="productLineSectionItem">
+                <apex:outputLabel >{!$ObjectType.Entitlement.fields.Product_Line__c.label}</apex:outputLabel>
+                <apex:inputField id="productLine" value="{!objEntitle.Product_Line__c}" style="width: 165px;"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem id="productDescriptionSectionItem">
+                <apex:outputLabel >{!$ObjectType.Entitlement.fields.Product_Description__c.label}</apex:outputLabel>
+                <apex:outputField id="productDescription" value="{!objEntitle.Product_Description__c}"/>
+            </apex:pageBlockSectionItem>        
+            <apex:pageBlockSectionItem id="statusSectionItem">
+                <apex:outputLabel >{!$ObjectType.Entitlement.fields.Entitlement_Status__c.label}</apex:outputLabel>
+                <apex:outputField id="entitlementStatus" value="{!objEntitle.Entitlement_Status__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem id="packageNameSectionItem">
+                <apex:outputLabel >{!$ObjectType.Entitlement.fields.Package_name__c.label}</apex:outputLabel>
+                 <apex:outputField id="entitlementPackageName" value="{!objEntitle.Package_name__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem id="offerSectionItem">
+                 <apex:outputLabel >{!$ObjectType.Entitlement.fields.Offer__c.label}</apex:outputLabel>
+                 <apex:outputField id="entitlementOffer" value="{!objEntitle.Offer__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem id="startEndDateSectionItem">
+                 <apex:outputLabel >{!$ObjectType.Entitlement.fields.Offer_Dates__c.label}</apex:outputLabel>
+                 <apex:panelGroup >
+                    <apex:outputField id="startDate" value="{!objEntitle.StartDate}"/>/<apex:outputField id="endDate" value="{!objEntitle.EndDate}"/>
+                 </apex:panelGroup>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem id="coverageSectionItem">
+                 <apex:outputLabel >{!$ObjectType.Entitlement.fields.Coverage_Response__c.label}</apex:outputLabel>
+                 <apex:outputField id="entitlementCoverage" value="{!objEntitle.Coverage_Response__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem rendered="{!caze.WarnMess__c == 1 || caze.WarnMess__c == 12}">
+                 <apex:outputLabel >合同提醒</apex:outputLabel>
+                 <a href="javascript:void(0);" class="no-hover" style="background-color: orange;text-decoration-line: initial;font-size: larger;cursor:default;">借贷合同</a>
+            </apex:pageBlockSectionItem>
+            <!-- <apex:pageBlockSectionItem id="latestedDTSectionItem">
+                <apex:outputLabel >{!$ObjectType.Entitlement.fields.Latested_DT__c.label}</apex:outputLabel>
+                <apex:outputField id="Latested_DT" value="{!objEntitle.Latested_DT__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem id="guaranteedDTSectionItem">
+                <apex:outputLabel >{!$ObjectType.Entitlement.fields.Guaranteed_DT__c.label}</apex:outputLabel>
+                <apex:outputField id="Guaranteed_DT" value="{!objEntitle.Guaranteed_DT__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem id="requestedDTSectionItem">
+                <apex:outputLabel >{!$ObjectType.Entitlement.fields.Requested_DT__c.label}</apex:outputLabel>
+                <apex:outputField id="Requested_DT" value="{!objEntitle.Requested_DT__c}"/>
+            </apex:pageBlockSectionItem> -->
+
+            <apex:pageBlockSectionItem rendered="{!showHPEEntitlementInfo}">
+                 <apex:outputLabel >Address On Contract</apex:outputLabel>
+                 <apex:panelGroup >
+                    <a href="#" onclick="gotoAddresssOnContractDetailPage();" id="addressLink" >{!objEntitle.LocationAddress__c}</a>
+                 </apex:panelGroup>
+            </apex:pageBlockSectionItem>
+
+            <!-- <apex:pageBlockSectionItem rendered="{!showHPEEntitlementInfo}">
+                 <apex:outputLabel ><nobr>价值客户</nobr></apex:outputLabel>
+                 <apex:panelGroup >
+                    <a href="javascript:void(0);" id="valuableCustomerNameHPE" style="background-color: yellow;text-decoration-line: initial;font-size: larger;cursor:default;"><nobr>{!objEntitle.Valuable_Customer_Name__c}</nobr></a>
+                    <apex:inputHidden id="valuableCustomerNameHPE2_input" value="{!objEntitle.Valuable_Customer_Name__c}"  />
+                 </apex:panelGroup>
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem rendered="{!showHPEEntitlementInfo}">
+                 <apex:outputLabel ><nobr>价值客户类型</nobr></apex:outputLabel>
+                 <apex:panelGroup >
+                    <a href="javascript:void(0);" id="valuableCustomerNameHPE2" style="background-color: yellow;text-decoration-line: initial;font-size: larger;cursor:default;"><nobr>{!objEntitle.Valuable_Customer_Type__c}</nobr></a>
+                    <apex:inputHidden id="valuableCustomerNameHPE2_input" value="{!objEntitle.Valuable_Customer_Type__c}"  />
+                 </apex:panelGroup>
+            </apex:pageBlockSectionItem>
+
+             <apex:pageBlockSectionItem  rendered="{!showHPEEntitlementInfo}">
+                <apex:outputLabel ><nobr>DMR</nobr></apex:outputLabel>
+                <apex:panelGroup >
+                    <apex:inputCheckbox value="{!caze.DMR__c}" disabled="true"></apex:inputCheckbox>
+                </apex:panelGroup>
+            </apex:pageBlockSectionItem> -->
+
+            <apex:pageBlockSectionItem rendered="{!showHPEEntitlementInfo}">
+                 <apex:outputLabel >Contact On Contract</apex:outputLabel>
+                 <apex:panelGroup >
+                    <a href="#" onclick="gotoContactOnContractListPage();" id="contactLink">
+                        Contact On Contract
+                    </a>
+                 </apex:panelGroup>
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem rendered="{!showHPEEntitlementInfo}">
+                 <div align="right">
+                    <a href="#" onclick="gotoEntitlementDetailPage();">
+                        View Details
+                    </a>
+                 </div>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem rendered="{!showHPEEntitlementInfo}">
+                <apex:outputLabel >Warning</apex:outputLabel>
+                <apex:outputField id="warningMessage" value="{!objEntitle.Entitlement_Warning_Message__c}"/>
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem rendered="{!redFlg}">
+                <apex:outputLabel >
+
+                    <nobr>Red SLA</nobr>
+                    
+                 </apex:outputLabel>
+                 <apex:actionRegion >
+                    <div class="requiredInput">
+                    <div class="requiredBlock"></div>
+                    <apex:selectList value="{!coverageSLA}" size="1">
+                       <apex:selectOptions value="{!coverageOptions}"/>
+                       <apex:actionSupport event="onchange" reRender="EntitlementBlock" status="optionsStatus" action="{!getEBSEntitlementMapping}" oncomplete="setElementsProperties();"/>
+                    </apex:selectList>
+                    </div>
+                 </apex:actionRegion>
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem rendered="{!showEBSEntitlementInfo}">
+                 <apex:outputLabel ><nobr>Address On Contract</nobr></apex:outputLabel>
+                 <apex:panelGroup >
+                    <a href="#" onclick="gotoEBSAddresssOnContractDetailPage();" id="EBSaddressLink" >{!objEntitle.LocationAddress__c}</a>
+                 </apex:panelGroup>
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem rendered="{!showEBSEntitlementInfo}">
+                 <apex:outputLabel ><nobr>价值客户</nobr></apex:outputLabel>
+                 <apex:panelGroup >
+                    <a href="javascript:void(0);" class="no-hover" id="valuableCustomerName"  style="background-color: yellow;text-decoration-line: initial;font-size: larger;cursor:default;">{!objEntitle.Valuable_Customer_Name__c}</a>
+                    
+                 </apex:panelGroup>
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem rendered="{!showEBSEntitlementInfo}">
+                 <apex:outputLabel ><nobr>价值客户类型</nobr></apex:outputLabel>
+                 <apex:panelGroup >
+                    <a href="javascript:void(0);" class="no-hover" id="valuableCustomerName2"  style="background-color: yellow;text-decoration-line: initial;font-size: larger;cursor:default;">{!objEntitle.Valuable_Customer_Type__c}</a>
+                    
+                 </apex:panelGroup>
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem rendered="{!showEBSEntitlementInfo}" id="dmrSectionItem">
+                <apex:outputLabel ><nobr>DMR</nobr></apex:outputLabel>
+                <apex:panelGroup >
+                    <apex:inputCheckbox value="{!caze.DMR__c}"  disabled="{!isDMRDisabled}" id="dmr_input"></apex:inputCheckbox>
+                </apex:panelGroup>
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem rendered="{!showEBSEntitlementInfo}">
+                 <apex:outputLabel ><nobr>Contact On Contract</nobr></apex:outputLabel>
+                 <apex:panelGroup >
+                    <a href="#" onclick="gotoEBSContactOnContractListPage();" id="EBScontactLink">
+                        Contact On Contract
+                    </a>
+                 </apex:panelGroup>
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem id="hpeSaidSectionItem"  rendered="{!objEntitle.HPE_SAID__c != null && objEntitle.HPE_SAID__c != ''}">
+                <apex:outputLabel ><nobr>HPE SAID</nobr></apex:outputLabel>
+                <apex:panelGroup >
+                <div href="javascript:void(0);" class="no-hover" id="hpeSaid"  style="background-color: yellow;word-break:break-all;word-wrap:break-word;font-size: larger;cursor:default;">{!objEntitle.HPE_SAID__c}</div>
+                </apex:panelGroup>
+            </apex:pageBlockSectionItem>
+
+            <apex:pageBlockSectionItem rendered="{!showEBSEntitlementInfo}">
+                 <div align="right">
+                    <a href="#" onclick="gotoEBSEntitlementDetailPage();">
+                        View Details
+                    </a>
+                 </div>
+            </apex:pageBlockSectionItem>
+
+
+
+            <apex:pageBlockSectionItem rendered="{!showEBSEntitlementInfo}">
+                <apex:outputLabel >Warning</apex:outputLabel>
+                <apex:outputField id="EBSwarningMessage" value="{!objEntitle.Entitlement_Warning_Message__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:panelGroup >
+                    <div align="right">
+                        <apex:commandButton value="ReSearch(EBS)" action="{!getReSearchEntitlementInfoByEBS}" oncomplete="showEntitlementInfo();" reRender="msg,hiddenStrGetEntitlementInfo,EntitlementBlock,dmrSectionItem,hiddenBlock" status="LoadingStatusSpinner" style="background:#4A4AFF;color:#FFFFFF;"/>
+                        <apex:commandButton value="ReEntitlement(EBS)" action="{!getReEntitlementInfoByEBS}" oncomplete="showEntitlementInfo();" reRender="msg,hiddenStrGetEntitlementInfo,EntitlementBlock,dmrSectionItem,hiddenBlock" status="LoadingStatusSpinner" style="background:#4A4AFF;color:#FFFFFF;"/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <br/>
+                        <apex:commandButton value="ReSearch(HPE)" action="{!getReSearchEntitlementInfo}" oncomplete="showEntitlementInfo();" reRender="msg,hiddenStrGetEntitlementInfo,EntitlementBlock,hiddenBlock" status="LoadingStatusSpinner"/>
+                        <apex:commandButton value="ReEntitlement(HPE)" action="{!getReEntitlementInfo}" oncomplete="showEntitlementInfo();" reRender="msg,hiddenStrGetEntitlementInfo,EntitlementBlock,hiddenBlock" status="LoadingStatusSpinner"/>
+                        <apex:commandButton value="Save" action="{!saveEntitlement}" oncomplete="refreshPrimaryTab();" reRender="msg,hiddenStrCaseId,hiddenIsGotoViewPage"/>
+                        <apex:actionFunction action="{!setEntitlementInfo}" name="setEntitlementInfoPage" reRender="msg,hiddenStrGetEntitlementInfo,EntitlementBlock,hiddenBlock" status="LoadingStatusSpinner" oncomplete="resetProperties();">
+                            <apex:param name="firstParam" assignTo="{!strEntitlementInfo}" value="" />
+                        </apex:actionFunction>
+                        <apex:actionFunction action="{!getEntitlementInfoByProductList}" name="getEntitlementInfoByProductList" reRender="msg,hiddenStrGetEntitlementInfo,EntitlementBlock,hiddenBlock" status="LoadingStatusSpinner" oncomplete="resetProperties();">
+                            <apex:param name="firstParam" assignTo="{!strProductId}" value="" />
+                            <apex:param name="secondParam" assignTo="{!strProductLineCode}" value="" />
+                            <apex:param name="threeParam" assignTo="{!strProductDescription}" value="" />
+                        </apex:actionFunction>
+                        <apex:actionFunction action="{!updateAccountInfo}" name="updateAccountInfo" reRender="hiddenStrCaseId" oncomplete="refreshPrimaryTab();">
+                            <apex:param name="firstParam" assignTo="{!strAccountId}" value="" />
+                        </apex:actionFunction>
+                        <apex:actionFunction action="{!updateContactInfo}" name="updateContactInfo" reRender="hiddenStrCaseId" oncomplete="refreshPrimaryTab();">
+                            <apex:param name="firstParam" assignTo="{!strContactId}" value="" />
+                        </apex:actionFunction>
+                        <apex:actionFunction action="{!getEBSEntitlementInfoByProductList}" name="getEBSEntitlementInfoByProductList" reRender="msg,hiddenStrGetEntitlementInfo,EntitlementBlock,hiddenBlock" status="LoadingStatusSpinner" oncomplete="resetProperties();">
+                            <apex:param name="firstParam" assignTo="{!strProductId}" value="" />
+                            <apex:param name="secondParam" assignTo="{!strProductLineCode}" value="" />
+                            <apex:param name="threeParam" assignTo="{!strProductDescription}" value="" />
+                        </apex:actionFunction>
+                        <apex:actionFunction action="{!getEBSEntitlementInfoBySnAndPnList}" name="getEBSEntitlementInfoBySnAndPnList" reRender="msg,hiddenStrGetEntitlementInfo,EntitlementBlock,hiddenBlock" status="LoadingStatusSpinner" oncomplete="resetProperties();">
+                            <apex:param name="firstParam" assignTo="{!strProductId}" value="" />
+                            <apex:param name="secondParam" assignTo="{!strProductLineCode}" value="" />
+                            <apex:param name="threeParam" assignTo="{!strProductDescription}" value="" />
+                            <apex:param name="fourParam" assignTo="{!strSerialNumber}" value="" />
+                        </apex:actionFunction>
+                    </div>
+                </apex:panelGroup>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    <apex:pageBlock id="hiddenBlock">
+        <apex:inputHidden id="hiddenStrGetEntitlementInfo" value="{!strGetEntitlementInfo}"/>
+        <input type="hidden" id="hiddenStrSN" value="{!objEntitle.SN__c}" />
+        <input type="hidden" id="hiddenStrPN" value="{!objEntitle.PN__c}" />
+        <input type="hidden" id="hiddenStrSearchDate" value="{!strEntitlementSearchDate}" />
+        <input type="hidden" id="hiddenLocationId" value="{!objEntitle.LocationId__c}" />
+        <input type="hidden" id="hiddenSourceCustomerID" value="{!objEntitle.SourceCustomerID__c}" />
+        <input type="hidden" id="hiddenStrContractId" value="{!objEntitle.ContractId__c}" />
+        <input type="hidden" id="hiddenStrOfferId" value="{!objEntitle.OfferId__c}"/>
+        <input type="hidden" id="hiddenStrOfferStatus" value="{!objEntitle.WarrantyOfferId__c}"/>
+        <input type="hidden" id="hiddenStrDeliverId" value="{!objEntitle.DeliverId__c}"/>
+        <input type="hidden" id="hiddenStrSlatype" value="{!objEntitle.SLA_Type__c}"/>
+        <apex:inputHidden id="hiddenStrCaseId" value="{!strCaseId}"/>
+        <apex:inputHidden id="hiddenIsGotoViewPage" value="{!isGotoViewPage}"/>
+        <!-- xutao -->
+        <apex:inputHidden id="valuableCustomer_casehide" value="{!caze.Valuable_Customer__c}"  />
+        <apex:inputHidden id="valuableCustomertype_casehide" value="{!caze.Valuable_Customer_Type__c}"  />
+        <apex:inputHidden id="valuableCustomerName_input" value="{!objEntitle.Valuable_Customer_Name__c}"  />
+        <apex:inputHidden id="valuableCustomerName2_input" value="{!objEntitle.Valuable_Customer_Type__c}"  />
+        <!-- package -->
+        <input type="hidden" id="hiddenPackageName" value="{!objEntitle.Package_name__c}"/>
+        <input type="hidden" id="hiddenWarnMess" value="{!caze.WarnMess__c}"/>
+
+    </apex:pageBlock>
+</apex:form>
+</apex:page>

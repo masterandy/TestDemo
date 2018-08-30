@@ -1,0 +1,310 @@
+<apex:page extensions="CSC_New_WorkOrder_Elevation_Controller" standardController="WorkOrder" id="page" showHeader="false">
+<script src="/support/api/34.0/interaction.js"></script>
+<script src="/support/console/34.0/integration.js"></script>
+<apex:includeScript value="{!$Resource.jQuery}"/>
+<html>
+    <head>
+        <style>
+            .wrap{  
+                min-width: 800px; 
+                width: auto;
+                height:auto;
+                background-color: #fff;
+                margin:0 auto;  
+            }  
+
+            .container{  
+                position:relative;  
+                width:auto;
+                height:100%;  
+            }  
+            
+            .left_side{  
+                position:absolute;  
+                top:0px;  
+                left:0px;  
+                width:360px;  
+                height:100%;  
+                overflow:auto;
+                background-color:#f8f8f8;
+            } 
+
+            .left_side_content{  
+                position:relative;  
+                top:0px;  
+                left:0px;  
+                width:360px;  
+                height:auto;  
+            } 
+
+            .content{  
+                margin:0px 360px 0px 360px;  
+                height:auto;  
+                overflow:auto;
+                background-color:#f8f8f8;
+            } 
+            
+            .right_side{  
+                position:absolute;  
+                top:0px;  
+                right:0px;  
+                width:360px;  
+                height:100%; 
+                overflow:auto;
+                background-color:#f8f8f8;           
+            }  
+
+            .right_side_content{  
+                position:relative;  
+                top:0px;  
+                right:0px;  
+                width:360px;  
+                height:auto;            
+            }
+            
+            .selectResult{  
+                height:200px; 
+                width: auto;
+                background-color:#f8f8f8;
+                overflow:auto;
+            }
+
+            input.btn {
+                padding: 4px 3px;
+            }
+
+            .progressBar{
+                background-color: #f8f8f8;
+                border:1px solid #DDDDDD;
+                height: 19px;
+                width: 300px;
+            }
+
+            .progress{
+                background-color: #F7B64B;
+                border:1px solid #E78F08;
+                height: 100%;
+                margin: -1px;
+                text-align: center;
+                line-height: 18px;
+            }
+
+            .errorCount{
+                color:red;
+            }
+
+            .requiredInput {
+                position: relative;
+                height: 100%;
+            }
+
+            .requiredBlock {
+                background-color: #c00;
+                position: absolute;
+                left: -4px;
+                width: 3px;
+                top: 1px;
+                bottom: 1px;
+            }
+
+            .requiredBlock_One {
+                background-color: #FF7F00;
+                position: absolute;
+                left: -4px;
+                width: 3px;
+                top: 1px;
+                bottom: 1px;
+            }
+
+            .requiredBlock_Two {
+                background-color: #c00;
+                position: absolute;
+                left: -8px;
+                width: 3px;
+                top: 1px;
+                bottom: 1px;
+            }
+
+            .refreshList {
+                background-image: url(/img/alohaSkin/sync.png);
+                background-repeat:no-repeat;
+                background-position: top left;
+                width: 22px;
+                height: 20px;
+                vertical-align: bottom;
+            }
+
+            .loadingImage { vertical-align:bottom; }
+
+            .loadingDescription { padding:0 1.5em 0 0.5em; }
+
+            .loadingHolder {
+              font-size: 1.2em;
+              font-weight: bold;
+              padding: 0.5em;
+              position: relative;
+              top: 45%;
+              white-space: nowrap;
+            }
+
+            .loadingDiv {
+              opacity: .75;
+              filter: alpha(opacity=75); 
+              text-align: center;
+              position: fixed;
+              z-index: 300;
+              top: 10px;
+              left: 85%;
+            }
+            
+            .SavingHolder {
+              background-color: #FFFFCC;
+              border: 1px solid #333333;
+              font-size: 1.2em;
+              font-weight: bold;
+              padding: 0.5em;
+              position: relative;
+              top: 45%;
+              white-space: nowrap;
+             }
+            
+            .SavingDiv {
+              background-color: #D0D0D0;
+              opacity: .75;
+              filter: alpha(opacity=75); 
+              text-align: center;
+              width: 100%;
+              height: 100%;
+              position: fixed;
+              z-index: 300;
+              top: 0;
+              left: 0;
+             } 
+
+             .textArea{
+                width: 475px;
+                height: 98px;
+             }
+
+        </style>
+    </head>
+
+<div style="{!div_style}">
+<apex:sectionHeader title="Work Order Edit" subtitle="New Elevation Work Order"/>
+<apex:pagemessages id="Messages"/>
+<apex:form id="form">
+<apex:pageBlock mode="edit" id="pageblock" title="Work Order Edit">
+    <apex:actionStatus id="SavingStatusSpinner">
+      <apex:facet name="start">
+           <div id="SavingDiv" class="SavingDiv" >
+                <span id="SavingHolder" class="SavingHolder">
+                     <img  title="Saving..." alt="Saving..." src="/img/loading.gif"/>
+                     <span class="loadingDescription">Saving...</span>
+                </span>
+           </div>
+      </apex:facet>
+    </apex:actionStatus>
+
+    <apex:pageBlockButtons >
+        <apex:commandButton value="Save" action="{!Save}" reRender="Messages" status="SavingStatusSpinner"/>
+        <!--input type="button" value="Cancel" onclick="Cancel();" class="btn"/-->
+        <apex:commandButton value="Cancel" action="{!Cancel}"/>
+    </apex:pageBlockButtons>
+<apex:pageBlockSection title="Core Case Attributes" id="case">
+    <apex:inputField id="Severity" value="{!wo.CSC_Severity__c}" required="true"/>
+    <apex:inputField id="Subject" value="{!wo.Subject}" required="true"/>
+    <apex:inputField id="OperatingSystem" rendered="{!recordTypeName<>'H3C->CoE'}" label="Operationg System" value="{!wo.OperatingSystem__c}"  required="true"/>
+    <apex:inputField id="OperatingSystemVersion" rendered="{!recordTypeName<>'H3C->CoE'}" label="Operationg System Version" value="{!wo.Operating_System_Version__c}"  required="true"/>
+    <apex:outputField id="Account" value="{!wo.AccountId}"/>
+    <apex:inputField id="AccountEngName" label="Account English" value="{!wo.Account_English__c}"/>
+    <apex:outputField id="SerialNumber" value="{!myCase.CSC_SN__c}"/>
+    <apex:outputField id="CaseRecordType" label="Case Type" value="{!myCase.RecordTypeId}"/>
+</apex:pageBlockSection>
+<apex:pageBlockSection title="Machine location" id="machineLocation">
+    <apex:outputField id="Country" value="{!myCase.CSC_Country__c}"/>
+    <apex:outputField id="province" label="State/Province" value="{!myCase.Province__c}"/>
+    <apex:outputField id="city" label="City" value="{!myCase.City__c}"/>
+    <apex:outputField id="zipCode" value="{!myCase.Billing_Zip_Postal_Code__c}"/>
+    <apex:outputField id="street" value="{!myCase.Billing_Street__c}"/>
+    <apex:outputtext ></apex:outputtext>
+    <apex:inputField id="risk" styleClass="textArea" rendered="{!recordTypeName<>'H3C->CoE'}" value="{!wo.Business_Risk__c}"  required="true"/>
+    <apex:inputField id="recentChange" styleClass="textArea" rendered="{!recordTypeName<>'H3C->CoE'}" value="{!wo.Recent_Changes__c}"  required="true"/>
+</apex:pageBlockSection>
+
+<div id="page:form:pageblock:elevation" style="{!IF(recordTypeName<>'H3C->CoE',"","display:none")}">
+<div class="pbSubheader brandTertiaryBgr tertiaryPalette"><h3>Elevation Attributes</h3></div>
+<div class="pbSubsection">
+<table class="detailList" border="0" cellspacing="0" cellpadding="0"><tbody>
+<tr>
+<td rowspan="2">
+Routing Tree
+</td>
+<td width="50px">
+    <apex:inputField rendered="{!recordTypeName<>'H3C->CoE'}" required="true" id="level1" value="{!wo.Elevation_Level1__c}"/>
+</td>
+<td>
+     -> &nbsp; <apex:inputField id="level2" rendered="{!recordTypeName<>'H3C->CoE'}" value="{!wo.Elevation_Level2__c}"/> -> &nbsp; 
+    <apex:inputField id="level3" rendered="{!recordTypeName<>'H3C->CoE'}" value="{!wo.Elevation_Level3__c}"/> -> &nbsp;
+    <apex:inputField id="level4" rendered="{!recordTypeName<>'H3C->CoE'}" value="{!wo.Elevation_Level4__c}"/>
+</td>
+</tr>
+<tr>
+<td style="padding-top:10px" colspan="2">
+    -> &nbsp; <apex:inputField id="level5" rendered="{!recordTypeName<>'H3C->CoE'}" value="{!wo.Elevation_Level5__c}"/> -> &nbsp;
+    <apex:inputField id="level6" rendered="{!recordTypeName<>'H3C->CoE'}" value="{!wo.Elevation_Level6__c}"/> -> &nbsp;
+    <apex:inputField id="level7" rendered="{!recordTypeName<>'H3C->CoE'}" value="{!wo.Elevation_Level7__c}"/>
+</td>
+</tr>
+</tbody></table>
+</div></div>
+
+
+<apex:pageBlockSection title="Contact Information" id="customerContact">
+    <apex:inputField label="Contact Name" value="{!wo.ContactName__c}" required="true"></apex:inputField>
+    <apex:inputField label="{!IF(recordTypeName=='H3C->ERT','CPZC PDL','Contact Email')}" value="{!wo.ContactEmail__c}" required="true"></apex:inputField>
+    <apex:inputField label="Contact Phone" value="{!wo.ContactPhone__c}" required="true"></apex:inputField>
+    <apex:inputField id="email2" label="{!IF(recordTypeName=='H3C->ERT','Concierge PDL','Team PDL')}" value="{!wo.Contact_Email2__c}" required="true" rendered="{!recordTypeName<>'H3C->CoE'}"/>
+</apex:pageBlockSection>
+<apex:pageBlockSection title="Issue Detail" id="issueDetail">
+    <apex:outputField id="RecordTypeId" value="{!wo.RecordTypeId}"/>
+    <apex:outputField id="productDescription" value="{!myCase.CSC_Product_Description__c}"/>
+    <apex:inputField id="FirstOccurredDate" rendered="{!recordTypeName<>'H3C->CoE'}" value="{!wo.First_Occurred_Date__c}"  required="true"/>
+    <apex:inputField id="Frequency" rendered="{!recordTypeName<>'H3C->CoE'}" value="{!wo.Frequency__c}"  required="true"/>
+    <apex:inputField id="ProblemDescription" styleClass="textArea" value="{!wo.ProblemDescription__c}"  required="true"/>
+    <apex:inputField id="ProblemAnalysis" styleClass="textArea" rendered="{!recordTypeName<>'H3C->CoE'}" value="{!wo.Problem_Analysis__c}"  required="true"/>
+    <apex:inputField id="CustomerImpact" styleClass="textArea" rendered="{!recordTypeName<>'H3C->CoE'}" value="{!wo.Customer_Impact__c}"  required="true"/>
+</apex:pageBlockSection>
+</apex:pageBlock>
+</apex:form>
+</div>
+<apex:includeScript value="/support/console/35.0/integration.js"/>
+<apex:includeScript value="{!$Resource.jQuery}"/>
+<script type="text/javascript">
+$("#submit").one('click', function (event) { 
+ event.preventDefault();
+ //do something
+ $(this).prop('disabled', true);
+});
+
+function Cancel()
+{
+    try
+    {
+        window.location.href='/'+'{!case_id}'; 
+        //window.history.go(-1); 
+        //window.location.reload();  
+        //sforce.console.getEnclosingTabId(closeSubtab);   
+    }
+    catch(e)
+    {
+        alert(e);
+    }
+}
+var closeSubtab = function closeSubtab(result) {
+//Now that we have the tab ID, we can close it
+var tabId = result.id;
+sforce.console.closeTab(tabId, callback);
+};
+</script>
+</html>
+</apex:page>

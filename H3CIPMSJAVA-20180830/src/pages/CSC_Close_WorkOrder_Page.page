@@ -1,0 +1,438 @@
+<apex:page controller="CSC_Close_WorkOrder_Controller" id="page" showHeader="false">
+<apex:form id="form">
+<!-- Main Body Starts Here -->
+<div class="lookupSearch"><div class="individualPalette"><div class="list0">
+<!-- Begin RelatedListElement -->
+<div class="bRelatedList" id="User"><a name="User_target"></a>
+<div class="listRelatedObject userBlock">
+<div class="bPageBlock brandSecondaryBrd secondaryPalette">
+<div class="pbHeader">
+    <table  border="0" cellpadding="0" cellspacing="0" summary="Employee">
+        <tr>
+            <td class="pbTitle">
+                <h3><span class="searchFirstCell">Close WorkOrder</span></h3>
+            </td>
+        </tr>
+    </table>   
+    <apex:pagemessages id="Messages"/>
+    <div class="searchFilterFieldsHolder searchFilterFieldsHolderFirst" id="field_name_User">
+    <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+            <table border="0"  class="searchFilterFields">
+                <tr>
+                    <td style="text-align:right;" ><label>Resolution Type</label></td>
+                    <td style="text-align:left;" ><apex:inputField id="Resolution_Type" value="{!wo.Resolution_Type__c}" required="true" /></td>
+                    <td style="text-align:right;" ><label>Resolution Code</label></td>
+                    <td style="text-align:left;" ><apex:inputField id="Resolution_Code" value="{!wo.Resolution_Code__c}" required="true"/></td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;" ><label>Resolution Sub-Code</label></td>
+                    <td style="text-align:left;" ><apex:inputField id="Resolution_Sub_Code" value="{!wo.Resolution_Sub_Code__c}" required="true"/></td>
+                    <td style="text-align:right;" ><label>Comments</label></td>
+                    <td style="text-align:left;" ><apex:inputField id="Comments" value="{!wo.Comments__c}"/></td>
+                </tr>
+                <tr style="{!IF(wo.Record_Type__c=='H3C->ERT',"","display:none")}">
+                    <td style="text-align:right;" ><label>ERT Resolution Code</label></td>
+                    <td style="text-align:left;" ><apex:inputField id="ERT_Resolution_Sub_Code" rendered="{!wo.Record_Type__c=='H3C->ERT'}" value="{!wo.ERT_Resolution_Code__c}" required="true"/></td>
+                    <td style="text-align:right;" ><label></label></td>
+                    <td style="text-align:left;" ></td>
+                </tr>
+                <tr style="{!style_l3}">
+                    <td style="text-align:right;" ><label>SIE ID</label></td>
+                    <td style="text-align:left;" ><apex:inputField id="SIE_ID" value="{!wo.SIE_ID__c}" /> </td>
+                    <td style="text-align:right;" ><label>CATCH III</label></td>
+                    <td style="text-align:left;" ><apex:inputField id="CATCH_III" value="{!wo.CATCH_III__c}"/></td>
+                </tr>
+                <tr style="{!style}">
+                    <td style="text-align:right;" ><label>Elevation Quality Issue</label></td>
+                    <td style="text-align:left;" ><apex:inputField id="Elevation_Quality_Issue" value="{!wo.Elevation_Quality_Issue__c}" required="true" rendered="{!rendered}"/></td>
+                    <td style="text-align:right;" ></td>
+                    <td style="text-align:left;" ></td>
+                </tr>
+                <!-- 2018-04-20 -->
+                <!-- <tr style="{!IF(wo.Record_Type__c=='RCE L2',"","display:none")}">
+                    <td style="text-align:right;" ><label>Is Red Brand Server</label></td>
+                    <td style="text-align:left;" ><apex:inputField id="IsRedServer" value="{!wo.IsRedServer__c}" /></td>
+                    <td style="text-align:right;" ></td>
+                    <td style="text-align:left;" ></td>     
+                </tr> -->
+                <apex:inputHidden value="{!wo.case.CSC_SN__c}" id="wc_sn" />
+                <!-- 2018-04-20 -->
+                <tr style="{!IF(wo.Record_Type__c=='RCE L2',"","display:none")}">        
+                    
+                    <td style="text-align:right;" ><label>Content Category</label></td>
+                    <td style="text-align:left;" ><apex:inputField id="Content_Category" value="{!wo.Content_Category__c}"  /></td>
+                    <td style="text-align:right;" ><label>Description</label></td>
+                    <td style="text-align:left;" ><apex:inputField id="id_Description" value="{!wo.Description}"  /></td>
+                </tr>
+                <!-- 2018-04-20 -->
+                <tr style="{!IF(wo.Record_Type__c=='RCE L2',"","display:none")}">
+                    <td style="text-align:right;" ><label>Content SubCategory</label></td>
+                    <td style="text-align:left;" ><apex:inputField id="Content_SubCategory" value="{!wo.Content_SubCategory__c}" /></td>
+                    <td style="text-align:right;" ><label>Resolution</label></td>
+                    <td style="text-align:left;" ><apex:inputField id="id_Resolution" value="{!wo.Resolution__c}" /></td>
+                </tr>
+                <!-- <tr style="{!IF(wo.Record_Type__c=='RCE L2',"","display:none")}">
+                    <td style="text-align:right;" ><label>Description</label></td>
+                    <td style="text-align:left;" ><apex:inputField id="id_Description" value="{!wo.Description }" required="true" rendered="{!rendered}"/>
+                    </td>
+                    <td style="text-align:right;" ><label>Resolution</label></td>
+                    <td style="text-align:left;" ><apex:inputField id="id_Resolution" value="{!wo.Resolution__c }" required="true" rendered="{!rendered}"/>
+                    </td>
+                </tr> -->
+                
+                <!--  -->
+                <tr style="{!style_asc}">
+                    <td style="text-align:right;" ><label>Repair Class</label></td>
+                    <td style="text-align:left;" ><apex:inputField id="CSC_Subcase_Repair_Class_Code__c" value="{!wo.CSC_Subcase_Repair_Class_Code__c}" required="{!repair_class_required}" rendered="{!rendered_asc}"/></td>
+                    <td style="text-align:right;" ><label>Delay Code</label></td>
+                    <td style="text-align:left;" ><apex:inputField id="CSC_Subcase_Delay_Code__c" value="{!wo.CSC_Subcase_Delay_Code__c}" required="{!delay_code_required}" rendered="{!rendered_asc}"/></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:right;" >
+                    <apex:commandButton value="Save&Close" onclick="Save();"/>
+                    <apex:actionFunction action="{!Close}" name="CloseWo" oncomplete="Reload();"/>
+                    </td>
+                    <td colspan="2" style="text-align:left;" >                    
+                    <apex:commandButton value="Cancel" onclick="window.close();"/>
+                    </td>
+                </tr>
+            </table>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+    </div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</apex:form> 
+<script type="text/javascript">
+var __sfdcSessionId = '{!GETSESSIONID()}';
+</script>
+<script src="/soap/ajax/36.0/connection.js" type="text/javascript"></script>
+<script src="/soap/ajax/36.0/apex.js" type="text/javascript"></script> 
+<script type="text/javascript">
+/* * *****************************************************************************************
+* Edit Date: 2016-11-16 By Hunter 
+* Edit No: ed1
+* If the work order is "H3C->ERT" or "H3C->CoE" can not close if "ERT Case ID" Or "HPE Case ID" is null
+***************************************************************************************************/
+function Close()
+{
+    try
+    {
+    CloseWo();
+    }
+    catch(e)
+    {
+        alert(e+'1');
+    }   
+}
+function isEmpty(str) {
+    return (!str || 0 === str.length);
+}
+function Save()
+{
+    try
+    {
+        var style='{!style}';
+        //add by xutao 2018-01-03 for require
+        var style_l3='{!style_l3}';
+        //
+        var style_rce='{!style_rce}';       
+
+        var rendered='{!rendered}';
+        var style_asc='{!style_asc}';
+        var rendered_asc='{!rendered_asc}';
+        var repair_class_required='{!repair_class_required}';
+        var wo = new sforce.SObject("WorkOrder");
+        if(style.length==0 && rendered=='true')
+        {
+            if(document.getElementById('page:form:Elevation_Quality_Issue').value.length==0)
+            {
+                return;
+            }
+        }
+        if(style_asc.length==0)
+        {
+            if(rendered_asc=='true')
+            {
+                if(repair_class_required=='true')
+                {
+                    if(document.getElementById('page:form:CSC_Subcase_Repair_Class_Code__c').value.length==0)
+                    {
+                        return;
+                    }
+                }
+                
+                if({!delay_code_required}==true && document.getElementById('page:form:CSC_Subcase_Delay_Code__c').value.length==0)
+                {
+                    return;
+                }
+                wo.CSC_Subcase_Repair_Class_Code__c=document.getElementById('page:form:CSC_Subcase_Repair_Class_Code__c').value;
+                wo.CSC_Subcase_Delay_Code__c=document.getElementById('page:form:CSC_Subcase_Delay_Code__c').value;
+            }
+        }
+        //ed1 begin
+        // if('{!wo.Record_Type__c}' === 'H3C->ERT' && isEmpty('{!wo.HPE_Case_ID__c}'))
+        // {
+        //     alert('The ERT Case Id can not be empty.');
+        //     return;
+        // }
+
+        // if('{!wo.Record_Type__c}' === 'H3C->CoE' && isEmpty('{!wo.HPE_Case_ID__c}'))
+        // {
+        //     alert('The HPE Case Id can not be empty.');
+        //     return;
+        // }
+        //ed1 end
+        var isNull_count='{!isNull_count}';  
+        var id='{!woId}';
+        if(document.getElementById('page:form:CSC_Subcase_Repair_Class_Code__c')!=null)
+        {
+            var repair_class_code=document.getElementById('page:form:CSC_Subcase_Repair_Class_Code__c').value;
+            //'{!wo.CSC_Subcase_Repair_Class_Code__c}';
+            var profile_name='{!profile_name}';
+            var resolution_type='{!wo.Resolution_Type__c}';
+            //alert('repair_class_code:'+repair_class_code);
+            if(profile_name=='CSC&FST DP' && resolution_type=='CSR' && repair_class_code.length==0)
+            {
+                alert('Please input Repair Class Code.');
+                return;
+            }
+        }
+        var Count_SN_IsNull='{!wo.Count_SN_IsNull__c}';
+        if(Count_SN_IsNull>0)
+        {
+            alert('For the cases that have parts, if no parts serial number of parts order fulfillment, the work order cannot be closed.');
+            return;
+        }
+        if(isNull_count>0)
+        {
+            alert('For the cases that have parts, if no status of parts order fulfillment, the work order cannot be closed.');
+            return;
+        }
+        var hpe_id='{!hpe_id}';
+        var qty='{!qty}';
+        
+        // if(hpe_id.length==0 && qty>0)
+        // {
+        //     alert('HPE SubCase ID is null, the work order cannot be closed.');
+        //     return;
+        // }
+        wo.Resolution_Type__c = document.getElementById('page:form:Resolution_Type').value;
+        //wo.Resolution_Code__c = document.getElementById('page:form:Resolution_Code').value;
+        //wo.Resolution_Sub_Code__c = document.getElementById('page:form:Resolution_Sub_Code').value;
+        wo.Id = id;
+
+        /*if(document.getElementById('page:form:Resolution_Type').value.length==3)
+        {
+            wo.Resolution_Type__c = null;
+        }
+        else
+        {     
+            wo.Resolution_Type__c = document.getElementById('page:form:Resolution_Type').value;
+        }*/
+        if(document.getElementById('page:form:Resolution_Code').value.length<=3)
+        {
+            //alert('Please input Resolution Code.');
+            return;
+            wo.Resolution_Code__c = null;
+        }
+        else
+        {     
+            wo.Resolution_Code__c = document.getElementById('page:form:Resolution_Code').value;
+        }
+        if(document.getElementById('page:form:Resolution_Sub_Code').value.length==3)
+        {
+            wo.Resolution_Sub_Code__c = null;
+        }
+        else if(document.getElementById('page:form:Resolution_Sub_Code').value.length==0)
+        {
+            return;
+        }
+        else
+        {     
+            wo.Resolution_Sub_Code__c = document.getElementById('page:form:Resolution_Sub_Code').value;
+        }
+        
+        wo.Comments__c = document.getElementById('page:form:Comments').value;
+
+        //add by xutao 2018-01-03 for require
+        //alert(style_rce);
+        //alert(style_rce==null);
+        //alert(style_rce.length==0);
+        if(style_rce.length==0)
+        {
+            //var IsRedServer__var = document.getElementById('page:form:IsRedServer').value;
+
+            var wc_sn = document.getElementById('page:form:wc_sn').value;
+            var c_category = document.getElementById('page:form:Content_Category').value;
+            //alert(wc_sn);
+            if(wc_sn==null||wc_sn==''||wc_sn.length!=20){
+                //不校验必填
+            }else{
+
+                if(c_category == null || c_category.length==0)
+                {
+                    alert('请选择Content Category.');
+                    return;
+                }
+
+            }
+            
+
+/*            if(IsRedServer__var.length != 1){
+                alert('请选择是否是红牌服务器.');
+                return;
+            }else if(IsRedServer__var=='是'){
+                if(c_category == null || c_category.length==0)
+                {
+                    alert('请选择Content Category.');
+                    return;
+                }
+
+            }*/
+
+            if(c_category == null 
+                || c_category == ''
+                || c_category == '非技术问题'
+                || c_category == '更换备件')
+            {
+                wo.Content_SubCategory__c = null;
+            }else{
+                if(document.getElementById('page:form:Content_SubCategory').value.length==0){
+                    alert('请选择Content Subcategory.');
+                    return; 
+                }
+                wo.Content_SubCategory__c = document.getElementById('page:form:Content_SubCategory').value;
+            }
+            wo.Content_Category__c = document.getElementById('page:form:Content_Category').value;;
+            //wo.IsRedServer__c = IsRedServer__var;
+            //
+            
+            /*if(document.getElementById('page:form:id_Description').value.length==0)
+            {
+                alert('以下字段为必填项：Description/Comments/Resolution.');
+                return;
+            }*/
+            wo.Description = document.getElementById('page:form:id_Description').value;
+            /*if(document.getElementById('page:form:Comments').value.length==0)
+            {
+                alert('以下字段为必填项：Description/Comments/Resolution.');
+                return;
+            }*/
+            wo.Comments__c = document.getElementById('page:form:Comments').value;
+            if(document.getElementById('page:form:id_Resolution').value.length==0)
+            {
+                alert('请填写Resolution.');
+                return;
+            }            
+            wo.Resolution__c = document.getElementById('page:form:id_Resolution').value;
+
+            
+            
+        }
+        //alert(document.getElementById('page:form:Content_Category').value);
+        //alert(document.getElementById('page:form:Content_SubCategory').value);
+
+        //add by xutao 2018-01-03 for require
+        if(style_l3.length==0)
+        {
+            if(document.getElementById('page:form:SIE_ID').value.length==0)
+            {
+                alert('Please input SIE ID.');
+                return;
+            }
+        }
+        
+        
+        if(style=='')
+        {
+            wo.SIE_ID__c = document.getElementById('page:form:SIE_ID').value;
+            wo.CATCH_III__c = document.getElementById('page:form:CATCH_III').value;
+            var Elevation_Quality_Issue = document.getElementById('page:form:Elevation_Quality_Issue');
+            if(document.getElementById('page:form:Elevation_Quality_Issue').value.length==3)
+            {
+               wo.Elevation_Quality_Issue__c = null; 
+            }
+            else
+            {
+                wo.Elevation_Quality_Issue__c = document.getElementById('page:form:Elevation_Quality_Issue').value;
+            }
+        }
+        //alert(wo);
+        //var result = sforce.connection.update([wo]);
+        //alert(result);
+        if(wo.Resolution_Type__c=='Remote Other' && wo.Comments__c.length==0)
+        {
+            alert('Please input Comments.');
+            return;
+        }
+        wo.status='Closed';
+        var r = sforce.connection.update([wo]);
+        //alert(r);
+        for (var i=0; i<r.length; i++) 
+        {
+            if (r[i].getBoolean("success")) 
+            {
+                Reload();
+            } 
+            else 
+            {
+                alert(r[i].errors.message);
+                //sb += "\n failed to create account " + result[i];
+            }
+        }
+        
+        //alert(wo);
+        //alert(wo.CSC_Subcase_Repair_Class_Code__c);
+        //sforce.apex.execute("CSC_Close_WorkOrder_Controller","UpdateWo",{wo:wo});
+        /*var res = sforce.apex.execute("CSC_Close_WorkOrder_Controller","Save",{id:id});
+        if(res=='true')
+        {
+            Reload();
+        }
+        else
+        {
+            alert(res);
+        }*/    
+    }
+    catch(ex)
+    {
+        alert(ex+'2');
+    }
+}
+ 
+function Reload()
+{
+    try
+    {
+    /*var is_clocked='{!is_clocked}';
+    if(is_clocked=='false')
+    {
+        return;
+    }*/
+    if(window.opener && !window.opener.closed) 
+    { 
+        //alert(window.opener.document.getElementsByTagName("td"));
+        window.opener.location.href=window.opener.location.href; 
+        //window.opener.location.href='/p/process/Submit?id='+'{!woId}'+'&retURL=%2F0WOp000000000L9&_CONFIRMATIONTOKEN=VmpFPSxNakF4Tmkwd05TMHlPRlF3TmpvMU1Ub3hPUzQ1TXpCYSxkc0R4bFZJWUtYRm1qTThPd19XckxTLE5qazROV1pt';
+    } 
+    window.close();
+    }
+    catch(ex)
+    {
+    alert(ex+'3');
+    }
+}
+</script>   
+</apex:page>

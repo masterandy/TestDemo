@@ -1,0 +1,47 @@
+<apex:page controller="CSC_SendToHpe_Controller" id="page" showHeader="false">
+<apex:pagemessages id="Messages" escape="false" />
+<apex:form id="form">
+<apex:pageBlock mode="edit" id="pageblock" title="Send Work Order to HPE">
+    <apex:actionStatus id="SavingStatusSpinner">
+      <apex:facet name="start">
+           <div id="SavingDiv" class="SavingDiv" >
+                <span id="SavingHolder" class="SavingHolder">
+                     <img  title="Saving..." alt="Saving..." src="/img/loading.gif"/>
+                     <span class="loadingDescription">Send...</span>
+                </span>
+           </div>
+      </apex:facet>
+    </apex:actionStatus>
+
+    <apex:pageBlockButtons id="buttons" location="bottom">
+        <apex:commandbutton id="sendBtn" value="Send" oncomplete="Reload();" action="{!Send}" rerender="Messages,sendBtn" status="SavingStatusSpinner" disabled="{!SendDisabled}"  />
+    </apex:pageBlockButtons>
+<apex:pageBlockSection title="Work Order Attributes" id="case">
+    <apex:inputField id="MissionCritical" value="{!wo.Service_Level__c}" required="true"/>
+    <apex:inputField id="sendQueue" value="{!wo.HPEQueue__c}" required="true"/>
+</apex:pageBlockSection>
+</apex:pageBlock>
+</apex:form>
+<script type="text/javascript"> 
+function Reload()
+{
+    try
+    {
+        var Status=document.getElementById('page:Messages');
+        if(Status.innerText.trim()==='success')
+        {
+            if(window.opener && !window.opener.closed)
+            { 
+                window.opener.location.href=window.opener.location.href; 
+                window.close();
+            } 
+        }
+    }
+    catch(ex)
+    {
+      alert(ex);
+    }
+}
+
+</script>
+</apex:page>

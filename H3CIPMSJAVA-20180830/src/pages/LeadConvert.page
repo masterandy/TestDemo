@@ -1,0 +1,98 @@
+<!-- 
+/**********************************************************
+* Page Name: LeadConvert
+* Author: Darren  
+* Date: 2016-03-07 
+* Requirement # Request Id: 317/304/307
+* Description: VF page to convert Lead into opportunity
+**********************************************************/
+-->
+<apex:page standardController="Lead" extensions="LeadConvertController" tabStyle="Lead">
+    <apex:stylesheet value="{!$Resource.CommonStyleSheet}" />
+    <apex:includeScript value="{!$Resource.jQuery}"/>
+    <apex:includeScript value="{!$Resource.jqueryBlockUi}"/>
+    <script type="text/javascript">
+    var j$ = jQuery.noConflict();
+    function disableOnSubmit() {
+        setTimeout('disableAfterTimeout();', 50);
+    }
+    function disableAfterTimeout() {
+       j$("[id$=save]").addClass('btnDisabled');
+       j$("[id$=cancel]").addClass('btnDisabled')
+       j$("[id$=save]").attr('disabled','disabled');
+       j$("[id$=cancel]").attr('disabled','disabled');
+       j$("[id$=save]").attr('value','{!JSENCODE('Please Wait')}');
+       j$("[id$=cancel]").attr('value','{!JSENCODE('Please Wait')}');
+       
+    }
+   </script>
+   <apex:form id="LeadConvertId">
+   <!-------------update "Cancel Wrokflow" field----------------------------------------------->
+       <div style="visibility:hidden;"> 
+    <apex:inputField value="{!Lead.Cancel_Workflow__c}" id="cancelWorkflow" style="visibility:hidden; "/> 
+  </div> 
+  
+  
+       <!-------------Error Message Section----------------------------------------------->
+        <apex:pageMessages />
+        <apex:pageBlock rendered="{!!isRender}">
+            <apex:pageBlockSection columns="1">
+                <center><b><apex:outputText value="{!errorMessage}"/></b></center>  <br/> 
+                <apex:commandButton value="Back" action="{!cancel}"  /> 
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <!---------Lead Convert Section ---------------------------------------------------->
+        <apex:pageBlock rendered="{!isRender}" id="leadConvertpbId">   
+            <apex:pageBlockSection title="Convert Lead" collapsible="false"/>
+            <apex:pageBlockButtons >
+               <apex:commandButton id="save" value="{!if(disableCancel,'Convert','Save')}" action="{!quickSave}" onclick="disableOnSubmit();" oncomplete="leadConvertAsUsual();" reRender="someDummyPanel"/>
+                 <apex:actionFunction action="{!leadConvert}" name="leadConvertAsUsual"/>
+                <apex:commandButton id="cancel" value="Cancel" action="{!cancel}" rendered="{!disableCancel}" onclick="disableOnSubmit();"/>
+               
+            </apex:pageBlockButtons>
+            <!-- Panel for internal user -->
+            <apex:outputPanel id="thePanel1" rendered="{!!isPartnerUser}">
+                <table id = "LeadConversionTableId"> 
+                    <tr align="center" id="ownerTR">
+                        <td align="right">Record Owner</td>
+                        <td align="left"><apex:inputField value="{!lead.Conv_Lead_Owner__c}"/></td> 
+                    </tr>
+                    <!--> 
+                    <tr align="center" id="emilFlagTR">
+                        <td align="right">Send Email to the owner</td>                                                 
+                        <td align="left"><apex:inputCheckbox value="{!sendNotificationEmail}"/></td> 
+                    </tr>
+                    <-->
+                   <tr  align="center" >
+                        <td align="right" >Account Name</td>           
+                        <td align="left" >                   
+                            <apex:outputField value="{!lead.Account__c}" id="accountId" /> 
+                        </td>
+                    </tr> 
+                     
+                    <tr>
+                        <td></td>
+                        <td style="color: #FF0000">{!errorMessage}</td>
+                    </tr>
+                    <tr align="center">
+                        <td align="right">Opportunity Name</td>              
+                        <td align="left"><apex:inputField value="{!lead.company}" /></td> 
+                    </tr>
+                </table>
+            </apex:outputPanel>
+        </apex:pageBlock>
+        <script language="JavaScript"> 
+    var previousOnload = window.onload; 
+    window.onload = function() { 
+      if (previousOnload) previousOnload(); 
+      fixLead(); 
+    } 
+    function fixLead() { 
+      var elemCancelWorkflow = document.getElementById('{!$Component.cancelWorkflow}'); 
+      elemCancelWorkflow.checked = true; 
+      quickSave(); 
+    } 
+  </script> 
+   </apex:form>
+   
+   </apex:page>

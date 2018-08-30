@@ -1,0 +1,510 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="true">
+<script src="/support/api/34.0/interaction.js"></script>
+<script src="/support/console/34.0/integration.js"></script>
+<apex:includeScript value="{!$Resource.jQuery}"/>
+<script type="text/javascript">
+    var j$ = jQuery.noConflict();
+
+    // RPL Check
+    var hiddenCheckResult =  window.opener.document.getElementById("page:form:hiddenBlock:hiddenCheckResult").value;
+
+    var result = jQuery.parseJSON(hiddenCheckResult);
+
+    var checkRPLAntiFraud = window.opener.document.getElementById("page:form:hiddenBlock:hiddenCheckRPLAntiFraud").value;
+
+    // AntiFraud check
+    var strProductList1 = window.opener.document.getElementById("page:form:hiddenBlock:hiddenStrAntiFraudResult1").value;
+    var result1 = jQuery.parseJSON(strProductList1);
+
+    var strProductList2 = window.opener.document.getElementById("page:form:hiddenBlock:hiddenStrAntiFraudResult2").value;
+    var result2 = jQuery.parseJSON(strProductList2);
+
+    var strProductList3 = window.opener.document.getElementById("page:form:hiddenBlock:hiddenStrAntiFraudResult3").value;
+    var result3 = jQuery.parseJSON(strProductList3);
+
+    var strProductList4 = window.opener.document.getElementById("page:form:hiddenBlock:hiddenStrAntiFraudResult4").value;
+    var result4 = jQuery.parseJSON(strProductList4);
+
+    var strProductList5 = window.opener.document.getElementById("page:form:hiddenBlock:hiddenStrAntiFraudResult5").value;
+    var result5 = jQuery.parseJSON(strProductList5);
+
+    var strProductList6 = window.opener.document.getElementById("page:form:hiddenBlock:hiddenStrAntiFraudResult6").value;
+    var result6 = jQuery.parseJSON(strProductList6);
+
+    j$(document).ready(function() {
+        if(result && result.RplMessageList && (result.RplMessageList.constructor === Array)){
+            //提取查询返回的结果
+            var searchDataList = result.RplMessageList;
+            var htmlTag = '';
+            if(searchDataList.length > 0){
+                //遍历结果，放入到HTML内容里
+                for(var i=0; i<searchDataList.length; i++){
+                    var searchDataInfo = searchDataList[i];
+                    htmlTag += '<tr class="dataRow">';
+                    htmlTag += '<td class="dataCell">'+searchDataInfo.strName+'</td>';
+                    if (searchDataInfo.strAddress !=null) {
+                        htmlTag += '<td class="dataCell">'+searchDataInfo.strAddress+'</td>';
+                    } else {
+                         htmlTag += '<td class="dataCell"></td>';
+                    }
+
+                    if (searchDataInfo.strType !=null) {
+                        htmlTag += '<td class="dataCell">'+searchDataInfo.strType+'</td>';
+                    } else {
+                         htmlTag += '<td class="dataCell"></td>';
+                    }
+                    
+                    htmlTag += '</tr>';
+                }
+
+                var infoTable = document.getElementById("DetailTable");
+                var oldNode = document.getElementById("DetailTableBody");
+
+                if(oldNode != null){
+                    infoTable.removeChild(oldNode);
+                }
+                
+                var div = document.createElement('div'); 
+                div.innerHTML = '<table>' + htmlTag + '</table>';
+                
+                div.firstChild.firstChild.setAttribute('id', 'DetailTableBody');
+                infoTable.appendChild(div.firstChild.firstChild);  
+            }
+        }
+
+        if(result1 && result1.antiFraudMessageList && (result1.antiFraudMessageList.constructor === Array)){
+            j$("#CheckContent1").text(result1.checkContent);
+            var searchDataList1 = result1.antiFraudMessageList;
+            var htmlTag1 = '';
+            if(searchDataList1.length > 0){
+                //遍历结果，放入到HTML内容里
+                for(var i=0; i<searchDataList1.length; i++){
+                    var searchDataInfo = searchDataList1[i];
+                    htmlTag1 += '<tr class="dataRow">';
+                    htmlTag1 += '<td class="dataCell">'+searchDataInfo.strName+'</td>';
+                    htmlTag1 += '<td class="dataCell">'+searchDataInfo.strDesc+'</td>';
+                    htmlTag1 += '</tr>';
+                }
+
+                var infoTable1 = document.getElementById("DetailTable1");
+                var oldNode1 = document.getElementById("DetailTableBody1");
+
+                if(oldNode1 != null){
+                    infoTable1.removeChild(oldNode1);
+                }
+                
+                var div1 = document.createElement('div'); 
+                div1.innerHTML = '<table>' + htmlTag1 + '</table>';
+                
+                div1.firstChild.firstChild.setAttribute('id', 'DetailTableBody1');
+                infoTable1.appendChild(div1.firstChild.firstChild);
+            }
+        } else{
+            j$("#DetailTable1").hide();
+            j$("#DetailTableBody1").hide();
+        }
+
+        if(result2 && result2.antiFraudMessageList && (result2.antiFraudMessageList.constructor === Array)){
+            j$("#CheckContent2").text(result2.checkContent);
+            var searchDataList2 = result2.antiFraudMessageList;
+            var htmlTag2 = '';
+            if(searchDataList2.length > 0){
+                //遍历结果，放入到HTML内容里
+                for(var i=0; i<searchDataList2.length; i++){
+                    var searchDataInfo = searchDataList2[i];
+                    htmlTag2 += '<tr class="dataRow">';
+                    htmlTag2 += '<td class="dataCell">'+searchDataInfo.strName+'</td>';
+                    htmlTag2 += '<td class="dataCell">'+searchDataInfo.strDesc+'</td>';
+                    htmlTag2 += '</tr>';
+                }
+
+                var infoTable2 = document.getElementById("DetailTable2");
+                var oldNode2 = document.getElementById("DetailTableBody2");
+
+                if(oldNode2 != null){
+                    infoTable2.removeChild(oldNode2);
+                }
+                
+                var div2 = document.createElement('div'); 
+                div2.innerHTML = '<table>' + htmlTag2 + '</table>';
+                
+                div2.firstChild.firstChild.setAttribute('id', 'DetailTableBody2');
+                infoTable2.appendChild(div2.firstChild.firstChild);  
+            }
+        } else{
+            j$("#DetailTable2").hide();
+            j$("#DetailTableBody2").hide();
+        }
+
+        if(result3 && result3.antiFraudMessageList && (result3.antiFraudMessageList.constructor === Array)){
+            j$("#CheckContent3").text(result3.checkContent);
+            var searchDataList3 = result3.antiFraudMessageList;
+            var htmlTag3 = '';
+            if(searchDataList3.length > 0){
+                //遍历结果，放入到HTML内容里
+                for(var i=0; i<searchDataList3.length; i++){
+                    var searchDataInfo = searchDataList3[i];
+                    htmlTag3 += '<tr class="dataRow">';
+                    htmlTag3 += '<td class="dataCell">'+searchDataInfo.strName+'</td>';
+                    htmlTag3 += '<td class="dataCell">'+searchDataInfo.strDesc+'</td>';
+                    htmlTag3 += '</tr>';
+                }
+
+                var infoTable3 = document.getElementById("DetailTable3");
+                var oldNode3 = document.getElementById("DetailTableBody3");
+
+                if(oldNode3 != null){
+                    infoTable3.removeChild(oldNode3);
+                }
+                
+                var div3 = document.createElement('div'); 
+                div3.innerHTML = '<table>' + htmlTag3 + '</table>';
+                
+                div3.firstChild.firstChild.setAttribute('id', 'DetailTableBody3');
+                infoTable3.appendChild(div3.firstChild.firstChild);
+            }
+        } else{
+            j$("#DetailTable3").hide();
+            j$("#DetailTableBody3").hide();
+        }
+
+        if(result4 && result4.antiFraudMessageList && (result4.antiFraudMessageList.constructor === Array)){
+            j$("#CheckContent4").text(result4.checkContent);
+            var searchDataList4 = result4.antiFraudMessageList;
+            var htmlTag4 = '';
+            if(searchDataList4.length > 0){
+                //遍历结果，放入到HTML内容里
+                for(var i=0; i<searchDataList4.length; i++){
+                    var searchDataInfo = searchDataList4[i];
+                    htmlTag4 += '<tr class="dataRow">';
+                    htmlTag4 += '<td class="dataCell">'+searchDataInfo.strName+'</td>';
+                    htmlTag4 += '<td class="dataCell">'+searchDataInfo.strDesc+'</td>';
+                    htmlTag4 += '</tr>';
+                }
+
+                var infoTable4 = document.getElementById("DetailTable4");
+                var oldNode4 = document.getElementById("DetailTableBody4");
+
+                if(oldNode4 != null){
+                    infoTable4.removeChild(oldNode4);
+                }
+                
+                var div4 = document.createElement('div'); 
+                div4.innerHTML = '<table>' + htmlTag4 + '</table>';
+                
+                div4.firstChild.firstChild.setAttribute('id', 'DetailTableBody4');
+                infoTable4.appendChild(div4.firstChild.firstChild);
+            }
+        } else{
+            j$("#DetailTable4").hide();
+            j$("#DetailTableBody4").hide();
+        }
+
+        if(result5 && result5.antiFraudMessageList && (result5.antiFraudMessageList.constructor === Array)){
+            j$("#CheckContent5").text(result5.checkContent);
+            var searchDataList5 = result5.antiFraudMessageList;
+            var htmlTag5 = '';
+            if(searchDataList5.length > 0){
+                //遍历结果，放入到HTML内容里
+                for(var i=0; i<searchDataList5.length; i++){
+                    var searchDataInfo = searchDataList5[i];
+                    htmlTag5 += '<tr class="dataRow">';
+                    htmlTag5 += '<td class="dataCell">'+searchDataInfo.strName+'</td>';
+                    htmlTag5 += '<td class="dataCell">'+searchDataInfo.strDesc+'</td>';
+                    htmlTag5 += '</tr>';
+                }
+
+                var infoTable5 = document.getElementById("DetailTable5");
+                var oldNode5 = document.getElementById("DetailTableBody5");
+
+                if(oldNode5 != null){
+                    infoTable5.removeChild(oldNode5);
+                }
+                
+                var div5 = document.createElement('div'); 
+                div5.innerHTML = '<table>' + htmlTag5 + '</table>';
+                
+                div5.firstChild.firstChild.setAttribute('id', 'DetailTableBody5');
+                infoTable5.appendChild(div5.firstChild.firstChild);
+            }
+        } else{
+            j$("#DetailTable5").hide();
+            j$("#DetailTableBody5").hide();
+        }
+
+        if(result6 && result6.antiFraudMessageList && (result6.antiFraudMessageList.constructor === Array)){
+            j$("#CheckContent6").text(result6.checkContent);
+            var searchDataList6 = result6.antiFraudMessageList;
+            var htmlTag6 = '';
+            if(searchDataList6.length > 0){
+                //遍历结果，放入到HTML内容里
+                for(var i=0; i<searchDataList6.length; i++){
+                    var searchDataInfo = searchDataList6[i];
+                    htmlTag6 += '<tr class="dataRow">';
+                    htmlTag6 += '<td class="dataCell">'+searchDataInfo.strName+'</td>';
+                    htmlTag6 += '<td class="dataCell">'+searchDataInfo.strDesc+'</td>';
+                    htmlTag6 += '</tr>';
+                }
+
+                var infoTable6 = document.getElementById("DetailTable6");
+                var oldNode6 = document.getElementById("DetailTableBody6");
+
+                if(oldNode6 != null){
+                    infoTable6.removeChild(oldNode6);
+                }
+                
+                var div6 = document.createElement('div'); 
+                div6.innerHTML = '<table>' + htmlTag6 + '</table>';
+                
+                div6.firstChild.firstChild.setAttribute('id', 'DetailTableBody6');
+                infoTable6.appendChild(div6.firstChild.firstChild);
+            }
+        } else{
+            j$("#DetailTable6").hide();
+            j$("#DetailTableBody6").hide();
+        }
+
+        // antiFraud失败
+        if (checkRPLAntiFraud==2){
+            
+            j$('#AniFraudDiv').hide();
+        }else if(checkRPLAntiFraud==3){
+            j$('#RPLDiv').hide();
+        }
+    });
+
+    /*function rplPass(){
+        window.opener.document.getElementById("page:form:rplBlock:rplBlockSection:rplStatusSectionItem:RPL_Status").value = 'RPL Pass';
+        window.close();
+    }
+
+    function rplFail(){
+
+        window.opener.document.getElementById("page:form:rplBlock:rplBlockSection:rplStatusSectionItem:RPL_Status").value = 'RPL Failed';
+        window.close();
+    }*/
+
+    function submitReslut(){
+
+        //必填项check
+        var needFlg = needcheck();
+
+        if (needFlg!=undefined && (needFlg=='false' || needFlg==false)){
+            return;
+        }
+
+        // RPL Check
+        if (checkRPLAntiFraud!=undefined){
+
+            // RPL，AntiFraud都失败的场合
+            if (checkRPLAntiFraud==1){
+                var rplCheck = j$("input[name='RPL']:checked").val();
+
+                if (rplCheck!=undefined && j$.trim(rplCheck) !=""){
+                    window.opener.document.getElementById("page:form:rplBlock:rplBlockSection:rplStatusSectionItem:RPL_Status").value = rplCheck;
+                }
+
+                var comments = j$("#comments").val();
+                var antiFraudFlg = j$("input[name='AntiFraud']:checked").val();
+
+                if (antiFraudFlg!=undefined){
+
+                    if (antiFraudFlg=='Proceed'){
+                        window.opener.doAntiFraudPass(comments, this.window);
+                    }else{
+                        window.opener.doAntiFraudFail(comments, this.window);
+                    }
+
+                }
+            }else if(checkRPLAntiFraud==2){
+                var rplCheck = j$("input[name='RPL']:checked").val();
+
+                if (rplCheck!=undefined && j$.trim(rplCheck) !=""){
+                    window.opener.document.getElementById("page:form:rplBlock:rplBlockSection:rplStatusSectionItem:RPL_Status").value = rplCheck;
+                }
+
+                window.close();
+            }else{
+                var comments = j$("#comments").val();
+                var antiFraudFlg = j$("input[name='AntiFraud']:checked").val();
+
+                if (antiFraudFlg!=undefined){
+
+                    if (antiFraudFlg=='Proceed'){
+                        window.opener.doAntiFraudPass(comments, this.window);
+                    }else{
+                        window.opener.doAntiFraudFail(comments, this.window);
+                    }
+
+                }
+            }
+        }
+    }
+
+    /*
+    * 必填项check
+    */
+    function needcheck(){
+
+        var rplCheck = j$("input[name='RPL']:checked").val();
+
+        // RPL Check失败的场合，RPL Reslut为必须选择一个
+        if(checkRPLAntiFraud!=undefined && (checkRPLAntiFraud==1 || checkRPLAntiFraud==2)){
+            if(rplCheck==undefined || rplCheck==''){
+                alert('Please select RPL Reslut!');
+                return false;
+            }
+        }
+
+        var comments = j$("#comments").val();
+        var antiFraudFlg = j$("input[name='AntiFraud']:checked").val();
+        // AniFraud Check失败的场合，RPL Reslut为必须选择一个
+        if(checkRPLAntiFraud!=undefined && (checkRPLAntiFraud==1 || checkRPLAntiFraud==3)){
+            
+            if (comments ==undefined || j$.trim(comments) =='') {
+                alert("Please input the Fraud Override Reason!");
+                return false;
+            }
+
+            if (antiFraudFlg ==undefined || j$.trim(antiFraudFlg) =='') {
+                alert("Please select the AntiFraud Reslut!");
+                return false;
+            }
+        }
+
+        return true;
+
+    }
+
+</script>
+<apex:form >
+
+    <Div id='RPLDiv'>
+        <apex:pageBlock title="RPL List">
+            <table class="list" cellpadding="0" cellspacing="0" id="DetailTable">
+                <thead>
+                    <tr class="headerRow">
+                        <td style="width:100px;">Name</td>
+                        <td style="width:100px;">Address</td>
+                        <td style="width:100px;">Type</td>
+                    </tr>
+                </thead>
+                <tbody id="DetailTableBody">                        
+                </tbody>
+            </table>
+            <div align="right">
+
+                <!--
+                <input type="button" value="RPL Pass" onclick="rplPass();" class="btn"/>
+                <input type="button" value="RPL Fail" onclick="rplFail();" class="btn"/>
+                -->
+                <input type="radio" name="RPL" value="RPL Pass">Pass</input>
+                <input type="radio" name="RPL" value="RPL Failed">Fail</input>
+            </div>
+        </apex:pageBlock>
+    </Div>
+
+    <Div id='AniFraudDiv'>
+        <apex:pageBlock title="Fraud Verification">
+            <div>
+                <p style="font-size:15px;color:red;">Error:Product/Account/Phone Number not eligible for service</p>
+                <br/>
+                <span id="CheckContent1"></span>
+                <table class="list" cellpadding="0" cellspacing="0" id="DetailTable1">
+                    <thead>
+                        <tr class="headerRow">
+                            <td style="width:100px;">AntiFraud Name</td>
+                            <td style="width:100px;">AntiFraud Desc</td>
+                        </tr>
+                    </thead>
+                    <tbody id="DetailTableBody1">                        
+                    </tbody>
+                </table>
+                <br/>
+                <span id="CheckContent2"></span>
+                <table class="list" cellpadding="0" cellspacing="0" id="DetailTable2">
+                    <thead>
+                        <tr class="headerRow">
+                            <td style="width:100px;">AntiFraud Name</td>
+                            <td style="width:100px;">AntiFraud Desc</td>
+                        </tr>
+                    </thead>
+                    <tbody id="DetailTableBody2">                        
+                    </tbody>
+                </table>
+                <br/>
+                <span id="CheckContent3"></span>
+                <table class="list" cellpadding="0" cellspacing="0" id="DetailTable3">
+                    <thead>
+                        <tr class="headerRow">
+                            <td style="width:100px;">AntiFraud Name</td>
+                            <td style="width:100px;">AntiFraud Desc</td>
+                        </tr>
+                    </thead>
+                    <tbody id="DetailTableBody3">                        
+                    </tbody>
+                </table>
+                <br/>
+                <span id="CheckContent4"></span>
+                <table class="list" cellpadding="0" cellspacing="0" id="DetailTable4">
+                    <thead>
+                        <tr class="headerRow">
+                            <td style="width:100px;">AntiFraud Name</td>
+                            <td style="width:100px;">AntiFraud Desc</td>
+                        </tr>
+                    </thead>
+                    <tbody id="DetailTableBody4">                        
+                    </tbody>
+                </table>
+                <br/>
+                <span id="CheckContent5"></span>
+                <table class="list" cellpadding="0" cellspacing="0" id="DetailTable5">
+                    <thead>
+                        <tr class="headerRow">
+                            <td style="width:100px;">AntiFraud Name</td>
+                            <td style="width:100px;">AntiFraud Desc</td>
+                        </tr>
+                    </thead>
+                    <tbody id="DetailTableBody5">                        
+                    </tbody>
+                </table>
+                <br/>
+                <span id="CheckContent6"></span>
+                <table class="list" cellpadding="0" cellspacing="0" id="DetailTable6">
+                    <thead>
+                        <tr class="headerRow">
+                            <td style="width:100px;">AntiFraud Name</td>
+                            <td style="width:100px;">AntiFraud Desc</td>
+                        </tr>
+                    </thead>
+                    <tbody id="DetailTableBody6">                        
+                    </tbody>
+                </table>
+            </div>
+            &nbsp;
+            <div>
+                <table >
+                    <th>Fraud Override Reason</th>
+                    <tr>
+                        <td><textarea id="comments" name="comments" cols="100" rows="6"></textarea></td>
+                    </tr>
+                </table>
+            </div>
+            <div align="right">
+
+                <!--
+                <input type="button" value="Proceed" onclick="antiFraudPass();" class="btn"/>
+                <input type="button" value="Do not proceed" onclick="antiFraudFail();" class="btn"/>
+                -->
+
+                <input type="radio" name="AntiFraud" value="Proceed">Proceed</input>
+                <input type="radio" name="AntiFraud" value="Do not proceed">Do not proceed</input>
+            </div>
+        </apex:pageBlock>
+    </Div>
+
+    <div align="center">
+        <input type="button" value="Submit" onclick="submitReslut();" class="btn"/>
+    </div>
+</apex:form>
+</apex:page>

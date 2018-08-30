@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Role xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseAccessLevel>None</caseAccessLevel>
+    <contactAccessLevel>None</contactAccessLevel>
+    <description>顶新国际集团 客户 管理员</description>
+    <mayForecastManagerShare>false</mayForecastManagerShare>
+    <name>顶新国际集团 客户 管理员</name>
+    <opportunityAccessLevel>None</opportunityAccessLevel>
+    <parentRole>CustomerExecutive113</parentRole>
+</Role>

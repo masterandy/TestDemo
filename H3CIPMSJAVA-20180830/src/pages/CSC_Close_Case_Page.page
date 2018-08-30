@@ -1,0 +1,169 @@
+<apex:page standardController="Case" sidebar="false" showHeader="false" standardStylesheets="true" tabStyle="Account" extensions="CSC_Close_Case_Controller" id="page">
+<script src="/support/api/34.0/interaction.js"></script>
+<script src="/support/console/34.0/integration.js"></script>
+<apex:includeScript value="{!$Resource.jQuery}"/>
+<script type="text/javascript">
+var __sfdcSessionId = '{!GETSESSIONID()}';
+</script>
+<script type="text/javascript">
+    var j$ = jQuery.noConflict();
+    
+    
+
+    function CheckCaseStatus(){
+        var isNotOwner = {!isNotOwner};
+        if (isNotOwner) {
+            alert('You are not the Case owner, cannot close the case!');
+            return;
+        }
+    
+        var isNeedPQRSurvey = {!isNeedPQRSurvey};
+
+        if (isNeedPQRSurvey) {
+            alert('Please finish PQR Survey!');
+            return;
+        }
+
+        var isNeedCloseWorkOrder = {!isNeedCloseWorkOrder};
+
+        if (isNeedCloseWorkOrder) {
+            alert('For the case that have work orders, if no status work orders fulfillment, the case cannot be closed!');
+            return;
+        }
+
+        var resolutionType = document.getElementById("page:form:detailBlock:ResolutionSection:Resolution_Type_SectionItem:Resolution_Type").value;
+        var resolutionCode = document.getElementById("page:form:detailBlock:ResolutionSection:Resolution_Code_SectionItem:Resolution_Code").value;
+        if (resolutionCode.length ==3) {
+            resolutionCode = '';
+        }
+        var resolutionSubCode = document.getElementById("page:form:detailBlock:Sub_Code_Section:Resolution_Sub_Code_SectionItem:Resolution_Sub_Code").value;
+        if (resolutionSubCode.length ==3) {
+            resolutionSubCode = '';
+        }
+        var comments = document.getElementById("page:form:detailBlock:CommentsSection:Comments_SectionItem:Comments").value;
+        save(resolutionType,resolutionCode,resolutionSubCode,comments);
+    }
+
+    function Reload(){
+        try{
+            var refresh = j$("[id$=refresh]").val();
+
+            if (refresh != undefined) {
+                if (refresh=='true') {
+                    if(window.opener && !window.opener.closed) {
+                        window.opener.location.href = window.opener.location.href;
+                    } 
+                    window.close();
+                } else {
+                    return;
+                }
+            }
+            
+        }catch(ex){
+            alert(ex);
+        }
+    }
+
+    function autoSetComments(){
+        var resolutionSubCode = document.getElementById("page:form:detailBlock:Sub_Code_Section:Resolution_Sub_Code_SectionItem:Resolution_Sub_Code").value;
+        var hiddenSelfComments = j$("[id$=hiddenSelfComments]").val();
+        if(resolutionSubCode=='Reject Subk Subcode'){
+            document.getElementById("page:form:detailBlock:CommentsSection:Comments_SectionItem:Comments").value = hiddenSelfComments;
+        }
+    }
+</script>
+<html>
+    <head>
+        <style>
+        body{  
+            width: auto;
+            height:100%;
+            background-color: #f8f8f8;
+            margin:0 auto;  
+        }
+        </style>
+    </head>
+    <body>
+    <apex:form id="form">
+        <apex:pageBlock title="Close Case" id="detailBlock" mode="detail">
+            <apex:pagemessages id="msg" escape="false"/>
+            <apex:pageBlockSection columns="2">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel style="width:100px;">Case Number</apex:outputLabel>
+                    <apex:outputField id="CaseNumber" value="{!objCase.CaseNumber}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel style="width:100px;">Case Owner</apex:outputLabel>
+                    <apex:outputField id="OwnerName" value="{!objCase.Owner.Name}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel style="width:100px;">Subject</apex:outputLabel>
+                    <apex:outputField id="Subject" value="{!objCase.Subject}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel style="width:100px;">Status</apex:outputLabel>
+                    <apex:outputField id="CaseStatus" value="{!objCase.Status}"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="2" id="ResolutionSection">
+                <apex:pageBlockSectionItem id="Resolution_Type_SectionItem">
+                    <apex:outputLabel style="width:100px;">Resolution Type</apex:outputLabel>
+                    <apex:inputField id="Resolution_Type" value="{!objCase.CSC_Resolution_Type__c}" required="true" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem id="Resolution_Code_SectionItem">
+                    <apex:outputLabel style="width:100px;">Resolution Code</apex:outputLabel>
+                    <apex:inputField id="Resolution_Code" value="{!objCase.CSC_Resolution_Code__c}" required="true" />
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection columns="1" id="Sub_Code_Section">
+                <apex:pageBlockSectionItem id="Resolution_Sub_Code_SectionItem">
+                    <apex:outputLabel style="width:100px;">Resolution Sub-Code</apex:outputLabel>
+                    <apex:inputField id="Resolution_Sub_Code" value="{!objCase.CSC_Resolution_Sub_code__c}" required="true" onchange="autoSetComments();"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection columns="2" id="ContentSection">
+                <apex:pageBlockSectionItem id="Content_Category_SectionItem">
+                    <apex:outputLabel style="width:100px;">Content Category</apex:outputLabel>
+                    <apex:inputField id="Content_Category" value="{!objCase.Content_Category__c}"  />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem id="Content_SubCategory_SectionItem">
+                    <apex:outputLabel style="width:100px;">Content SubCategory</apex:outputLabel>
+                    <apex:inputField id="Content_SubCategory" value="{!objCase.Content_SubCategory__c}"  />
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection columns="1" id="CommentsSection">
+                <!-- <apex:pageBlockSectionItem id="Resolution_Sub_Code_SectionItem">
+                    <apex:outputLabel style="width:100px;">Resolution Sub-Code</apex:outputLabel>
+                    <apex:inputField id="Resolution_Sub_Code" value="{!objCase.CSC_Resolution_Sub_code__c}" required="true" onchange="autoSetComments();"/>
+                </apex:pageBlockSectionItem> -->
+                <apex:pageBlockSectionItem id="Comments_SectionItem">
+                    <apex:outputLabel style="width:100px;">Comments</apex:outputLabel>
+                    <apex:inputField id="Comments" value="{!objCase.CSC_Comments__c}" style="width:450px;height:70px;"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1">
+                <apex:pageBlockSectionItem >
+                    <apex:panelGroup >
+                        <div align="center">
+                            <input type="button"  value="Save&Close" onclick="CheckCaseStatus();" class="btn"/>
+                            <apex:actionFunction action="{!save}" name="save" reRender="msg,refresh" oncomplete="Reload();">
+                                <apex:param name="firstParam" assignTo="{!resolutionType}" value="" />
+                                <apex:param name="secondParam" assignTo="{!resolutionCode}" value="" />
+                                <apex:param name="threeParam" assignTo="{!resolutionSubCode}" value="" />
+                                <apex:param name="fourParam" assignTo="{!comments}" value="" />
+                            </apex:actionFunction>
+                            <apex:commandButton value="Cancel" onclick="window.close();"/>
+                            <apex:inputHidden id="refresh" value="{!refresh}"/>
+                        </div>
+                    </apex:panelGroup>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:inputHidden id="hiddenSelfComments" value="{!selfComments}"/>
+        </apex:pageBlock>
+    </apex:form>
+    </body>
+</html>
+</apex:page>

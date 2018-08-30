@@ -1,0 +1,114 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="true">
+<script src="/support/api/34.0/interaction.js"></script>
+<script src="/support/console/34.0/integration.js"></script>
+<apex:includeScript value="{!$Resource.jQuery}"/>
+<script type="text/javascript">
+    var j$ = jQuery.noConflict();
+
+    var strProductList = window.opener.document.getElementById("page:form:hiddenBlock:hiddenStrGetEntitlementInfo").value;
+
+    var result = jQuery.parseJSON(strProductList);
+
+    j$(document).ready(function() {
+
+    	if(result && result.contactOosList && (result.contactOosList.constructor === Array)){
+            //提取查询返回的结果
+            var searchDataList = result.contactOosList;
+            var htmlTag = '';
+            if(searchDataList.length > 0){
+                //遍历结果，放入到HTML内容里
+                for(var i=0; i<searchDataList.length; i++){
+                    var searchDataInfo = searchDataList[i];
+
+                    htmlTag += '<tr class="dataRow">';
+                    var radioValue = searchDataInfo.serialNumber + searchDataInfo.productID; 
+                    htmlTag += '<td class="dataCell"><input type="radio" name="rad" value='+ radioValue +' /></td>';
+                    if (searchDataInfo.serialNumber != null && searchDataInfo.serialNumber !=undefined) {
+                    	htmlTag += '<td class="dataCell">'+searchDataInfo.serialNumber+'</td>';
+                    } else {
+                    	htmlTag += '<td class="dataCell"> NA </td>';
+                    }
+                    htmlTag += '<td class="dataCell">'+searchDataInfo.productID+'</td>';
+                    htmlTag += '<td class="dataCell">'+searchDataInfo.productDescription+'</td>';
+                    htmlTag += '<td class="dataCell">'+searchDataInfo.targetQuantity+'</td>';
+                    htmlTag += '<td class="dataCell">'+searchDataInfo.oOSGroupID+'</td>';
+                    htmlTag += '</tr>';
+                }
+
+                var infoTable = document.getElementById("DetailTable");
+                var oldNode = document.getElementById("DetailTableBody");
+
+                if(oldNode != null){
+                    infoTable.removeChild(oldNode);
+                }
+                
+                var div = document.createElement('div'); 
+                div.innerHTML = '<table>' + htmlTag + '</table>';
+                
+                div.firstChild.firstChild.setAttribute('id', 'DetailTableBody');
+                infoTable.appendChild(div.firstChild.firstChild);  
+            }
+        }
+    });
+
+    function callActionMethod(){
+
+    	var selectData = j$('input[name="rad"]').filter(':checked').val();
+        if (selectData == undefined) {
+            alert("Please select one product");
+            return ;
+        }
+        
+        var strSn;
+        var strProductId;
+        var strProductLineCode;
+        var strProductDescription;
+
+	    if(result && result.contactOosList && (result.contactOosList.constructor === Array)){
+	            
+	        //提取查询返回的结果
+	        var searchDataList = result.contactOosList;
+
+	        if(searchDataList.length > 0){
+	            for(var i=0; i<searchDataList.length; i++){
+
+	                var searchDataInfo = searchDataList[i];
+                    var selectedRadioValue = searchDataInfo.serialNumber + searchDataInfo.productID;
+	                if (selectData == selectedRadioValue) {
+                        strSn = searchDataInfo.serialNumber;
+	                	strProductId = searchDataInfo.productID;
+	                	strProductLineCode = searchDataInfo.productLineCode;
+	                    strProductDescription = searchDataInfo.productDescription;
+	                }
+	            }
+	        }
+	    }
+
+        window.opener.setEBSEntitlementInfoBySnAndPnListPage(strProductId,strProductLineCode,strProductDescription,strSn,this.window);
+    }
+
+</script>
+<apex:form >
+	<apex:pageBlock title="SN&PN List">
+        <div>
+            <table>
+                <tr><td align="right"><input type="button" id="selectProduct" value="Use Selected Data" onclick="callActionMethod()" /></td></tr>
+            </table>
+        </div>
+        <table class="list" cellpadding="0" cellspacing="0" id="DetailTable">
+            <thead>
+                <tr class="headerRow">
+                    <td style="width:20px;"></td>
+                    <td style="width:80px;">Serial Number</td>
+                    <td style="width:80px;">Product Number</td>
+                    <td style="width:200px;">Product description</td>
+                    <td style="width:80px;">QTY</td>
+                    <td style="width:80px;">Reference Num</td>
+                </tr>
+            </thead>
+            <tbody id="DetailTableBody">
+            </tbody>
+        </table>
+    </apex:pageBlock>
+</apex:form>
+</apex:page>

@@ -1,0 +1,27 @@
+<apex:page standardController="Account_Team__c" extensions="AccountTeamController"  tabStyle="Account" id="page">
+    <apex:form id="frm" >
+        <apex:sectionHeader title="{!$Label.New_Account_Team}"/>
+        <apex:pagemessages />
+        <!-- Page block for adding channel partner -->
+        <apex:pageBlock title="{!$Label.New_Account_Team_Edit}" id="pageBlock">
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton action="{!Save}" value="{!$Label.ldchangeowner_save_button}" />
+                <apex:commandButton action="{!More}" value="{!$Label.Save_More}" />   
+                <apex:commandButton action="{!Cancel}" value="{!$Label.Ldchangeowner_cancel_button}"/>
+            </apex:pageBlockButtons>
+            <apex:pageblockTable value="{!accountTeamList}" var="at" id="dataTable" >
+                <apex:column headerValue="{!$Label.Team_Member}" width="10%">                        
+                    <apex:inputField id="teamMember" value="{!at.Team_Member__c}"/>
+                </apex:column>
+                <apex:column headerValue="{!$Label.Account_Access}" width="10%">
+                    <apex:inputText id="accountAccess" value="{!at.Account_Access__c}" disabled="true" />
+                </apex:column>
+                <apex:column headerValue="{!$Label.Opportunity_Access}" width="10%">
+                    <apex:inputField id="opportunityAccess" value="{!at.Opportunity_Access__c}" />
+                </apex:column>
+                <apex:column headerValue="">
+                </apex:column>
+           </apex:pageblockTable>
+        </apex:pageBlock>
+    </apex:form>  
+</apex:page>

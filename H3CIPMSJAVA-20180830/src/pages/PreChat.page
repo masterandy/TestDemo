@@ -1,0 +1,196 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="width=device-width, initial-scale=1" name="viewport" />
+    <title>新华三集团在线技术支持平台</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="{!URLFOR($Resource.Bootstrap, 'bootstrap/css/bootstrap.min.css')}" rel="stylesheet"/>
+    <apex:includeScript value="{!$Resource.jQuery}"/>
+    
+    <style>
+  body {
+            background-image: url('{!$Resource.BGImage}');
+            background-repeat: no-repeat;
+            background-position:center;
+            background-size:cover;
+            background-attachment: fixed;
+        }
+        #connectionform {
+            margin-top: 2%;
+            margin-right: 5%;
+            /*height: 400px;*/
+            width: 380px;
+            float: right;
+            background-color: rgba(25, 21, 22, 0.06);
+            background-repeat: no-repeat;
+            background-image: url('{!$Resource.Logo}');
+            background-position: center 1px;
+            background-size: 95%;
+            padding: 30PX;
+            padding-top: 100px;
+        }
+
+        #fire_chat {
+            margin-top: 5%;
+            margin-right: -650px;
+            width: 650px;
+            float: right;
+            /*background-color: rgba(25, 21, 22, 0.06);*/
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<form method="post" id="prechatForm" onsubmit="return check();">
+    <div id="connectionform">
+        <table style="width:100%;">
+            <tr style="height:30px;vertical-align: middle;">
+                <td style="text-align:center;">
+                </td>
+            </tr>
+            <tr style="height:120px;vertical-align: top;">
+                <td>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">
+                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        </span>
+                        <input type="text" class="form-control" placeholder="用户姓名（必填）" id="chat_userName" name="liveagent.prechat:用户姓名" />
+                    </div>
+
+                    <div class="input-group" style="margin-top:15px;">
+                        <span class="input-group-addon" id="basic-addon1">
+                            <span class="glyphicon glyphicon-phone" aria-hidden="true"></span>
+                        </span>
+                        <input type="text" class="form-control" placeholder="电话（必填）" id="chat_phoneNumber" name="liveagent.prechat:电话" />
+                    </div>
+                    <div class="input-group" style="margin-top:15px;">
+                        <span class="input-group-addon" id="basic-addon1">
+                            <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+                        </span>
+                        <input type="text" class="form-control" placeholder="邮箱（必填）" id="chat_email" name="liveagent.prechat:邮箱" />
+                    </div>
+                    <div class="input-group" style="margin-top:15px;">
+                        <span class="input-group-addon" id="basic-addon1">
+                            <span class="glyphicon glyphicon-barcode" aria-hidden="true"></span>
+                        </span>
+                        <input type="text" class="form-control" placeholder="产品序号（必填）" id="chat_sn" name="liveagent.prechat:产品序号" />
+                    </div>
+                    <div class="input-group" style="margin-top:15px;">
+                        <span class="input-group-addon" id="basic-addon1">
+                            <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>
+                        </span>
+                        <input type="text" class="form-control" placeholder="公司名称（必填）" id="chat_caseId" name="liveagent.prechat:公司名称" />
+                    </div>
+                    <div class="input-group" style="margin-top:15px;">
+                        <span class="input-group-addon" id="basic-addon1">
+                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                        </span>
+                        <textarea class="form-control" placeholder="问题描述（必填）" style="resize:vertical;max-height:200px;" id="chat_problem" maxlength="200" name="liveagent.prechat:问题描述" ></textarea>
+                    </div>
+                    <input type="hidden" name="liveagent.prechat.save:用户姓名" value="Account_Name__c" />
+                    <input type="hidden" name="liveagent.prechat.save:产品序号" value="PN_Number__c" />
+                    <input type="hidden" name="liveagent.prechat.save:邮箱" value="Email__c" />
+                    <input type="hidden" name="liveagent.prechat.save:电话" value="Phonenumber__c" />
+                    <input type="hidden" name="liveagent.prechat.name" id='windowName' />
+                    <input type="hidden" name="liveagent.prechat.findorcreate.map:Contact" value="Email,邮箱;" />
+                    <input type="hidden" name="liveagent.prechat.findorcreate.map.doFind:Contact" value="Email,true" />
+                    <input type="hidden" name="liveagent.prechat.findorcreate.map.isExactMatch:Contact" value="Email,true" />
+                    <input type="hidden" name="liveagent.prechat.findorcreate.showOnCreate:Contact" value="true" />
+                    <input type="hidden" name="liveagent.prechat.findorcreate.saveToTranscript:Contact" value="Contact" />
+
+                    <input type="hidden" name="liveagent.prechat:CaseRecordType" value="01228000000oqDs" />
+                    <input type="hidden" name="liveagent.prechat:CaseOrQuickLog" value="Normal Case" />
+                    <input type="hidden" name="liveagent.prechat.findorcreate.map:Case" value="CSC_CaseOrQuickLog__c,CaseOrQuickLog;RecordTypeID,CaseRecordType;Phone_Chat__c,电话;Company_Name_Chat__c,公司名称;ContactName_Chat__c,用户姓名;Email_Chat__c,邮箱;CSC_Issue__c,问题描述;CSC_SN__c,产品序号" />
+                    <input type="hidden" name="liveagent.prechat.findorcreate.map.doCreate:Case" value="CSC_CaseOrQuickLog__c,true;RecordType.ID,true;Phone_Chat__c,true;Company_Name_Chat__c,true;ContactName_Chat__c,true;Email_Chat__c,true;CSC_Issue__c,true;CSC_SN__c,true" />
+                    <input type="hidden" name="liveagent.prechat.findorcreate.showOnCreate:Case" value="true" />
+                    <input type="hidden" name="liveagent.prechat.findorcreate.saveToTranscript:Case" value="Case" />
+                    <input type="hidden" name="liveagent.prechat.findorcreate.displayToAgent:CaseRecordType" value="false" />
+                    <input type="hidden" name="liveagent.prechat.findorcreate.displayToAgent:CaseOrQuickLog" value="false" />
+                    
+                    <button id="btn_connect2agent" type="submit" class="btn btn-info" style="margin-top:25px;" onClick="setName()" >连线</button>
+                </td>
+            </tr>
+            <tr style="height:50px;vertical-align:bottom;">
+                <td style="padding-top: 10px;">
+                    <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
+                    <small>
+                        尊敬的用户 您好！
+                        欢迎您使用新华三集团在线技术支持平台！
+                        我们的工作时间是周一到周五（节假日除外）早9点至晚6点，同时请您收藏以下网址以便获取更快捷的服务，感谢您一直以来的支持！
+                        e800.h3c.com/chat
+                    </small>
+                </td>
+            </tr>
+        </table>
+    </div>
+    </form>
+</body>
+<script type="text/javascript">
+    function setName(){
+    document.getElementById("windowName").value = document.getElementById("chat_userName").value;
+    return true;
+    }
+</script>
+
+<script type="text/javascript">
+    //highligtMe
+    function highligtMe(dom) {
+        $(dom).css("background-color", "antiquewhite");
+    }
+    //releaseMe
+    function releaseMe(dom) {
+        $(dom).css("background-color", "transparent");
+    }
+    function releaseMeColor(dom, color) {
+        $(dom).css("background-color", color);
+    } 
+    function check() {
+        var chat_userName = $("#chat_userName").val().trim();
+        var chat_email = $("#chat_email").val().trim();
+        var chat_phoneNumber = $("#chat_phoneNumber").val().trim();
+        var chat_sn = $("#chat_sn").val().trim();
+        var chat_caseId = $("#chat_caseId").val().trim();
+        var chat_problem = $("#chat_problem").val().trim();
+        
+        var color = "#ffffff";
+        
+        
+        if (chat_userName.length < 1) 
+        {
+         highligtMe("#chat_userName");
+         return false;
+         } 
+        else { releaseMeColor("#chat_userName", color) }
+        
+        if (chat_phoneNumber.length < 1) 
+        { highligtMe("#chat_phoneNumber"); return false; } 
+        else { releaseMeColor("#chat_phoneNumber", color) }
+        
+        if (chat_email.length < 1) 
+        { highligtMe("#chat_email"); return false; } 
+        else { releaseMeColor("#chat_email", color) }
+        
+        if (chat_sn.length < 1) 
+        { highligtMe("#chat_sn"); return false; }
+         else { releaseMeColor("#chat_sn", color) }
+        
+        if (chat_caseId.length < 1) 
+        { highligtMe("#chat_caseId"); return false; }
+         else { releaseMeColor("#chat_caseId", color) }
+         
+        if (chat_problem.length < 1) 
+        { highligtMe("#chat_problem"); return false; } 
+        else { releaseMeColor("#chat_problem", color) }
+        return true;
+    }
+    
+    $(function contactMe()
+                 {
+                    var redirectURL;                        
+                    redirectURL = 'https://rsu.la1-c2-hnd.salesforceliveagent.com/content/s/chat?language=zh_CN#deployment_id=572280000004GNU&org_id=00D2800000127Ge&button_id=573280000008T03';
+                    document.getElementById('prechatForm').action = redirectURL; 
+                    }
+                    );
+</script>
+</html>
+</apex:page>

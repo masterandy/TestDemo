@@ -1,0 +1,595 @@
+<apex:page extensions="CSCViewOrderController" standardController="Order__c" id="page" tabStyle="Order__c">
+<apex:pagemessages id="Messages"/>
+<div style="{!form_div_style}">
+    <!-- <div class="message errorM3" role="alert" id="detail_div" style="{!detail_div}">
+        <table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">
+            <tr valign="top">
+                <td>
+                    <img alt="ERROR" class="msgIcon" src="/s.gif" title="ERROR" />
+                </td>
+                <td class="messageCell"><div id="page:Messages:j_id1:j_id2:0:j_id3:j_id4:j_id6" class="messageText"><span id="page:Messages:j_id1:j_id2:0:j_id3:j_id4:j_id7" style="color:#cc0000">
+                                <h4>Errors</h4></span><br /></div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><span id="page:Messages:j_id1:j_id2:0:j_id3:j_id4:j_id16">
+                <ul style="padding-left:10px;padding-top:0px;margin:0px">
+                    <li style="{!phone_div}" id="phone_div">Phone: You must enter a value
+                    </li>
+                    <li style="{!name_div}" id="name_div">Name: You must enter a value
+                    </li>
+                    <li style="{!email_div}" id="email_div">Email: You must enter a value
+                    </li>
+                    <li style="{!city_div}" id="city_div">City: You must enter a value
+                    </li>
+                    <li style="{!state_div}" id="state_div">State/ Province: You must enter a value
+                    </li>
+                    <li style="{!postal_div}" id="postal_div">Zip/Postal Code: You must enter a value
+                    </li>
+                </ul></span>
+                </td>
+            </tr>
+        </table>
+    </div> -->
+
+    <div class="message errorM3" role="alert" id="user_must_div" style="display:none;">
+        <table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">
+            <tr valign="top">
+                <td>
+                    <img alt="ERROR" class="msgIcon" src="/s.gif" title="ERROR" />
+                </td>
+                <td class="messageCell"><div id="page:Messages:j_id1:j_id2:0:j_id3:j_id4:j_id6" class="messageText"><span id="page:Messages:j_id1:j_id2:0:j_id3:j_id4:j_id7" style="color:#cc0000">
+                                <h4>Error:</h4></span>Badge Number: You must enter a value<br /></div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="message errorM3" role="alert" id="user_many_div" style="display:none;">
+        <table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">
+            <tr valign="top">
+                <td>
+                    <img alt="ERROR" class="msgIcon" src="/s.gif" title="ERROR" />
+                </td>
+                <td class="messageCell"><div id="page:Messages:j_id0:j_id1:0:j_id2:j_id3:j_id5" class="messageText"><span id="page:Messages:j_id0:j_id1:0:j_id2:j_id3:j_id6" style="color:#cc0000">
+                                <h4>Error:</h4></span>Badge Number: Multiple items found.<br /></div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="message errorM3" role="alert" id="user_not_div" style="display:none;">
+        <table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">
+            <tr valign="top">
+                <td>
+                    <img alt="ERROR" class="msgIcon" src="/s.gif" title="ERROR" />
+                </td>
+                <td class="messageCell"><div id="page:Messages:j_id0:j_id1:0:j_id2:j_id3:j_id5" class="messageText"><span id="page:Messages:j_id0:j_id1:0:j_id2:j_id3:j_id6" style="color:#cc0000">
+                                <h4>Error:</h4></span>Badge Number: No matching users found.<br /></div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                </td>
+            </tr>
+        </table>
+    </div>
+<div style="">
+</div>
+<div id="form_div" style="display:none;">
+<apex:sectionHeader title="Order" subtitle="{!o.Name}"/>
+<apex:form id="form">
+<apex:pageBlock mode="edit" id="pageblock" >
+    <apex:pageBlockButtons >
+        <apex:commandButton action="{!Save}" value="Save"/>
+        <!--input type="button" value="Save" onclick="Save();" class="btn"/-->
+        <input type="button" value="Cancel" onclick="Cancel();" class="btn"/>
+    </apex:pageBlockButtons>
+<apex:pageBlockSection title="Basic Info" id="basic">
+    <apex:outputField id="WorkOrderName" value="{!o.Work_Order_Name__c}"/>
+    <apex:inputField id="ShippingCondition" value="{!o.Shipping_Condition__c}" required="{!is_required}"/>
+    <apex:inputField id="OrderReason" value="{!o.Order_Reason__c}" />
+    <apex:outputField id="Name" value="{!o.Name}"/>
+    <apex:inputField id="DeliveryPriority" value="{!o.Delivery_Priority__c}" required="{!is_required}"/>
+    <apex:inputField id="DeliveryInstructions" value="{!o.Delivery_Instructions__c}" />
+</apex:pageBlockSection>
+<apex:pageBlockSection title="HPE Info">
+    <apex:inputField id="OrderNumber" value="{!o.Order_Number__c}"/>
+    <apex:outputField id="OrderStatus" value="{!o.Order_Status__c}"/>
+    <apex:outputField id="OrderDate" value="{!o.Order_Date__c}"/>
+    <apex:outputField id="ShippingAddress" value="{!o.Shipping_Address__c}"/>
+    <apex:outputField id="OrderMessage" value="{!o.Order_Message__c}"/>
+    <apex:outputField id="PhoneNumber" value="{!o.Phone_Number__c}"/>
+    <apex:outputField id="AlternatePhone" value="{!o.Alternate_Phone__c}"/>
+</apex:pageBlockSection>
+<apex:pageBlockSection title="Receiver Info" id="sectionReceiver">
+    <apex:inputField id="BadgeNumber" value="{!o.Badge_Number__c}" onChange="SetUser();"/>
+    <apex:inputField id="ChooseAddress" value="{!o.Choose_Address__c}" onchange="ChooseAddressOnChange()" required="{!is_required}"/>
+</apex:pageBlockSection>
+<div id="readonly_div">
+<apex:pageBlockSection title="Contact" id="sectionContact_readonly"> 
+    <apex:outputField id="Company_readonly" value="{!o.Company__c}"/>
+    <apex:outputField id="Phone_readonly" value="{!o.Phone__c}" />
+    <apex:outputField id="Name_readonly" value="{!o.Name__c}" />
+    <apex:outputField id="AlternativePhone_readonly" value="{!o.Alternative_Phone__c}"/>
+    <apex:outputField id="Fax_readonly" value="{!o.Fax__c}" />
+    <apex:outputField id="Email_readonly" value="{!o.Email__c}" />
+    <!--apex:inputField id="Language" value="{!o.Language__c}" required="true"/-->
+</apex:pageBlockSection>
+<apex:pageBlockSection title="Address" id="sectionAddress_readonly">
+    <apex:outputField id="SiteID_readonly" value="{!o.Site_ID__c}"/>
+    <apex:outputField id="City_readonly" value="{!o.City__c}"/>
+    <apex:outputField id="Line1_readonly" value="{!o.Line1__c}"/>
+    <apex:outputField id="StateProvince_readonly" value="{!o.State_Province__c}" />
+    <apex:outputField id="Line2_readonly" value="{!o.Line2__c}" />
+    <apex:outputField id="ZipPostalCode_readonly" value="{!o.Zip_Postal_Code__c}" />
+</apex:pageBlockSection>
+</div>
+<div id="edit_div">
+<apex:pageBlockSection title="Contact" id="sectionContact"> 
+    <apex:inputField id="Company" value="{!o.Company__c}" onchange="SetCurrentValue();"/>
+    <apex:inputField id="Phone" value="{!o.Phone__c}" onchange="SetCurrentValue();" required="{!is_required}"/>
+    <apex:inputField id="Name" value="{!o.Name__c}" onchange="SetCurrentValue();" required="{!is_required}"/>
+    <apex:inputField id="AlternativePhone" value="{!o.Alternative_Phone__c}" onchange="SetCurrentValue();"/>
+    <apex:inputField id="Fax" value="{!o.Fax__c}" onchange="SetCurrentValue();"/>
+    <apex:inputField id="Email" value="{!o.Email__c}" onchange="SetCurrentValue();"/>
+    <!--apex:inputField id="Language" value="{!o.Language__c}" required="true"/-->
+</apex:pageBlockSection>
+<apex:pageBlockSection title="Address" id="sectionAddress">
+    <apex:inputField id="SiteID" value="{!o.Site_ID__c}" />
+    <apex:inputField id="City" value="{!o.City__c}" onchange="SetCurrentValue();" required="{!is_required}"/>
+    <apex:inputField id="Line1" value="{!o.Line1__c}" onchange="SetCurrentValue();"/>
+    <apex:inputField id="StateProvince" value="{!o.State_Province__c}" onchange="SetCurrentValue();" required="{!is_required}"/>
+    <apex:inputField id="Line2" value="{!o.Line2__c}"  onchange="SetCurrentValue();" />
+    <apex:inputField id="ZipPostalCode" value="{!o.Zip_Postal_Code__c}"  onchange="SetCurrentValue();" required="{!is_required}"/>
+</apex:pageBlockSection>
+</div>
+</apex:pageBlock>
+<apex:includeScript value="/support/console/36.0/integration.js"/>
+</apex:form>
+</div>
+</div>
+<apex:includeScript value="{!$Resource.jQuery}"/>
+<script type="text/javascript">
+    $(document).ready(function(){
+        console.log("Jquery Started!");   
+        onLoad(); 
+        // settings = generateSettings();
+        // var isNew = {!IF(oid==null,'true', 'false')};
+        // if(isNew === true){
+        //     console.log('isNew:'+isNew);
+        //     document.getElementById("page:form:pageblock:sectionReceiver:ChooseAddress").value='Customer';
+        //     ChooseAddressOnChange();
+        // }
+    });
+</script>
+<script type="text/javascript">
+var __sfdcSessionId = '{!GETSESSIONID()}';
+</script>
+<script src="/soap/ajax/36.0/connection.js" type="text/javascript"></script>
+<script src="/soap/ajax/36.0/apex.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+var emptyObj = {
+        company:"",
+        phone:"",
+        name:"",
+        alternativePhone:"",
+        fax:"",
+        email:"",
+        siteId:"",
+        city:"",
+        line1:"",
+        line2:"",
+        stateProvince:"",
+        zipPostalCode:""
+};
+
+var settings = $.extend(true,{}, emptyObj);
+
+function onLoad()
+{
+    var status = '{!status}';
+    if(status == '' || status == 'Recommand')
+    {
+        document.getElementById("form_div").style.display = '';    
+    }
+       
+    if(sforce.console.isInConsole())
+    {
+        sforce.console.setTabTitle('{!o.Name}');
+    }
+    var Choose_Address = document.getElementById("page:form:pageblock:sectionReceiver:ChooseAddress").value;
+    if(Choose_Address=='Customer')
+    {
+        document.getElementById("readonly_div").style.display = '';
+        document.getElementById("edit_div").style.display = 'none';
+        document.getElementById("page:form:pageblock:sectionReceiver:BadgeNumber").disabled="disabled";
+        document.getElementById("page:form:pageblock:sectionReceiver:BadgeNumber_mlktp").disabled="disabled";
+        document.getElementsByClassName("lookupInput")[0].style="display:none;";
+    }
+    else if(Choose_Address=='Same business day' || Choose_Address=='Next business day')
+    {
+        document.getElementById("readonly_div").style.display = '';
+        document.getElementById("edit_div").style.display = 'none';
+        document.getElementById("page:form:pageblock:sectionReceiver:BadgeNumber").disabled="";
+        document.getElementById("page:form:pageblock:sectionReceiver:BadgeNumber_mlktp").disabled="";
+        document.getElementsByClassName("lookupInput")[0].style="";
+    }
+    else
+    {
+        document.getElementById("readonly_div").style.display = 'none';
+        document.getElementById("edit_div").style.display = '';
+        document.getElementById("page:form:pageblock:sectionReceiver:BadgeNumber").disabled="disabled";
+        document.getElementById("page:form:pageblock:sectionReceiver:BadgeNumber_mlktp").disabled="disabled";
+        document.getElementsByClassName("lookupInput")[0].style="display:none;";
+    }
+    //SetCurrentValue();
+    generateReadOnly();
+    settings = generateSettings();
+}
+
+function SetCurrentValue()
+{
+    console.log('SetCurrentValue Start');
+    try
+    {      
+        if(document.getElementById("page:form:pageblock:sectionReceiver:ChooseAddress").value== 'User Entry' ||
+        document.getElementById("page:form:pageblock:sectionReceiver:ChooseAddress").value== 'None')
+        {
+            generateReadOnly();
+        }
+        else
+        {
+            generateContact();
+            generateAddress();
+        }
+        settings = generateSettings();
+    }
+    catch(e)
+    {
+        alert(e);
+    }
+    console.log('SetCurrentValue End');
+}
+
+function ChooseAddressOnChange()
+{
+    console.log('ChooseAddressOnChange Start');
+    document.getElementById('user_not_div').style="display:none;";
+    document.getElementById('user_many_div').style="display:none;";
+    document.getElementById('user_must_div').style="display:none;";
+    // document.getElementById('detail_div').style="display:none;";
+    var Choose_Address = document.getElementById("page:form:pageblock:sectionReceiver:ChooseAddress").value;
+    if(Choose_Address=='Customer')
+    {
+        document.getElementById("readonly_div").style.display = '';
+        document.getElementById("edit_div").style.display = 'none';
+        document.getElementById("page:form:pageblock:sectionReceiver:BadgeNumber").disabled="disabled";
+        //document.getElementById("page:form:pageblock:sectionReceiver:BadgeNumber").value=null;
+        document.getElementById("page:form:pageblock:sectionReceiver:BadgeNumber_mlktp").disabled="disabled";
+        document.getElementsByClassName("lookupInput")[0].style="display:none;";
+        
+        var setting = {
+            company:"{!c.Account.Name}",
+            phone:"{!c.Phone}",
+            name:"{!c.Name}",
+            alternativePhone:"{!c.OtherPhone}",
+            fax:"{!c.Fax}",
+            email:"{!c.Email}",
+            siteId:"",
+            city:"{!wo.Case.City__c}",
+            line1:"{!wo.Case.Billing_Street__c}",
+            line2:"",
+            stateProvince:"{!wo.Case.Province__c}",
+            zipPostalCode:"{!wo.Case.Billing_Zip_Postal_Code__c}"
+        };
+        generateReadOnlyBySettings(setting);
+        generateContact();
+        generateAddress();
+    }
+    else if(Choose_Address=='User Entry')
+    {
+        document.getElementById("readonly_div").style.display = 'none';
+        document.getElementById("edit_div").style.display = '';
+        document.getElementById("page:form:pageblock:sectionReceiver:BadgeNumber").disabled="disabled";
+        //document.getElementById("page:form:pageblock:sectionReceiver:BadgeNumber").value=null;
+        document.getElementById("page:form:pageblock:sectionReceiver:BadgeNumber_mlktp").disabled="disabled";
+        document.getElementsByClassName("lookupInput")[0].style="display:none;";
+        
+        generateInput(settings);
+    }
+    else if(Choose_Address=='None')
+    {
+        document.getElementById("readonly_div").style.display = 'none';
+        document.getElementById("edit_div").style.display = '';
+        document.getElementById("page:form:pageblock:sectionReceiver:BadgeNumber").disabled="disabled";
+        //document.getElementById("page:form:pageblock:sectionReceiver:BadgeNumber").value=null;
+        document.getElementById("page:form:pageblock:sectionReceiver:BadgeNumber_mlktp").disabled="disabled";
+        document.getElementsByClassName("lookupInput")[0].style="display:none;";
+        
+        generateEmpty();
+    }
+    else if(Choose_Address=='Same business day' || Choose_Address=='Next business day')
+    {
+        document.getElementById("readonly_div").style.display = '';
+        document.getElementById("edit_div").style.display = 'none';
+        document.getElementById("page:form:pageblock:sectionReceiver:BadgeNumber").disabled="";
+        document.getElementById("page:form:pageblock:sectionReceiver:BadgeNumber_mlktp").disabled="";
+        document.getElementsByClassName("lookupInput")[0].style="";
+        
+        if(document.getElementById("page:form:pageblock:sectionReceiver:BadgeNumber").value.length==0)
+        {
+            generateReadOnlyEmpty();
+        }
+        else
+        {
+            SetUser();
+        }
+    }
+
+    SetCurrentValue();
+    console.log('ChooseAddressOnChange Start');
+}
+
+function SetUser()
+{
+    console.log('SetUser Start');
+    try
+    {
+        document.getElementById('user_not_div').style="display:none;";
+        document.getElementById('user_many_div').style="display:none;";
+        document.getElementById('user_must_div').style="display:none;";
+        generateReadOnlyEmpty();
+
+        if(document.getElementById("page:form:pageblock:sectionReceiver:ChooseAddress").value!='Same business day' &&
+            document.getElementById("page:form:pageblock:sectionReceiver:ChooseAddress").value!='Next business day' )
+        {
+            return;
+        }
+        
+        var uName = document.getElementById('page:form:pageblock:sectionReceiver:BadgeNumber').value;
+        
+        if(uName.length==0)
+        {
+            document.getElementById('user_must_div').style.display = '';
+            return;
+        }
+        
+        console.log('SetUser, fetch user from DB. Parameter: '+uName);
+        var result = sforce.connection.query("select contact.Id,contactId,contact.Name,id,profile_type__c,CompanyName,Name,Fax,Phone,MobilePhone,Email,City,State,PostalCode,Street from user where IsActive=true and name like '%"+uName+"%' and (profile_type__c='Standard' or profile_type__c='PowerPartner' or profile_type__c='PowerCustomerSuccess')");
+        var records = result.getArray("records");
+        console.log(records);
+
+        if(records.length==0)
+        {
+            document.getElementById('user_not_div').style.display = '';
+            return;
+        }
+           
+        if(records.length>1)
+        {
+            document.getElementById('user_many_div').style.display = '';
+            return;
+        }
+        
+        var user_type=records[0].profile_type__c;
+        if(user_type=='Standard')
+        {
+            document.getElementById('page:form:pageblock:sectionReceiver:BadgeNumber_mlktp').value='005';
+        }
+        else if(user_type=='PowerPartner')
+        {
+            document.getElementById('page:form:pageblock:sectionReceiver:BadgeNumber_mlktp').value='PartnerUserLookup';
+        }
+        else if(user_type=='PowerCustomerSuccess')
+        {
+            document.getElementById('page:form:pageblock:sectionReceiver:BadgeNumber_mlktp').value='CustomerSuccessUserLookup';
+        }
+
+        // 设置ship to id
+        var resultShip = sforce.connection.query("select UserName__c,shipto_id__c from Ship_to_id__c where UserName__c = '" +  records[0].Id + "'");
+        var recordShips = resultShip.getArray("records");
+
+        // 有ship to id
+        var shiptoId = "";
+        if (recordShips.length > 0){
+            shiptoId = recordShips[0].shipto_id__c;
+        }
+        
+        var setting = {
+            company:records[0].CompanyName,
+            phone:records[0].Phone,
+            name:records[0].Name!=null?(records[0].ContactId!=null?records[0].Contact.Name:records[0].Name):"",
+            alternativePhone:records[0].MobilePhone,
+            fax:records[0].Fax,
+            email:records[0].Email,
+            siteId:shiptoId,
+            //siteId:"",
+            city:records[0].City,
+            line1:records[0].Street,
+            line2:"",
+            stateProvince:records[0].State,
+            zipPostalCode:records[0].PostalCode==""||records[0].PostalCode==null?"{!wo.Case.Billing_Zip_Postal_Code__c}":records[0].PostalCode
+        };
+        generateReadOnlyBySettings(setting);
+
+        SetCurrentValue();
+
+        generateContact();
+        generateAddress();
+    }
+    catch(e)
+    {
+        alert(e);
+    }
+    console.log('SetUser End');
+}
+var el = function(pre,id){
+
+    return isEmpty(id)?id:$(pre+id);
+}
+
+//判断一个字符串是否null,undefined,blank
+var isEmpty = function(str) {
+    return (!str || 0 === str.trim().length);
+};
+
+var generateInput =function(settings){
+    var pre = "#page\\:form\\:pageblock\\:sectionContact\\:";
+    el(pre,"Company").val(settings.company);
+    el(pre,"Phone").val(settings.phone);
+    el(pre,"Name").val(settings.name);
+    el(pre,"AlternativePhone").val(settings.alternativePhone);
+    el(pre,"Fax").val(settings.fax);
+    el(pre,"Email").val(settings.email);
+    
+    pre = '#page\\:form\\:pageblock\\:sectionAddress\\:';
+    el(pre,"SiteID").val(settings.siteId);
+    el(pre,"City").val(settings.city);
+    el(pre,"Line1").val(settings.line1);
+    el(pre,"StateProvince").val(settings.stateProvince);
+    el(pre,"Line2").val(settings.line2);
+    el(pre,"ZipPostalCode").val(settings.zipPostalCode);
+};
+
+var generateReadOnlyBySettings = function(settings){
+    console.log('generateReadOnlyBySettings Start!');
+    var pre = "#page\\:form\\:pageblock\\:sectionContact\\:";
+    var pre_readOnly = "#page\\:form\\:pageblock\\:sectionContact_readonly\\:";
+    el(pre_readOnly,"Company_readonly").html(settings.company);
+    el(pre_readOnly,"Phone_readonly").html(settings.phone);
+    el(pre_readOnly,"Name_readonly").html(settings.name);
+    el(pre_readOnly,"AlternativePhone_readonly").html(settings.alternativePhone);
+    el(pre_readOnly,"Fax_readonly").html(settings.fax);
+    el(pre_readOnly,"Email_readonly").html(settings.email);
+
+    pre = '#page\\:form\\:pageblock\\:sectionAddress\\:';
+    pre_readOnly = "#page\\:form\\:pageblock\\:sectionAddress_readonly\\:";
+    el(pre_readOnly,"SiteID_readonly").html(settings.siteId);
+    el(pre_readOnly,"City_readonly").html(settings.city);
+    el(pre_readOnly,"Line1_readonly").html(settings.line1);
+    el(pre_readOnly,"StateProvince_readonly").html(settings.stateProvince);
+    el(pre_readOnly,"Line2_readonly").html(settings.line2);
+    el(pre_readOnly,"ZipPostalCode_readonly").html(settings.zipPostalCode);
+    console.log('generateReadOnlyBySettings End!');
+};
+
+var generateContact = function(){
+    console.log('generateContact Start!');
+    var pre = "#page\\:form\\:pageblock\\:sectionContact\\:";
+    var pre_readOnly = "#page\\:form\\:pageblock\\:sectionContact_readonly\\:";
+
+    el(pre,"Company").val(el(pre_readOnly,"Company_readonly").html());
+    el(pre,"Phone").val(el(pre_readOnly,"Phone_readonly").html().replace('&nbsp;',''));
+    el(pre,"Name").val(el(pre_readOnly,"Name_readonly").html());
+    el(pre,"AlternativePhone").val(el(pre_readOnly,"AlternativePhone_readonly").html().replace('&nbsp;',''));
+    el(pre,"Fax").val(el(pre_readOnly,"Fax_readonly").html().replace('&nbsp;',''));
+    el(pre,"Email").val(el(pre_readOnly,"Email_readonly").html());
+    console.log('generateContact End!');
+};
+
+var generateAddress = function(){
+    console.log('generateAddress Start!');
+    var pre = '#page\\:form\\:pageblock\\:sectionAddress\\:';
+    var pre_readOnly = "#page\\:form\\:pageblock\\:sectionAddress_readonly\\:";
+    el(pre,"SiteID").val(el(pre_readOnly,"SiteID_readonly").html());
+    el(pre,"City").val(el(pre_readOnly,"City_readonly").html());
+    el(pre,"Line1").val(el(pre_readOnly,"Line1_readonly").html());
+    el(pre,"StateProvince").val(el(pre_readOnly,"StateProvince_readonly").html());
+    el(pre,"Line2").val(el(pre_readOnly,"Line2_readonly").html());
+    el(pre,"ZipPostalCode").val(el(pre_readOnly,"ZipPostalCode_readonly").html());
+    console.log('generateAddress End!');
+};
+
+var generateSettings = function(){
+    var pre = "#page\\:form\\:pageblock\\:sectionContact\\:";
+    var pre_Addr = "#page\\:form\\:pageblock\\:sectionAddress\\:";
+    var settings = {
+        company:el(pre,"Company").val(),
+        phone:el(pre,"Phone").val(),
+        name:el(pre,"Name").val(),
+        alternativePhone:el(pre,"AlternativePhone").val(),
+        fax:el(pre,"Fax").val(),
+        email:el(pre,"Email").val(),
+        siteId:el(pre_Addr,"SiteID").val(),
+        city:el(pre_Addr,"City").val(),
+        line1:el(pre_Addr,"Line1").val(),
+        line2:el(pre_Addr,"Line2").val(),
+        stateProvince:el(pre_Addr,"StateProvince").val(),
+        zipPostalCode:el(pre_Addr,"ZipPostalCode").val()
+    };
+    return settings;
+};
+
+var generateReadOnly = function(){
+    console.log('generateReadOnly Start!');
+    generateReadOnlyBySettings(generateSettings());
+    console.log('generateReadOnly End!');
+};
+
+var generateEmpty = function(){
+    console.log('generateContactEmpty Start!');
+    generateInput(emptyObj);
+    console.log('generateContactEmpty End!');
+};
+
+var generateReadOnlyEmpty = function(){
+    console.log('generateAddressEmpty Start!');
+    generateReadOnlyBySettings(emptyObj);
+    console.log('generateAddressEmpty End!');
+};
+
+function CloseTab() {
+    sforce.console.getEnclosingTabId(closeSubtab);
+}
+var closeSubtab = function closeSubtab(result) {
+    //Now that we have the tab ID, we can close it
+    var tabId = result.id;
+    console.log('tab id:'+tabId);
+    sforce.console.closeTab(tabId);
+};
+
+var isSave='';
+function Cancel()
+{
+    try
+    {
+        var isDelete='{!isDelete}';
+        var oid='{!oid}';
+        //if(isSave=='' && isDelete=='delete')
+        if(oid.length==0)
+        {
+            /*var order = new sforce.SObject("Order__c");
+            order.Id = '{!o.Id}';
+            var result=sforce.connection.deleteIds([order.Id]);*/
+            // window.location.href='/'+'{!workorderId}';
+            CloseTab();
+        }
+        else
+        {
+            window.location.href='/'+'{!o.Id}';
+        }     
+    }
+    catch(e)
+    {
+        alert(e);
+    }
+}
+function DetailValidation()
+{
+}
+</script>
+</apex:page>

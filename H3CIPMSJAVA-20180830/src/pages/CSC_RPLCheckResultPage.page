@@ -1,0 +1,104 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="true" controller="CSC_RPLCheckController" >
+<script src="/support/api/34.0/interaction.js"></script>
+<script src="/support/console/34.0/integration.js"></script>
+<apex:includeScript value="{!$Resource.jQuery}"/>
+<script type="text/javascript">
+    var j$ = jQuery.noConflict();
+
+    j$(document).ready(function() {
+
+        j$("#showSuccessMessage").hide(); 
+        j$("#showErrorMessage").hide(); 
+        var hiddenCheckResult =  '{!checkResult}';
+        var result = jQuery.parseJSON(hiddenCheckResult);
+
+        if (hiddenCheckResult != undefined && j$.trim(hiddenCheckResult) !="") {
+            var jsonHiddenCheckResult = jQuery.parseJSON(hiddenCheckResult);
+            var status = jsonHiddenCheckResult.isPassed;
+            if (status == true) {
+                j$("#showSuccessMessage").fadeIn(); 
+                saveRPLPass();
+            } else{
+                j$("#showErrorMessage").fadeIn(); 
+                if(result && result.RplMessageList && (result.RplMessageList.constructor === Array)){
+                    //提取查询返回的结果
+                    var searchDataList = result.RplMessageList;
+                    var htmlTag = '';
+                    if(searchDataList.length > 0){
+                        //遍历结果，放入到HTML内容里
+                        for(var i=0; i<searchDataList.length; i++){
+                            var searchDataInfo = searchDataList[i];
+                            htmlTag += '<tr class="dataRow">';
+                            htmlTag += '<td class="dataCell">'+searchDataInfo.strName+'</td>';
+                            if (searchDataInfo.strAddress !=null) {
+                                htmlTag += '<td class="dataCell">'+searchDataInfo.strAddress+'</td>';
+                            } else {
+                                 htmlTag += '<td class="dataCell"></td>';
+                            }
+
+                            if (searchDataInfo.strType !=null) {
+                                htmlTag += '<td class="dataCell">'+searchDataInfo.strType+'</td>';
+                            } else {
+                                 htmlTag += '<td class="dataCell"></td>';
+                            }
+                            
+                            htmlTag += '</tr>';
+                        }
+
+                        var infoTable = document.getElementById("DetailTable");
+                        var oldNode = document.getElementById("DetailTableBody");
+
+                        if(oldNode != null){
+                            infoTable.removeChild(oldNode);
+                        }
+                        
+                        var div = document.createElement('div'); 
+                        div.innerHTML = '<table>' + htmlTag + '</table>';
+                        
+                        div.firstChild.firstChild.setAttribute('id', 'DetailTableBody');
+                        infoTable.appendChild(div.firstChild.firstChild);  
+                    }
+                }
+            }
+        } 
+    });
+
+    function Reload(){
+        try{
+            if(window.opener && !window.opener.closed) {
+                window.opener.location.href = window.opener.location.href;
+            } 
+            window.close();
+            
+        }catch(ex){
+            alert(ex);
+        }
+    }
+
+</script>
+<apex:form >
+    <div id="showSuccessMessage">
+        <span>RPL Check Pass!</span>
+    </div>
+    <div id="showErrorMessage">
+        <apex:pageBlock title="RPL List">
+            <table class="list" cellpadding="0" cellspacing="0" id="DetailTable">
+                <thead>
+                    <tr class="headerRow">
+                        <td style="width:100px;">Name</td>
+                        <td style="width:100px;">Address</td>
+                        <td style="width:100px;">Type</td>
+                    </tr>
+                </thead>
+                <tbody id="DetailTableBody">                        
+                </tbody>
+            </table>
+            <div align="right">
+                <apex:commandButton action="{!saveRPLPass}" value="RPL Pass" oncomplete="Reload();"/>
+                <apex:commandButton action="{!saveRPLFail}" value="RPL Fail" oncomplete="Reload();"/>
+                <apex:actionFunction action="{!saveRPLPass}" name="saveRPLPass" oncomplete="Reload();"/>
+            </div>
+        </apex:pageBlock>
+    </div>
+</apex:form>
+</apex:page>

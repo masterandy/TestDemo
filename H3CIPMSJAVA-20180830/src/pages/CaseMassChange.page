@@ -1,0 +1,5 @@
+<apex:page standardController="Case" extensions="CasesController" recordSetVar="cases" action="{!masChange}">
+<script>
+    window.history.back();
+</script>   
+</apex:page>

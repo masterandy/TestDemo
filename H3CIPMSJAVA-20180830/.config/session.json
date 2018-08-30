@@ -1,0 +1,17 @@
+{
+    "apex_url": "https://hscec--IPMSORG.cs31.my.salesforce.com/services/Soap/s/39.0", 
+    "success": true, 
+    "rest_url": "https://hscec--IPMSORG.cs31.my.salesforce.com/services/data/v39.0", 
+    "project name": "H3CIPMSJAVA", 
+    "metadata_url": "https://hscec--IPMSORG.cs31.my.salesforce.com/services/Soap/m/39.0", 
+    "session_id": "00Dp0000000DbXx!AQoAQDwXEhMv_KXKdxGDkJjtdoFwrJDq7PpkJ6__0eD13GR1m8.V8cgvIg6MN7wrTqmtBve21b38uaNuRWSmxvI79FNJBycL", 
+    "user_id": "0050I0000085R7AQAU", 
+    "time_stamp": "2018-08-30 11:26:21", 
+    "headers": {
+        "Authorization": "OAuth 00Dp0000000DbXx!AQoAQDwXEhMv_KXKdxGDkJjtdoFwrJDq7PpkJ6__0eD13GR1m8.V8cgvIg6MN7wrTqmtBve21b38uaNuRWSmxvI79FNJBycL", 
+        "Accept": "application/json", 
+        "Content-Type": "application/json; charset=UTF-8"
+    }, 
+    "partner_url": "https://hscec--IPMSORG.cs31.my.salesforce.com/services/Soap/u/39.0", 
+    "instance_url": "https://hscec--IPMSORG.cs31.my.salesforce.com"
+}

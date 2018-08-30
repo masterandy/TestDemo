@@ -1,0 +1,51 @@
+<apex:page standardController="Case" rendered="{!(case.CSC_RPL_AntiFraud_check__c == true || case.WarnMess__c != 0)}">
+<style>
+    body{
+        font-family:Arial, Helvetica, sans-serif; 
+        font-size:13px;
+    }
+    warning {
+        font-weight:bold;
+        width: 99%; 
+        display: inline-block;
+        border: 1px solid;
+        margin: 1px 1px;
+        padding:5px 5px 5px 5px;
+        background-repeat: no-repeat;
+        background-position: 5px center;
+        color: #FF0000;
+        vertical-align:middle;
+        font-size: 10px;
+    }
+    img{
+        vertical-align:middle;
+    }
+    .msgIcon {
+        background-image: url(/img/msg_icons/info24.png);
+        background-position: 0 0;
+        width: 24px;
+        height: 24px;
+    }
+</style>
+    <apex:form rendered="{!case.CSC_RPL_AntiFraud_check__c == true}">
+        <warning>
+        <img alt="INFO" class="msgIcon" src="/s.gif" title="INFO"/>
+        <apex:outputText value="You must complete RPL/Anti-Fraud check!"/>
+        </warning>
+    </apex:form>
+
+    <!--<apex:form rendered="{!case.WarnMess__c == 1 || case.WarnMess__c == 12}">
+        <warning>
+        <img alt="INFO" class="msgIcon" src="/s.gif" title="INFO"/>
+        <apex:outputText value="此产品为借贷合同，不可以安排上门服务。"/>
+        </warning>
+    </apex:form>-->
+
+    <apex:form rendered="{!case.WarnMess__c == 2 || case.WarnMess__c == 12}">
+        <warning>
+        <img alt="INFO" class="msgIcon" src="/s.gif" title="INFO"/>
+        <apex:outputText value="此产品即将过保修期！"/>
+        </warning>
+    </apex:form>
+
+</apex:page>

@@ -1,0 +1,5 @@
+<apex:page standardController="Campaign" 
+action="{!if($CurrentPage.parameters.RecordType = '01228000000PMiK' || $CurrentPage.parameters.RecordType = '01228000000PMiL',
+urlfor('/701/e',null,[RecordType=$CurrentPage.parameters.RecordType,cpn1='此处自动生成，无需填写',retURL='701/o'],true),
+urlfor('/701/e',null,[RecordType=$CurrentPage.parameters.RecordType,retURL='701/o'],true))}">
+</apex:page>

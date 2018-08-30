@@ -1,0 +1,260 @@
+<apex:page controller="CSC_Assign_Controller" id="page" showHeader="false">
+<apex:form id="form">
+<apex:inputtext id="row" value="{!row}" style="display:none;"/>
+<!-- Main Body Starts Here -->
+<div class="lookupSearch"><div class="individualPalette"><div class="list0">
+<!-- Begin RelatedListElement -->
+<div class="bRelatedList" id="User"><a name="User_target"></a>
+<div class="listRelatedObject userBlock">
+<div class="bPageBlock brandSecondaryBrd secondaryPalette">
+<div class="pbHeader">
+    <table  border="0" cellpadding="0" cellspacing="0" summary="Employee">
+        <tr>
+            <td class="pbTitle">
+                <img src="/s.gif" alt="用户"  class="relatedListIcon" title="Employee"/>
+                <h3><span class="searchFirstCell">Employee</span></h3>
+            </td>
+        </tr>
+    </table>   
+    
+    <div class="searchFilterFieldsHolder searchFilterFieldsHolderFirst" id="field_name_User">
+    <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+            <table border="0"  class="searchFilterFields">
+                <tr>
+                    <td style="text-align:right;" ><label>Name</label></td>
+                    <td style="text-align:left;" ><apex:inputText id="username" value="{!userName}"/></td>
+                    <td style="text-align:right;" ><label>Employee ID</label></td>
+                    <td style="text-align:left;" ><apex:inputText id="employeeid" value="{!employeeId}"/></td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;" ><label>Email</label></td>
+                    <td style="text-align:left;" ><apex:inputText id="email" value="{!email}"/></td>
+                    <td style="text-align:right;" ><label>Skill Name</label></td>
+                    <td style="text-align:left;" ><apex:inputField id="skill" value="{!wo.Skill__c}" label="Skill Name"/></td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;" ><label>Requested Date</label></td>
+                    <td style="text-align:left;" ><apex:inputField id="date" value="{!wo.Requested_Date__c}" required="true"/></td>
+                    <td style="text-align:right;" ><label>Subcase Estimated Task Duration</label></td>
+                    <td style="text-align:left;" ><apex:inputField id="Duration" value="{!wo.Subcase_Estimated_Task_Duration__c}" required="true"/></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:right;" >
+                    <apex:commandButton value="Search" action="{!Search}"/>
+                    </td>
+                    <td colspan="2" style="text-align:left;" >                    
+                    <apex:commandButton value="Close" onclick="window.close();"/>
+                    </td>
+                </tr>
+            </table>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+    </div>
+      
+<div class="pbBody" id="User_body">
+<apex:pagemessages id="Messages"/>
+<div id='User_Div' style="{!showUser}">
+    <table class="list" border="0" cellspacing="0" cellpadding="0">
+        <tr class="headerRow">
+            <th scope="col" class=" zen-deemphasize">Action</th>
+            <th scope="col" class=" zen-deemphasize" >Name</th>
+            <th scope="col" class=" zen-deemphasize" >Employee ID</th>
+            <th scope="col" class=" zen-deemphasize" >Email</th>
+            <!--th scope="col" class=" zen-deemphasize" >UserName</th-->
+            <th scope="col" class=" zen-deemphasize" >Role</th>
+            <!--th scope="col" class=" zen-deemphasize">Last Login Date</th-->
+            <th scope="col" class=" zen-deemphasize" >Profile</th>
+            <th scope="col" class=" zen-deemphasize">Manager</th>
+        </tr>
+        <apex:repeat value="{!uList}" var="u" id="theRepeat"> 
+        <tr class="dataRow even first">
+            <td class=" dataCell  "><apex:commandButton value="Assign" onclick="AssignRow(this);" action="{!Assign}" oncomplete="Reload();"/></td>
+            <td class=" dataCell  ">{!u.Name}</td>
+            <td class=" dataCell  ">{!u.Employee_ID__c}</td>
+            <td class=" dataCell  ">{!u.Email}</td>
+            <!--td class=" dataCell  ">{!u.UserName}</td-->
+            <td class=" dataCell  " >{!u.UserRole.Name}</td>
+            <!--td class=" dataCell  ">{!u.LastLoginDate}</td-->
+            <td class=" dataCell  ">{!u.Profile.Name}</td>
+            <td class=" dataCell  ">{!u.Manager.Name }</td>
+        </tr>
+        </apex:repeat>
+    </table>
+</div> 
+<div id='Group_Div' style="{!showGroup}">   
+    <table class="list" border="0" cellspacing="0" cellpadding="0">
+        <tr class="headerRow">
+            <th scope="col" class=" zen-deemphasize">Action</th>
+            <th scope="col" class=" zen-deemphasize">Name</th>
+        </tr>
+        <apex:repeat value="{!gList}" var="g" id="groupRepeat"> 
+        <tr class="dataRow even first">
+            <td class=" dataCell  "><apex:commandButton value="Assign" onclick="AssignRow(this);" action="{!Assign}" /></td>
+            <td class=" dataCell  ">{!g.Name}</td>
+        </tr>
+        </apex:repeat>
+    </table>
+</div>    
+</div>
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id='resultdiv' style="display:none;"></div>
+</apex:form>  
+<script type="text/javascript">
+var __sfdcSessionId = '{!GETSESSIONID()}';
+</script>
+<script src="/soap/ajax/36.0/connection.js" type="text/javascript"></script>
+<script src="/soap/ajax/36.0/apex.js" type="text/javascript"></script>
+<script type="text/javascript"> 
+var requestdate_str='';
+var result='true';
+var rowobj = document.getElementById('page:form:row');
+
+function AssignRow(obj)
+{
+    try
+    {   
+        rowobj.value =-1;
+        var requestdate=document.getElementById('page:form:date').value;
+        var now=new Date('{!now()}');
+        var year=now.getFullYear()+'';
+        var month=now.getMonth()+1+'';     
+        var day=now.getDate()+'';
+        var hour=now.getHours()+'';
+        var minute=now.getMinutes()+'';
+        
+        if(month.length==1)
+        {
+            month='0'+month;
+        }
+        if(day.length==1)
+        {
+            day='0'+day;
+        }
+        if(hour.length==1)
+        {
+            hour='0'+hour;
+        }
+        if(minute.length==1)
+        {
+            minute='0'+minute;
+        }
+        var nowstr=year+month+day+hour+minute;
+        GetDateTimeString(requestdate);
+        //alert(requestdate_str);
+        //alert(nowstr);
+        var div=document.getElementById('resultdiv');
+        div.innerHTML='';
+        if(parseInt(requestdate_str)<parseInt(nowstr))
+        {
+            div.innerHTML='false';
+            alert('Requested Date less than the current time!');
+            return;
+        }
+        else
+        {
+        
+            //alert(obj.parentNode.parentNode.rowIndex);
+            var e = e || window.event; 
+            var target = e.target || e.srcElement; 
+            if (target.parentNode.tagName.toLowerCase() == "td") 
+            { 
+                var rowIndex = target.parentNode.parentNode.rowIndex-1; 
+                rowobj.value = rowIndex;
+                //alert(rowIndex);
+                //alert({!row});
+            } 
+        //obj.parentNode.parentNode.removeNode(true);
+        }
+    }
+    catch(e)
+    {
+    alert(e);
+    } 
+}
+
+function GetDateTimeString(str)
+{
+    var year=str.substr(0,4);
+    var month=str.substr(5,str.lastIndexOf('-')-5);
+    var day=str.substr(str.lastIndexOf('-')+1,2).replace(/\s+/g,"");
+    
+    var chinese=str.indexOf('午');
+    var english=str.indexOf('M');
+    
+    var hour='';
+    var minute='';
+    if(chinese>0)
+    {
+        hour=str.substr(chinese+1,str.indexOf(':')-1-chinese);
+        minute=str.substr(str.lastIndexOf(':')+1,str.length-str.lastIndexOf(':')-1);
+        
+        if(str.indexOf('下')>0)
+        {
+            hour=parseInt(hour)+12+'';
+        }
+    }
+    else
+    {
+        hour=str.substr(english+1,str.indexOf(':')-1-english);
+        minute=str.substr(str.lastIndexOf(':')+1,str.length-str.lastIndexOf(':')-1);
+        
+        if(str.indexOf('P')>0)
+        {
+            hour=parseInt(hour)+12+'';
+        }
+    }
+    
+    if(month.length==1)
+        {
+            month='0'+month;
+        }
+        if(day.length==1)
+        {
+            day='0'+day;
+        }
+        if(hour.length==1)
+        {
+            hour='0'+hour;
+        }
+        if(minute.length==1)
+        {
+            minute='0'+minute;
+        }
+    requestdate_str=year+month+day+hour+minute;
+}
+
+function Reload()
+{
+    try
+    {
+        var div=document.getElementById('resultdiv');
+        if(div.innerHTML=='')
+        {
+            if(window.opener && !window.opener.closed) 
+            { 
+                //alert(window.opener.document.getElementsByTagName("td"));
+                window.opener.location.href=window.opener.location.href; 
+            } 
+            window.close();
+        }
+    }
+    catch(ex)
+    {
+    alert(ex);
+    }
+}
+</script>   
+</apex:page>

@@ -1,0 +1,119 @@
+<apex:page standardController="WorkOrder" extensions="CSC_CustomizedLogActivityWorkOrder" id="page">
+    <script src="/support/api/34.0/interaction.js"></script>
+    <script src="/support/console/34.0/integration.js"></script>
+    <script type='text/javascript' src='/canvas/sdk/js/publisher.js'/>
+    <apex:includeScript value="{!$Resource.jQuery}"/>
+   
+    <script type="text/javascript">
+    var j$ = jQuery.noConflict();
+
+    j$(document).ready(function() {
+        //document.getElementById("page:form:Name_mlktp").style.height= "30px";
+        //document.getElementById("page:form:Name").style.height= "30px";
+
+        var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+        var observer = new MutationObserver(function(mutations) { 
+            if(!j$('#selectList select').first().hasClass('myListClass')){
+                j$('#selectList select').first().addClass('myListClass');
+            }
+        });
+
+        var myNode = document.querySelector('#selectList'); 
+
+        observer.observe(myNode, {
+            childList: true,
+            subtree: true,
+            attributes: true
+        });
+    });
+
+    function refreshFeed() {
+        //document.getElementById("page:form:Name_mlktp").style.height= "25px";
+        //document.getElementById("page:form:Name").style.height= "25px";
+        var isSuccessful = j$("[id$=hiddenIsSuccessful]").val();
+        if (isSuccessful == 'true') {
+            Sfdc.canvas.publisher.publish({name : 'publisher.refresh', payload :{feed:true}});
+        } else {
+            return null;
+        }
+    }
+
+    function setFocus(){
+        var orgValue=j$("[id$=Description]").val(); 
+        j$("[id$=Description]").val("").focus().val(orgValue);
+    }
+</script>
+<style>
+    td {
+        height:25px;
+    }
+
+    .myListClass{
+        width:200px;
+        height:25px;
+    }
+
+</style>
+<apex:form id="form">
+    <apex:pageMessages id="msg" escape="false"/>
+    <table>
+        <tr>
+            <th>Subject</th><th></th><th></th>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <apex:inputField id="Subject" value="{!taskRecord.Subject}" style="width:460px;height:20px;"/>
+            </td>
+        </tr>
+        <tr><th>Note Type</th><th>Action Type</th><th></th></tr>
+        <tr>
+            <td>
+                <apex:inputField id="NoteType" value="{!taskRecord.Note_type__c}" styleClass="myListClass" required="true"/>
+            </td>
+            <td id="selectList">
+                <apex:inputField id="ActionType" value="{!taskRecord.Action_Type__c}" styleClass="myListClass dependentElement" onchange="setCommentsByActionType();" required="true"/>
+            </td>
+            <td>
+                <apex:inputField id="Internal" value="{!taskRecord.Internal__c}"/>
+                <span style="font-size:12px;">Internal</span>
+            </td>
+        </tr>
+        <tr>
+            <th>Comments</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td colspan="3" height="220px;">
+                <apex:inputField id="Description" value="{!taskRecord.Description}" style="width:460px;height:200px;" />
+            </td>
+        </tr>
+        <tr>
+            <th>Duration(Hour)</th>
+            <th>Duration(minute)</th>
+        </tr>
+        <tr>
+            <td>
+                <apex:inputField id="DurationHour" value="{!taskRecord.Duration_Hour__c}" style="width:230px;height:20px;"/>
+            </td>
+            <td colspan="2">
+                <apex:inputField id="DurationMinute" value="{!taskRecord.Duration_Minute__c}" style="width:230px;height:20px;"/>
+            </td>
+          </tr>
+        <tr>
+            <td colspan="3" style="width:460px;background-color: #f4f6f9;">
+            <apex:commandButton value="Create" action="{!saveTask}" reRender="msg,hiddenIsSuccessful,Subject,NoteType,ActionType,Internal,Description,DurationHour,DurationMinute,RelatedTo,Name" style="float:right;" oncomplete="refreshFeed();"/>
+            </td>
+        </tr>
+    </table>
+    <div style="display:none;">
+    <apex:pageBlock id="detailBlock" mode="maindetail">
+        <apex:pageBlockSection columns="1">
+            <apex:pageBlockSectionItem >
+                <apex:actionFunction action="{!setCommentsByActionType}" name="setCommentsByActionType" rerender="Description" oncomplete="setFocus();"/>
+            </apex:pageBlockSectionItem>
+            <apex:inputHidden id="hiddenIsSuccessful" value="{!isSuccessful}" />
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+     </div>
+</apex:form>
+</apex:page>

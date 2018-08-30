@@ -1,0 +1,29 @@
+<apex:page standardController="Opportunity_Competitor__c" extensions="AddCompetitorsController"  tabStyle="Opportunity" id="page">
+    <apex:form id="frm" >
+        <apex:sectionHeader title="{!$Label.Add_Competitors}"/>
+        <apex:pagemessages />
+        <!-- Page block for adding channel partner -->
+        <apex:pageBlock title="{!$Label.Add_Competitors}" id="pageBlock">
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton action="{!Save}" value="{!$Label.ldchangeowner_save_button}" />
+                <apex:commandButton action="{!Cancel}" value="{!$Label.Ldchangeowner_cancel_button}"/>
+            </apex:pageBlockButtons>
+            <apex:pageblockTable value="{!CompetitorList}" var="c" id="dataTable" >
+                <apex:column headerValue="{!$Label.Competitor_Account}" width="10%">                        
+                    <apex:inputField id="competitorAccount" value="{!c.Competitor__c}"/>
+                </apex:column>
+                <apex:column headerValue="{!$Label.Competitor_Primary}" width="10%">
+                    <apex:inputCheckbox id="primary" value="{!c.Primary_Competitor__c}" />
+                </apex:column>
+                <apex:column headerValue="{!$Label.Incumbent}" width="10%">
+                    <apex:inputCheckbox id="incumbent" value="{!c.Incumbent_Competitor__c}" />
+                </apex:column>
+                <apex:column headerValue="{!$Label.Winning_Competitor}" width="10%">
+                    <apex:inputCheckbox id="winningCompetitor" value="{!c.Winning_Competitor__c}" />
+                </apex:column>
+                <apex:column headerValue="">
+                </apex:column>
+           </apex:pageblockTable>
+        </apex:pageBlock>
+    </apex:form>  
+</apex:page>
